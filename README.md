@@ -13,8 +13,8 @@ TODO
 
 ## Installation
 ```sh
-$ git clone thisrepo
-$ cd 
+$ git clone https://github.com/dodicin/autonomous-exploration-agent
+$ cd autonomous-exploration-agent
 $ virtualenv .venv -p C:/Python/Python36/python.exe 
 $ .venv/Script/activate.bat
 $ pip install mlagents
