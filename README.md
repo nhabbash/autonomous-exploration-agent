@@ -35,7 +35,7 @@ $ pip install bleach==1.5.0
 * Launch a command prompt:
 ```sh
 $ tensorboard --logdir=summaries
-$ mlagents-learn MLConfig\trainer_config.yaml --run-id=TEST --train
+$ mlagents-learn config\trainer_config.yaml --run-id=TEST --train
 ```
 * Stop the training when the cumulative reward reaches a satisfying level
 * Models are saved under `./models`
