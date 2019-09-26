@@ -1,0 +1,58 @@
+Base path: 'D:/Program Files/Unity/2019.2.2f1/Editor/Data', plugins path 'D:/Program Files/Unity/2019.2.2f1/Editor/Data/PlaybackEngines'
+Cmd: initializeCompiler
+Cmd: compileComputeKernel
+  api=4 insize=12733 outsize=1004 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=65748 outsize=7569 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=4631 outsize=1831 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=4631 outsize=1831 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=24259 outsize=6172 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=24259 outsize=3252 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=28420 outsize=2583 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=28420 outsize=2014 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=28420 outsize=1309 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=28420 outsize=1449 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=28420 outsize=1296 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=28420 outsize=1835 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=28420 outsize=1326 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=21203 outsize=801 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=21203 outsize=849 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=21203 outsize=945 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=21203 outsize=791 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=21203 outsize=1309 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=21203 outsize=1243 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=21203 outsize=1354 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=21203 outsize=1305 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=21203 outsize=1344 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=21203 outsize=1233 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=21203 outsize=1762 ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=11846 outsize=5706 kw=SHADOWS_SPLIT_SPHERES pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=1596 outsize=7294 kw=UNITY_PASS_FORWARDBASE DIRECTIONAL SHADOWS_SCREEN LIGHTPROBE_SH _EMISSION pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=1596 outsize=2002 kw=UNITY_PASS_FORWARDBASE DIRECTIONAL SHADOWS_SCREEN LIGHTPROBE_SH _SPECULARHIGHLIGHTS_OFF _GLOSSYREFLECTIONS_OFF pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=1596 outsize=2002 kw=UNITY_PASS_FORWARDBASE DIRECTIONAL SHADOWS_SCREEN LIGHTPROBE_SH _EMISSION _SPECULARHIGHLIGHTS_OFF _GLOSSYREFLECTIONS_OFF pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
