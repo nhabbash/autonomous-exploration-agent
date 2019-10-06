@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b23992c8eb17439887f5e944bf04a40, type: 3}
-  m_Name: RollerBallBrain
+  m_Name: ExAgentBrain
   m_EditorClassIdentifier: 
   brainParameters:
     vectorObservationSize: 8
-    numStackedVectorObservations: 1
+    numStackedVectorObservations: 10
     vectorActionSize: 02000000
     cameraResolutions: []
     vectorActionDescriptions:
-    - 
-    - 
+    - Z Axis Movement
+    - X Axis Movement
     vectorActionSpaceType: 1
-  model: {fileID: 5022602860645237092, guid: 2876af421453dc44f8bdde53c8337562, type: 3}
+  model: {fileID: 0}
   inferenceDevice: 0
