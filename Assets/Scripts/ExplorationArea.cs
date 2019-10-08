@@ -111,7 +111,6 @@ public class ExplorationArea : Area
     {
         Collider c = target.GetComponent<Collider>();
         Debug.Log(c.enabled);
-        target.GetComponent<Collider>().enabled = false;
         target.transform.rotation = Quaternion.Euler(new Vector3(0f, UnityEngine.Random.Range(0f, 360f), 0f));
 
         Vector3 randomLocalPosition = new Vector3(UnityEngine.Random.Range(-range, range), 0.1f, UnityEngine.Random.Range(-range, range));
