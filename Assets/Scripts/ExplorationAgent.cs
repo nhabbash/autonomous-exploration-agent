@@ -16,6 +16,12 @@ public class ExplorationAgent : Agent
     private Vector3 signals = Vector3.zero;
 
     private bool reachedGoal;
+    private bool resetting;
+
+    private const float MIN_REWARD = -1f;
+    private const float WIN_REWARD = 1f;
+
+
 
     void Start()
     {
@@ -24,12 +30,14 @@ public class ExplorationAgent : Agent
         exArea = transform.parent.GetComponent<ExplorationArea>();
         rayPerception = GetComponent<RayPerception3D>();
         reachedGoal = false;
+        resetting = false;
     }
 
     public override void AgentReset()
     {
         body.velocity = Vector3.zero;
         reachedGoal = false;
+        resetting = false;
     }
 
     public override void CollectObservations()
@@ -57,33 +65,27 @@ public class ExplorationAgent : Agent
         controlSignal.z = vectorAction[1];
         signals = controlSignal;
 
-        // Reward, determine state
-
-        if (GetCumulativeReward() < -5f)
+        if (resetting && !reachedGoal && GetCumulativeReward() > MIN_REWARD )
         {
-            // Reward is too negative, give up
+            //resetting = false;
+        }
+
+        if (GetCumulativeReward() < MIN_REWARD && !resetting)
+        {
             Done();
-
-            // Color area
-            StartCoroutine(exArea.SwapGroundMaterial(success: false));
-
-            // Reset
-            exArea.ResetArea();
+            exArea.FailResetArea();
+            resetting = true;
 
         }
-        else if (reachedGoal)
+        else if (reachedGoal && !resetting)
         {
             Done();
+            exArea.SuccessResetArea();
+            resetting = true;
 
-            // Color area
-            StartCoroutine(exArea.SwapGroundMaterial(success: true));
-
-            // Reset
-            exArea.ResetArea();
-
-        }else
+        }
+        else
         {
-            // Encourage more movement with a small penalty
             AddReward(-.001f);
             exArea.UpdateScore(GetCumulativeReward());
         }
@@ -95,12 +97,11 @@ public class ExplorationAgent : Agent
         if (collision.gameObject.CompareTag("Goal"))
         {
             reachedGoal = true;
-            AddReward(1f);
+            AddReward(WIN_REWARD);
             exArea.UpdateScore(GetCumulativeReward());
-            Destroy(collision.gameObject);
-        }else if(collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("LevelBoundaries"))
+        } else if(collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("LevelBoundaries"))
         {
-            AddReward(-.01f);
+            AddReward(-.1f);
         }
     }
 

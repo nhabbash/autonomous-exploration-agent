@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5815166374388021317}
   m_Layer: 0
   m_Name: ExplorationAgent
-  m_TagString: Untagged
+  m_TagString: Protagonist
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,8 +29,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6456080395083320180}
-  m_LocalRotation: {x: 0, y: 0.31816033, z: 0, w: -0.94803697}
-  m_LocalPosition: {x: 1.783248, y: 0.1, z: -3.4156694}
+  m_LocalRotation: {x: 0, y: 0.7874452, z: 0, w: -0.6163847}
+  m_LocalPosition: {x: -2.6595078, y: 0.1, z: 7.955}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

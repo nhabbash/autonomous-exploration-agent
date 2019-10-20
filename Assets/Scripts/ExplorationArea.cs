@@ -43,11 +43,24 @@ public class ExplorationArea : Area
 
         collisionLayerMask = ~LayerMask.GetMask("LevelBoundaries");
     }
+    public void SuccessResetArea()
+    {
+        // Color map
+        StartCoroutine(this.SwapGroundMaterial(success: true));
+        this.ResetArea();
+    }
+
+    public void FailResetArea()
+    {
+        // Color map
+        StartCoroutine(this.SwapGroundMaterial(success: false));
+        ResetAgent();
+        this.ResetArea();
+    }
 
     public override void ResetArea()
     {
         occupiedPositions = new List<Tuple<Vector3, float>>();
-        ResetAgent();
         ResetGoal();
         ResetObstacles();
     }
@@ -78,12 +91,10 @@ public class ExplorationArea : Area
   
     private void ResetGoal()
     {
-        if (goal != null)
+        if (goal == null)
         {
-            Destroy(goal);
+            goal = Instantiate(goalPrefab, transform);
         }
-
-        goal = Instantiate(goalPrefab, transform);
         SpawnObjects(goal, spawnRange);
     }
 
@@ -110,7 +121,6 @@ public class ExplorationArea : Area
     private void SpawnObjects(GameObject target, float range)
     {
         Collider c = target.GetComponent<Collider>();
-        Debug.Log(c.enabled);
         target.transform.rotation = Quaternion.Euler(new Vector3(0f, UnityEngine.Random.Range(0f, 360f), 0f));
 
         Vector3 randomLocalPosition = new Vector3(UnityEngine.Random.Range(-range, range), 0.1f, UnityEngine.Random.Range(-range, range));
