@@ -65,11 +65,6 @@ public class ExplorationAgent : Agent
         controlSignal.z = vectorAction[1];
         signals = controlSignal;
 
-        if (resetting && !reachedGoal && GetCumulativeReward() > MIN_REWARD )
-        {
-            //resetting = false;
-        }
-
         if (GetCumulativeReward() < MIN_REWARD && !resetting)
         {
             Done();
