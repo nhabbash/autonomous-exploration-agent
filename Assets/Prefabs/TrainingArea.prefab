@@ -111,8 +111,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 0.00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -445,7 +443,7 @@ MonoBehaviour:
   rewardText: {fileID: 1596489931}
   goalPrefab: {fileID: 0}
   obstaclePrefab: {fileID: 0}
-  numObstacles: 0
+  numObstacles: 2
   obstacleSpeed: 0
   spawnRange: 0
 --- !u!1 &6698278059897475945

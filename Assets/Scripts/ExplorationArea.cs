@@ -89,7 +89,7 @@ public class ExplorationArea : Area
         SpawnObjects(expAgent, spawnRange);
     }
   
-    private void ResetGoal()
+    public void ResetGoal()
     {
         if (goal == null)
         {
@@ -100,32 +100,42 @@ public class ExplorationArea : Area
 
     private void ResetObstacles()
     {
-        if (spawnedObstacles != null)
-        { 
-            foreach (GameObject obstacle in spawnedObstacles.ToArray())
-            {
-                Destroy(obstacle);
-            }
-        }
-
-        spawnedObstacles = new List<GameObject>();
-
-            for (int i = 0; i<numObstacles; i++)
+        if (spawnedObstacles == null)
+        {
+            spawnedObstacles = new List<GameObject>();
+            for (int i = 0; i < numObstacles; i++)
             {
                 GameObject obstacle = Instantiate(obstaclePrefab, transform);
-                SpawnObjects(obstacle, spawnRange);
                 spawnedObstacles.Add(obstacle);
             }
+        }
+        foreach (GameObject obstacle in spawnedObstacles.ToArray())
+        {
+            SpawnObjects(obstacle, spawnRange);
+        }
     }
 
     private void SpawnObjects(GameObject target, float range)
     {
-        Collider c = target.GetComponent<Collider>();
-        target.transform.rotation = Quaternion.Euler(new Vector3(0f, UnityEngine.Random.Range(0f, 360f), 0f));
+        Collider[] hitColliders;
+        Quaternion orientation;
+        Vector3 randomLocalPosition;
+        Rigidbody rb = target.GetComponent<Rigidbody>();
+        do
+        {
+            orientation = Quaternion.Euler(new Vector3(0f, UnityEngine.Random.Range(0f, 360f), 0f));
+            randomLocalPosition = new Vector3(UnityEngine.Random.Range(-range, range), 0f, UnityEngine.Random.Range(-range, range));
+            randomLocalPosition.Scale(transform.localScale);
 
-        Vector3 randomLocalPosition = new Vector3(UnityEngine.Random.Range(-range, range), 0.1f, UnityEngine.Random.Range(-range, range));
-        randomLocalPosition.Scale(transform.localScale);
-
+            hitColliders = Physics.OverlapSphere(randomLocalPosition, Mathf.Max(transform.localScale.x, transform.localScale.y, transform.localScale.z));
+        }
+        while (hitColliders.Length > 1);
+        if(rb != null)
+        {
+            //rb.velocity = Vector3.zero;
+            //rb.angularVelocity = Vector3.zero;
+        }
+        target.transform.rotation = orientation;
         target.transform.localPosition = randomLocalPosition;
     }
 

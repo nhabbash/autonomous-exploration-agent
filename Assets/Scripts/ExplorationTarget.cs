@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ExplorationTarget : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private ExplorationArea exArea;
     void Start()
     {
-        
+        exArea = transform.parent.GetComponent<ExplorationArea>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -18,11 +18,13 @@ public class ExplorationTarget : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("LevelBoundaries"))
         {
-            
+            if (exArea)
+            {
+                exArea.ResetGoal();
+            }
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         
