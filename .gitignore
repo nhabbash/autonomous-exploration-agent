@@ -1,13 +1,13 @@
-/UnitySDK/[Ll]ibrary/
-/UnitySDK/[Tt]emp/
-/UnitySDK/[Oo]bj/
-/UnitySDK/[Bb]uild/
-/UnitySDK/[Bb]uilds/
-/UnitySDK/[Pp]ackages/
-/UnitySDK/[Uu]nity[Pp]ackage[Mm]anager/
-/UnitySDK/Assets/AssetStoreTools*
-/UnitySDK/Assets/Plugins*
-/UnitySDK/Assets/Demonstrations*
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Pp]ackages/
+[Uu]nity[Pp]ackage[Mm]anager/
+Assets/AssetStoreTools*
+Assets/Plugins*
+Assets/Demonstrations*
 
 # Tensorflow Model Info
 /models
@@ -41,7 +41,7 @@
 *.pidb.meta
 
 # Unity3D Generated File On Crash Reports
-/UnitySDK/sysinfo.txt
+/sysinfo.txt
 
 # Builds
 *.apk
@@ -52,14 +52,14 @@
 *.x86
 
 # Tensorflow Sharp Files
-/UnitySDK/Assets/ML-Agents/Plugins/Android*
-/UnitySDK/Assets/ML-Agents/Plugins/iOS*
-/UnitySDK/Assets/ML-Agents/Plugins/Computer*
-/UnitySDK/Assets/ML-Agents/Plugins/System.Numerics*
-/UnitySDK/Assets/ML-Agents/Plugins/System.ValueTuple*
+/Assets/ML-Agents/Plugins/Android*
+/Assets/ML-Agents/Plugins/iOS*
+/Assets/ML-Agents/Plugins/Computer*
+/Assets/ML-Agents/Plugins/System.Numerics*
+/Assets/ML-Agents/Plugins/System.ValueTuple*
 
 # Plugins
-/UnitySDK/Assets/ML-Agents/VideoRecorder*
+/Assets/ML-Agents/VideoRecorder*
 
 # Generated doc folders
 /docs/html
