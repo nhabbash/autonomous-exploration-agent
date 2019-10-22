@@ -15,11 +15,12 @@ MonoBehaviour:
   brainParameters:
     vectorObservationSize: 7
     numStackedVectorObservations: 10
-    vectorActionSize: 02000000
+    vectorActionSize: 030000000300000003000000
     cameraResolutions: []
     vectorActionDescriptions:
-    - Z Axis Movement
-    - X Axis Movement
-    vectorActionSpaceType: 1
+    - Forward Axis
+    - Right Axis
+    - Horizontal Rotation Axis
+    vectorActionSpaceType: 0
   model: {fileID: 0}
   inferenceDevice: 0

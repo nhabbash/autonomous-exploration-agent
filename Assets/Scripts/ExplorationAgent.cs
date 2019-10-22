@@ -5,9 +5,11 @@ using MLAgents;
 public class ExplorationAgent : Agent
 {
     [Header("Exploration Agent Settings")]
-    public float maxSpeed = 8f;
-    public float speed = 1f;
-    public bool accelerate = true;
+    public float maxSpeed = 25f;
+    public float turnSpeed = 300;
+    public float moveSpeed = 2f;
+
+    private Vector3[] movement;
 
     private ExplorationAcademy exAcademy;
     private ExplorationArea exArea;
@@ -22,13 +24,15 @@ public class ExplorationAgent : Agent
     private const float WIN_REWARD = 1f;
 
 
-
-    void Start()
+    public override void InitializeAgent()
     {
+        base.InitializeAgent();
         body = GetComponent<Rigidbody>();
         exAcademy = FindObjectOfType<ExplorationAcademy>();
         exArea = transform.parent.GetComponent<ExplorationArea>();
         rayPerception = GetComponent<RayPerception3D>();
+
+        movement = new Vector3[2];
         reachedGoal = false;
         resetting = false;
     }
@@ -36,20 +40,23 @@ public class ExplorationAgent : Agent
     public override void AgentReset()
     {
         body.velocity = Vector3.zero;
+        transform.position = new Vector3(Random.Range(-exArea.spawnRange, exArea.spawnRange),
+            2f, Random.Range(-exArea.spawnRange, exArea.spawnRange))
+            + exArea.transform.position;
+        transform.rotation = Quaternion.Euler(new Vector3(0f, Random.Range(0, 360)));
+
         reachedGoal = false;
         resetting = false;
     }
 
     public override void CollectObservations()
     {
-        float rayDistance = 2f;
+        float rayDistance = 20f;
         float[] rayAngles = { 90f };
         string[] detectableObjects = { "LevelBoundaries", "Obstacle", "Goal" };
-        string[] detectableGoal = { "Goal" };
 
         // Add obstacles and goal observations
         AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, 0f));
-        //AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableGoal, 0f, 0f));
 
         // Agent velocity
         Vector3 localVelocity = transform.InverseTransformDirection(body.velocity);
@@ -59,11 +66,7 @@ public class ExplorationAgent : Agent
 
     public override void AgentAction(float[] vectorAction, string textAction)
     {
-        // Actions, size = 2
-        Vector3 controlSignal = Vector3.zero;
-        controlSignal.x = vectorAction[0];
-        controlSignal.z = vectorAction[1];
-        signals = controlSignal;
+        getMovement(vectorAction);
 
         if (GetCumulativeReward() < MIN_REWARD && !resetting)
         {
@@ -87,6 +90,49 @@ public class ExplorationAgent : Agent
 
     }
 
+    private void getMovement(float[] actions)
+    {
+        var direction = Vector3.zero;
+        var rotation = Vector3.zero;
+
+        var forwardAxis = actions[0];
+        var rightAxis = actions[1];
+        var horRotationAxis = actions[2];
+
+        switch (forwardAxis)
+        {
+            case 1:
+                direction = transform.forward;
+                break;
+            case -1:
+                direction = -transform.forward;
+                break;
+        }
+
+        switch (rightAxis)
+        {
+            case 1:
+                direction = -transform.right;
+                break;
+            case -1:
+                direction = transform.right;
+                break;
+        }
+
+        switch (horRotationAxis)
+        {
+            case 1:
+                rotation = -transform.up;
+                break;
+            case -1:
+                rotation = transform.up;
+                break;
+        }
+
+        movement[0] = direction;
+        movement[1] = rotation;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Goal"))
@@ -102,19 +148,13 @@ public class ExplorationAgent : Agent
 
     void FixedUpdate()
     {
-        if (!accelerate)
-            body.MovePosition(body.position + signals * speed * Time.fixedDeltaTime);
-        else
+        body.AddForce(movement[0] * moveSpeed, ForceMode.VelocityChange);
+        transform.Rotate(movement[1], Time.fixedDeltaTime * turnSpeed);
+
+        if (body.velocity.sqrMagnitude > maxSpeed)
         {
-            Vector3 accel = signals * speed;
-
-            if (body.velocity.magnitude > maxSpeed)
-            {
-                body.velocity = body.velocity.normalized * maxSpeed;
-            }
-
-            body.AddForce(accel, ForceMode.VelocityChange);
-
+            body.velocity *= 0.95f;
         }
+
     }
 }

@@ -15,12 +15,13 @@ MonoBehaviour:
   brainParameters:
     vectorObservationSize: 7
     numStackedVectorObservations: 10
-    vectorActionSize: 02000000
+    vectorActionSize: 030000000300000003000000
     cameraResolutions: []
     vectorActionDescriptions:
-    - Z Axis Movement
-    - X Axis Movement
-    vectorActionSpaceType: 1
+    - Forward Axis
+    - Right Axis
+    - Horizontal Rotation Axis
+    vectorActionSpaceType: 0
   keyContinuousPlayerActions:
   - key: 100
     index: 0
@@ -35,4 +36,22 @@ MonoBehaviour:
     index: 1
     value: -1
   axisContinuousPlayerActions: []
-  discretePlayerActions: []
+  discretePlayerActions:
+  - key: 119
+    branchIndex: 0
+    value: 1
+  - key: 115
+    branchIndex: 0
+    value: -1
+  - key: 97
+    branchIndex: 1
+    value: 1
+  - key: 100
+    branchIndex: 1
+    value: -1
+  - key: 113
+    branchIndex: 2
+    value: 1
+  - key: 101
+    branchIndex: 2
+    value: -1
