@@ -52,7 +52,7 @@ public class ExplorationAgent : Agent
     public override void CollectObservations()
     {
         float rayDistance = 20f;
-        float[] rayAngles = { 90f };
+        float[] rayAngles = { 20f, 90f, 160f, 45f, 135f, 70f, 110f };
         string[] detectableObjects = { "LevelBoundaries", "Obstacle", "Goal" };
 
         // Add obstacles and goal observations
@@ -95,27 +95,27 @@ public class ExplorationAgent : Agent
         var direction = Vector3.zero;
         var rotation = Vector3.zero;
 
-        var forwardAxis = actions[0];
-        var rightAxis = actions[1];
-        var horRotationAxis = actions[2];
+        var forwardAxis = (int)actions[0];
+        var rightAxis = (int)actions[1];
+        var horRotationAxis = (int)actions[2];
 
         switch (forwardAxis)
         {
             case 1:
-                direction = transform.forward;
+                direction += transform.forward;
                 break;
-            case -1:
-                direction = -transform.forward;
+            case 2:
+                direction += -transform.forward;
                 break;
         }
 
         switch (rightAxis)
         {
             case 1:
-                direction = -transform.right;
+                direction += -transform.right;
                 break;
-            case -1:
-                direction = transform.right;
+            case 2:
+                direction += transform.right;
                 break;
         }
 
@@ -124,7 +124,7 @@ public class ExplorationAgent : Agent
             case 1:
                 rotation = -transform.up;
                 break;
-            case -1:
+            case 2:
                 rotation = transform.up;
                 break;
         }
@@ -140,6 +140,7 @@ public class ExplorationAgent : Agent
             reachedGoal = true;
             AddReward(WIN_REWARD);
             exArea.UpdateScore(GetCumulativeReward());
+            exArea.ResetGoal();
         } else if(collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("LevelBoundaries"))
         {
             AddReward(-.1f);

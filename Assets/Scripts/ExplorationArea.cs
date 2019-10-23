@@ -25,10 +25,11 @@ public class ExplorationArea : Area
     public float obstacleSpeed;
     [HideInInspector]
     public float spawnRange;
+    [HideInInspector]
+    public Bounds areaBounds;
 
     private GameObject goal;
     private List<GameObject> spawnedObstacles;
-
     private List<Tuple<Vector3, float>> occupiedPositions;
 
     private Renderer groundRenderer;
@@ -40,8 +41,10 @@ public class ExplorationArea : Area
     {
         groundRenderer = ground.GetComponent<Renderer>();
         groundMaterial = groundRenderer.material;
+        // Get the ground's bounds
+        areaBounds = ground.GetComponent<Collider>().bounds;
 
-        collisionLayerMask = ~LayerMask.GetMask("LevelBoundaries");
+        collisionLayerMask = ~LayerMask.GetMask("Ground");
     }
     public void SuccessResetArea()
     {
@@ -117,41 +120,53 @@ public class ExplorationArea : Area
 
     private void SpawnObjects(GameObject target, float range)
     {
-        Collider[] hitColliders;
-        Quaternion orientation;
-        Vector3 randomLocalPosition;
-        Rigidbody rb = target.GetComponent<Rigidbody>();
+        Collider targetCollider = target.GetComponent<Collider>();
+        var spawnPos = Vector3.zero;
+        var foundLocation = false;
+        int tries = 20;
+
+        var orientation = Quaternion.Euler(new Vector3(0f, UnityEngine.Random.Range(0f, 360f), 0f));
+        var colliderRadius = Mathf.Max(targetCollider.bounds.extents.x, targetCollider.bounds.extents.y, targetCollider.bounds.extents.z);
+
         do
         {
-            orientation = Quaternion.Euler(new Vector3(0f, UnityEngine.Random.Range(0f, 360f), 0f));
-            randomLocalPosition = new Vector3(UnityEngine.Random.Range(-range, range), 0f, UnityEngine.Random.Range(-range, range));
-            randomLocalPosition.Scale(transform.localScale);
+            var randomPosX = UnityEngine.Random.Range(-areaBounds.extents.x * range,
+                areaBounds.extents.x * range);
 
-            hitColliders = Physics.OverlapSphere(randomLocalPosition, Mathf.Max(transform.localScale.x, transform.localScale.y, transform.localScale.z));
+            var randomPosZ = UnityEngine.Random.Range(-areaBounds.extents.z * range,
+                areaBounds.extents.z * range);
+            spawnPos = ground.transform.position + new Vector3(randomPosX, targetCollider.bounds.extents.y, randomPosZ);
+
+            //foundLocation = !Physics.CheckBox(spawnPos, targetCollider.bounds.extents, orientation, collisionLayerMask);
+            foundLocation = !Physics.CheckSphere(spawnPos, colliderRadius, collisionLayerMask);
+            tries--;
         }
-        while (hitColliders.Length > 1);
-        if(rb != null)
-        {
-            //rb.velocity = Vector3.zero;
-            //rb.angularVelocity = Vector3.zero;
-        }
-        target.transform.rotation = orientation;
-        target.transform.localPosition = randomLocalPosition;
-    }
+        while (!foundLocation || tries > 0);
 
-
-    private bool CheckIfPositionIsOpen(Vector3 testPosition, float testRadius)
-    {
-        foreach (Tuple<Vector3, float> occupied in occupiedPositions)
+        if (foundLocation)
         {
-            Vector3 occupiedPosition = occupied.Item1;
-            float occupiedRadius = occupied.Item2;
-            if (Vector3.Distance(testPosition, occupiedPosition) - occupiedRadius <= testRadius)
+            //Debug
+            /*
+            Collider[] hitColliders = Physics.OverlapBox(spawnPos, targetCollider.bounds.extents, orientation, collisionLayerMask);
+            Debug.Log(hitColliders.Length);
+            if (Physics.CheckBox(spawnPos, targetCollider.bounds.extents, orientation, collisionLayerMask))
             {
-                return false;
+                var targetRenderer = target.GetComponent<Renderer>();
+                var targetMaterial = targetRenderer.material;
+                targetMaterial = failureMaterial;
             }
-        }
+            
+            GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            sphere.transform.position = spawnPos;
+            sphere.transform.localScale = target.transform.localScale;
+            SphereCollider sphereCollider = sphere.GetComponent<SphereCollider>();
+            sphereCollider.radius = colliderRadius;
+            */
 
-        return true;
+            target.transform.position = spawnPos;
+            target.transform.rotation = orientation;
+        }
+        
     }
+
 }

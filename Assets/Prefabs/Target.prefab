@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 3822590114976348632}
   - component: {fileID: 3822590114976348633}
   - component: {fileID: 8391234159977293735}
-  - component: {fileID: -5761125262332712417}
   m_Layer: 0
   m_Name: Target
   m_TagString: Goal
@@ -60,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f4abcb290251940948a31b349a6f9995, type: 2}
+  - {fileID: 2100000, guid: 5c59bd36def9a4684be49a21cf201a2d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -110,15 +109,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-5761125262332712417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3822590114976348635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b580ae056fba8d1488c7341c68e328da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
