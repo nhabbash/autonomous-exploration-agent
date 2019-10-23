@@ -26,6 +26,9 @@ public class ExplorationArea : Area
     [HideInInspector]
     public float spawnRange;
     [HideInInspector]
+    public float collisionRadius;
+
+    [HideInInspector]
     public Bounds areaBounds;
 
     private GameObject goal;
@@ -41,55 +44,25 @@ public class ExplorationArea : Area
     {
         groundRenderer = ground.GetComponent<Renderer>();
         groundMaterial = groundRenderer.material;
-        // Get the ground's bounds
         areaBounds = ground.GetComponent<Collider>().bounds;
-
         collisionLayerMask = ~LayerMask.GetMask("Ground");
-    }
-    public void SuccessResetArea()
-    {
-        // Color map
-        StartCoroutine(this.SwapGroundMaterial(success: true));
-        this.ResetArea();
-    }
-
-    public void FailResetArea()
-    {
-        // Color map
-        StartCoroutine(this.SwapGroundMaterial(success: false));
-        ResetAgent();
-        this.ResetArea();
-    }
-
-    public override void ResetArea()
-    {
-        occupiedPositions = new List<Tuple<Vector3, float>>();
-        ResetGoal();
-        ResetObstacles();
-    }
-
-    public IEnumerator SwapGroundMaterial(bool success)
-    {
-        if (success)
-        {
-            groundRenderer.material = successMaterial;
-        }
-        else
-        {
-            groundRenderer.material = failureMaterial;
-        }
-        yield return new WaitForSeconds(0.5f);
-        groundRenderer.material = groundMaterial;
     }
 
     public void UpdateScore(float reward)
     {
         rewardText.text = reward.ToString("0.00");
     }
+    public override void ResetArea()
+    {
+        occupiedPositions = new List<Tuple<Vector3, float>>();
+        ResetGoal();
+        ResetAgent();
+        ResetObstacles();
+    }
 
     private void ResetAgent()
     {
-        SpawnObjects(expAgent, spawnRange);
+        SpawnObjectsDist(expAgent, spawnRange);
     }
   
     public void ResetGoal()
@@ -98,7 +71,7 @@ public class ExplorationArea : Area
         {
             goal = Instantiate(goalPrefab, transform);
         }
-        SpawnObjects(goal, spawnRange);
+        SpawnObjectsDist(goal, spawnRange);
     }
 
     private void ResetObstacles()
@@ -109,39 +82,51 @@ public class ExplorationArea : Area
             for (int i = 0; i < numObstacles; i++)
             {
                 GameObject obstacle = Instantiate(obstaclePrefab, transform);
+                obstacle.name += "(" + i + ")";
                 spawnedObstacles.Add(obstacle);
             }
         }
+
         foreach (GameObject obstacle in spawnedObstacles.ToArray())
         {
-            SpawnObjects(obstacle, spawnRange);
+            SpawnObjectsDist(obstacle, spawnRange);
         }
     }
 
-    private void SpawnObjects(GameObject target, float range)
+    private void SpawnObjects(GameObject target, float range, int tries = 10)
     {
         Collider targetCollider = target.GetComponent<Collider>();
         var spawnPos = Vector3.zero;
         var foundLocation = false;
-        int tries = 20;
 
         var orientation = Quaternion.Euler(new Vector3(0f, UnityEngine.Random.Range(0f, 360f), 0f));
-        var colliderRadius = Mathf.Max(targetCollider.bounds.extents.x, targetCollider.bounds.extents.y, targetCollider.bounds.extents.z);
 
         do
         {
             var randomPosX = UnityEngine.Random.Range(-areaBounds.extents.x * range,
                 areaBounds.extents.x * range);
-
             var randomPosZ = UnityEngine.Random.Range(-areaBounds.extents.z * range,
                 areaBounds.extents.z * range);
             spawnPos = ground.transform.position + new Vector3(randomPosX, targetCollider.bounds.extents.y, randomPosZ);
-
-            //foundLocation = !Physics.CheckBox(spawnPos, targetCollider.bounds.extents, orientation, collisionLayerMask);
-            foundLocation = !Physics.CheckSphere(spawnPos, colliderRadius, collisionLayerMask);
+            foundLocation = !Physics.CheckSphere(spawnPos, collisionRadius, collisionLayerMask);
             tries--;
+            //foundLocation = !Physics.CheckBox(spawnPos, targetCollider.bounds.extents, orientation, collisionLayerMask);
+            //Collider[] hitColliders = Physics.OverlapBox(spawnPos, targetCollider.bounds.extents, orientation, collisionLayerMask);
+
+            /*Collider[] hitColliders = Physics.OverlapSphere(spawnPos, collisionRadius, collisionLayerMask);
+            var names = "";
+            foreach (Collider c in hitColliders)
+            {
+                names += " " + c.name;
+            }
+            
+            Debug.Log("-------------");
+            Debug.Log(spawnPos);
+            Debug.Log(foundLocation);
+            Debug.Log(names);
+            Debug.Log(tries);*/
         }
-        while (!foundLocation || tries > 0);
+        while (!foundLocation && tries > 0);
 
         if (foundLocation)
         {
@@ -161,12 +146,114 @@ public class ExplorationArea : Area
             sphere.transform.localScale = target.transform.localScale;
             SphereCollider sphereCollider = sphere.GetComponent<SphereCollider>();
             sphereCollider.radius = colliderRadius;
-            */
 
+            Debug.Log("Spawned: " + target.name);
+            */
+            target.SetActive(true);
+           
             target.transform.position = spawnPos;
             target.transform.rotation = orientation;
+        }
+        else
+        {
+            Debug.LogError("Couldn't spawn object: " + target.name);
         }
         
     }
 
+
+    private void SpawnObjectsDist(GameObject target, float range, int tries = 10)
+    {
+        Collider targetCollider = target.GetComponent<Collider>();
+        var spawnPos = Vector3.zero;
+        var foundLocation = false;
+
+        var orientation = Quaternion.Euler(new Vector3(0f, UnityEngine.Random.Range(0f, 360f), 0f));
+        var colliderBounds = targetCollider.bounds.extents;
+        colliderBounds.Scale(target.transform.localScale);
+        float colliderOccupationRadius = (float)Mathf.Max(colliderBounds.x, colliderBounds.y, colliderBounds.z);
+
+        while (!foundLocation && tries > 0)
+        {
+            var randomPosX = UnityEngine.Random.Range(
+                (-areaBounds.extents.x + targetCollider.bounds.extents.x),
+                (areaBounds.extents.x - targetCollider.bounds.extents.x)) * range;
+            var randomPosZ = UnityEngine.Random.Range(
+                (-areaBounds.extents.z + targetCollider.bounds.extents.z),
+                (areaBounds.extents.z - targetCollider.bounds.extents.z)) * range;
+
+            spawnPos = ground.transform.position + new Vector3(randomPosX, targetCollider.bounds.extents.y, randomPosZ);
+
+            foundLocation = true;
+            // If it never breaks then no occupied spot is in conflict with spawnPos
+            foreach (Tuple<Vector3, float> occupied in occupiedPositions)
+            {
+                Vector3 occupiedPosition = occupied.Item1;
+                float occupiedRadius = occupied.Item2;
+                if (Vector3.Distance(spawnPos, occupiedPosition) - occupiedRadius - collisionRadius <= 0)
+                {
+                    foundLocation = false;
+                    break;
+                }
+            }
+
+            tries--;
+        }
+
+        if (foundLocation)
+        {
+            target.SetActive(true);
+            target.transform.position = spawnPos;
+            target.transform.rotation = orientation;
+            occupiedPositions.Add(new Tuple<Vector3, float>(target.transform.position, colliderOccupationRadius));
+        }
+        else
+        {
+            target.SetActive(false);
+            Debug.LogWarning("Couldn't spawn object: " + target.name + ", deactivating it for the current episode");
+        }
+
+    }
+
+    public void SuccessResetArea()
+    {
+        // Color map
+        StartCoroutine(this.SwapGroundMaterial(success: true));
+        ResetArea();
+    }
+
+    public void FailResetArea()
+    {
+        // Color map
+        StartCoroutine(this.SwapGroundMaterial(success: false));
+        ResetAgent();
+        ResetArea();
+    }
+
+    public IEnumerator SwapGroundMaterial(bool success)
+    {
+        if (success)
+        {
+            groundRenderer.material = successMaterial;
+        }
+        else
+        {
+            groundRenderer.material = failureMaterial;
+        }
+        yield return new WaitForSeconds(0.5f);
+        groundRenderer.material = groundMaterial;
+    }
+
+    /* 
+     private void OnDrawGizmos()
+     {
+
+         foreach (GameObject obstacle in spawnedObstacles.ToArray())
+         {
+             Gizmos.DrawWireSphere(obstacle.transform.position, collisionRadius);
+         }
+         
+
+    }
+    */
 }

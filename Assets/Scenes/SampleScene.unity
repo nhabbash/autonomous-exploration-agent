@@ -187,47 +187,71 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6453415252965247495, guid: ac776d3a65d626e4f89168b31769602f,
-        type: 3}
-      propertyPath: successMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: df32cc593804f42df97464dc455057b8, type: 2}
-    - target: {fileID: 6453415252965247495, guid: ac776d3a65d626e4f89168b31769602f,
-        type: 3}
-      propertyPath: failureMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: a1daf31cdf41e484ca9ac33a5c6f524a, type: 2}
     - target: {fileID: 6453415254351448432, guid: ac776d3a65d626e4f89168b31769602f,
         type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 4
+      propertyPath: m_margin.z
+      value: -11.514984
       objectReference: {fileID: 0}
     - target: {fileID: 6453415254351448432, guid: ac776d3a65d626e4f89168b31769602f,
         type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 2
+      propertyPath: m_margin.x
+      value: -12.095055
       objectReference: {fileID: 0}
     - target: {fileID: 6453415254351448432, guid: ac776d3a65d626e4f89168b31769602f,
         type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 1
+      propertyPath: m_isRightToLeft
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6453415254351448432, guid: ac776d3a65d626e4f89168b31769602f,
         type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6453415254351448432, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6453415254351448432, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6453415254351448432, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6453415254351448437, guid: ac776d3a65d626e4f89168b31769602f,
         type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 8759571320386982019, guid: ac776d3a65d626e4f89168b31769602f,
+    - target: {fileID: 6453415254351448436, guid: ac776d3a65d626e4f89168b31769602f,
         type: 3}
-      propertyPath: brain
-      value: 
-      objectReference: {fileID: 11400000, guid: 4ca82977c0a4ee34d993b620ccacae04,
-        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 9.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490477, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490475, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: m_Drag
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490475, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: m_Mass
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490475, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac776d3a65d626e4f89168b31769602f, type: 3}
 --- !u!1 &473766152
@@ -263,8 +287,7 @@ MonoBehaviour:
     broadcastingBrains:
     - {fileID: 11400000, guid: 4ca82977c0a4ee34d993b620ccacae04, type: 2}
     - {fileID: 11400000, guid: d97a881a2fd6ef44ab5cb5e4b8002a93, type: 2}
-    m_BrainsToControl:
-    - {fileID: 11400000, guid: 4ca82977c0a4ee34d993b620ccacae04, type: 2}
+    m_BrainsToControl: []
   m_TrainingConfiguration:
     width: 80
     height: 80
@@ -283,6 +306,8 @@ MonoBehaviour:
       value: 20
     - key: spawn_range
       value: 1
+    - key: collision_radius
+      value: 2
 --- !u!4 &473766154
 Transform:
   m_ObjectHideFlags: 0

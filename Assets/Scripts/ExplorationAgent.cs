@@ -32,7 +32,7 @@ public class ExplorationAgent : Agent
         exArea = transform.parent.GetComponent<ExplorationArea>();
         rayPerception = GetComponent<RayPerception3D>();
 
-        movement = new Vector3[2];
+        movement = new Vector3[3];
         reachedGoal = false;
         resetting = false;
     }
@@ -92,7 +92,8 @@ public class ExplorationAgent : Agent
 
     private void getMovement(float[] actions)
     {
-        var direction = Vector3.zero;
+        var fwDirection = Vector3.zero;
+        var rDirection = Vector3.zero;
         var rotation = Vector3.zero;
 
         var forwardAxis = (int)actions[0];
@@ -102,20 +103,20 @@ public class ExplorationAgent : Agent
         switch (forwardAxis)
         {
             case 1:
-                direction += transform.forward;
+                fwDirection = transform.forward;
                 break;
             case 2:
-                direction += -transform.forward;
+                fwDirection = -transform.forward;
                 break;
         }
 
         switch (rightAxis)
         {
             case 1:
-                direction += -transform.right;
+                rDirection = -transform.right;
                 break;
             case 2:
-                direction += transform.right;
+                rDirection = transform.right;
                 break;
         }
 
@@ -129,8 +130,9 @@ public class ExplorationAgent : Agent
                 break;
         }
 
-        movement[0] = direction;
-        movement[1] = rotation;
+        movement[0] = fwDirection;
+        movement[1] = rDirection;
+        movement[2] = rotation;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -149,8 +151,9 @@ public class ExplorationAgent : Agent
 
     void FixedUpdate()
     {
-        body.AddForce(movement[0] * moveSpeed, ForceMode.VelocityChange);
-        transform.Rotate(movement[1], Time.fixedDeltaTime * turnSpeed);
+        var direction = movement[0] + movement[1];
+        body.AddForce( direction * moveSpeed, ForceMode.VelocityChange);
+        transform.Rotate(movement[2], Time.fixedDeltaTime * turnSpeed);
 
         if (body.velocity.sqrMagnitude > maxSpeed)
         {
