@@ -8,6 +8,9 @@ public class ExplorationAgent : Agent
     public float maxSpeed = 25f;
     public float turnSpeed = 300;
     public float moveSpeed = 2f;
+    public bool showRays = true;
+    public float[] rayAngles = { 20f, 90f, 160f, 45f, 135f, 70f, 110f };
+    public float rayDistance = 20f;
 
     private Vector3[] movement;
 
@@ -15,7 +18,6 @@ public class ExplorationAgent : Agent
     private ExplorationArea exArea;
     private Rigidbody body;
     private RayPerception3D rayPerception;
-    private Vector3 signals = Vector3.zero;
 
     private bool reachedGoal;
     private bool resetting;
@@ -51,8 +53,6 @@ public class ExplorationAgent : Agent
 
     public override void CollectObservations()
     {
-        float rayDistance = 20f;
-        float[] rayAngles = { 20f, 90f, 160f, 45f, 135f, 70f, 110f };
         string[] detectableObjects = { "LevelBoundaries", "Obstacle", "Goal" };
 
         // Add obstacles and goal observations
@@ -160,5 +160,19 @@ public class ExplorationAgent : Agent
             body.velocity *= 0.95f;
         }
 
+    }
+
+    void Update()
+    {
+        if (showRays)
+        {
+            foreach (var angle in rayAngles)
+            {
+                var endPosition = transform.TransformDirection(
+                    RayPerception3D.PolarToCartesian(rayDistance, angle));
+                Debug.DrawRay(transform.position, endPosition, Color.cyan, 0.01f, depthTest:true);
+            }
+
+        }
     }
 }
