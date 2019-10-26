@@ -5,7 +5,6 @@ using UnityEngine;
 using TMPro;
 using MLAgents;
 
-
 public class ExplorationArea : Area
 {
     [Header("Exploration Area Objects")]
@@ -37,8 +36,9 @@ public class ExplorationArea : Area
 
     private Renderer groundRenderer;
     private Material groundMaterial;
+    public int collisionLayerMask;
 
-    private int collisionLayerMask;
+    public delegate bool CustomCheckFunction(Vector3 pos);
 
     private void Start()
     {
@@ -73,7 +73,11 @@ public class ExplorationArea : Area
             goal = Instantiate(goalPrefab, transform);
             goal.SetActive(true);
         }
-        SpawnObjectsDist(goal, spawnRange);
+        SpawnObjectsDist(goal, spawnRange, (Vector3 spawnPos) =>
+            {
+                float cor = this.getColliderOccupationRadius(this.expAgent.GetComponent<Collider>(), this.expAgent);
+                return Vector3.Distance(spawnPos, this.expAgent.transform.position) - cor - collisionRadius >= 20;
+            });
     }
 
     private void ResetObstacles()
@@ -96,16 +100,13 @@ public class ExplorationArea : Area
         }
     }
 
-    private void SpawnObjectsDist(GameObject target, float range, int tries = 10)
+    private void SpawnObjectsDist(GameObject target, float range, int tries = 10) => SpawnObjectsDist(target, range, (Vector3 pos) => true, tries);
+
+    private void SpawnObjectsDist(GameObject target, float range, CustomCheckFunction customCondToCheckLocation, int tries = 10)
     {
         Collider targetCollider = target.GetComponent<Collider>();
         var spawnPos = Vector3.zero;
         bool foundLocation = false;
-
-        var orientation = Quaternion.Euler(new Vector3(0f, UnityEngine.Random.Range(0f, 360f), 0f));
-        var colliderBounds = targetCollider.bounds.extents;
-        colliderBounds.Scale(target.transform.localScale);
-        float colliderOccupationRadius = (float)Mathf.Max(colliderBounds.x, colliderBounds.y, colliderBounds.z);
 
         for(; !foundLocation && tries > 0; tries--)
         {
@@ -117,15 +118,16 @@ public class ExplorationArea : Area
                 (areaBounds.extents.z - targetCollider.bounds.extents.z)) * range;
 
             spawnPos = ground.transform.position + new Vector3(randomPosX, targetCollider.bounds.extents.y, randomPosZ);
-            foundLocation = this.checkLocation(spawnPos);
+            foundLocation = this.checkLocation(spawnPos) && customCondToCheckLocation(spawnPos);
         }
 
         if (foundLocation)
         {
-            target.SetActive(true);
+            var orientation = Quaternion.Euler(new Vector3(0f, UnityEngine.Random.Range(0f, 360f), 0f));
+
             target.transform.position = spawnPos;
             target.transform.rotation = orientation;
-            occupiedPositions.Add(new Tuple<Vector3, float>(target.transform.position, colliderOccupationRadius));
+            occupiedPositions.Add(new Tuple<Vector3, float>(target.transform.position, getColliderOccupationRadius(targetCollider, target)));
         }
         else
         {
@@ -133,6 +135,13 @@ public class ExplorationArea : Area
             Debug.LogWarning("Couldn't spawn object: " + target.name + ", deactivating it for the current episode");
         }
 
+    }
+
+    private float getColliderOccupationRadius(Collider targetCollider, GameObject target)
+    {
+        Vector3 colliderBounds = targetCollider.bounds.extents;
+        colliderBounds.Scale(target.transform.localScale);
+        return (float)Mathf.Max(colliderBounds.x, colliderBounds.y, colliderBounds.z);
     }
 
     private bool checkLocation(Vector3 spawnPos) => !occupiedPositions
@@ -171,12 +180,9 @@ public class ExplorationArea : Area
 
      /*private void OnDrawGizmos()
      {
-
          foreach (GameObject obstacle in spawnedObstacles.ToArray())
          {
              Gizmos.DrawWireSphere(obstacle.transform.position, collisionRadius);
          }
-         
-
     }*/
 }

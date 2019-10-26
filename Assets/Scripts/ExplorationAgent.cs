@@ -41,6 +41,7 @@ public class ExplorationAgent : Agent
 
     public override void AgentReset()
     {
+        //exArea.ResetAgent();
         reachedGoal = false;
         resetting = false;
     }
