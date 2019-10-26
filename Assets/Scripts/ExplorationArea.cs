@@ -26,6 +26,8 @@ public class ExplorationArea : Area
     public float spawnRange;
     [HideInInspector]
     public float collisionRadius;
+    [HideInInspector]
+    public float pathMinimumDistance;
 
     [HideInInspector]
     public Bounds areaBounds;
@@ -76,7 +78,7 @@ public class ExplorationArea : Area
         SpawnObjectsDist(goal, spawnRange, (Vector3 spawnPos) =>
             {
                 float cor = this.getColliderOccupationRadius(this.expAgent.GetComponent<Collider>(), this.expAgent);
-                return Vector3.Distance(spawnPos, this.expAgent.transform.position) - cor - collisionRadius >= 20;
+                return Vector3.Distance(spawnPos, this.expAgent.transform.position) - cor - collisionRadius >= pathMinimumDistance;
             });
     }
 

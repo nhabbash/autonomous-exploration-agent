@@ -338,6 +338,8 @@ MonoBehaviour:
       value: 1
     - key: collision_radius
       value: 2
+    - key: path_minimum_distance
+      value: 20
 --- !u!4 &473766154
 Transform:
   m_ObjectHideFlags: 0
