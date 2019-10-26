@@ -22,7 +22,7 @@ public class ExplorationAgent : Agent
     private bool reachedGoal;
     private bool resetting;
 
-    private const float MIN_REWARD = -5f;
+    private const float MIN_REWARD = -1f;
     private const float WIN_REWARD = 1f;
 
 
@@ -136,7 +136,6 @@ public class ExplorationAgent : Agent
             reachedGoal = true;
             AddReward(WIN_REWARD);
             exArea.UpdateScore(GetCumulativeReward());
-            exArea.ResetGoal();
         } else if(collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("LevelBoundaries"))
         {
             AddReward(-.1f);

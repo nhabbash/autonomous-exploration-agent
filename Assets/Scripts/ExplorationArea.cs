@@ -65,12 +65,13 @@ public class ExplorationArea : Area
     {
         SpawnObjectsDist(expAgent, spawnRange);
     }
-  
-    public void ResetGoal()
+
+    private void ResetGoal()
     {
         if (goal == null)
         {
             goal = Instantiate(goalPrefab, transform);
+            goal.SetActive(true);
         }
         SpawnObjectsDist(goal, spawnRange);
     }
@@ -83,6 +84,7 @@ public class ExplorationArea : Area
             for (int i = 0; i < numObstacles; i++)
             {
                 GameObject obstacle = Instantiate(obstaclePrefab, transform);
+                obstacle.SetActive(true);
                 obstacle.name += "(" + i + ")";
                 spawnedObstacles.Add(obstacle);
             }
@@ -115,19 +117,7 @@ public class ExplorationArea : Area
                 (areaBounds.extents.z - targetCollider.bounds.extents.z)) * range;
 
             spawnPos = ground.transform.position + new Vector3(randomPosX, targetCollider.bounds.extents.y, randomPosZ);
-
-            foundLocation = true;
-            // If it never breaks then no occupied spot is in conflict with spawnPos
-            foreach (Tuple<Vector3, float> occupied in occupiedPositions)
-            {
-                Vector3 occupiedPosition = occupied.Item1;
-                float occupiedRadius = occupied.Item2;
-                if (Vector3.Distance(spawnPos, occupiedPosition) - occupiedRadius - collisionRadius <= 0)
-                {
-                    foundLocation = false;
-                    break;
-                }
-            }
+            foundLocation = this.checkLocation(spawnPos);
         }
 
         if (foundLocation)
@@ -144,6 +134,11 @@ public class ExplorationArea : Area
         }
 
     }
+
+    private bool checkLocation(Vector3 spawnPos) => !occupiedPositions
+        .Exists(occupied =>
+            Vector3.Distance(spawnPos, occupied.Item1) - occupied.Item2 - collisionRadius <= 0
+        );
 
     public void SuccessResetArea()
     {
