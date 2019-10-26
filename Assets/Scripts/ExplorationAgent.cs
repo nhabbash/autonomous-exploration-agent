@@ -22,7 +22,7 @@ public class ExplorationAgent : Agent
     private bool reachedGoal;
     private bool resetting;
 
-    private const float MIN_REWARD = -1f;
+    private const float MIN_REWARD = -5f;
     private const float WIN_REWARD = 1f;
 
 
@@ -41,12 +41,6 @@ public class ExplorationAgent : Agent
 
     public override void AgentReset()
     {
-        body.velocity = Vector3.zero;
-        transform.position = new Vector3(Random.Range(-exArea.spawnRange, exArea.spawnRange),
-            2f, Random.Range(-exArea.spawnRange, exArea.spawnRange))
-            + exArea.transform.position;
-        transform.rotation = Quaternion.Euler(new Vector3(0f, Random.Range(0, 360)));
-
         reachedGoal = false;
         resetting = false;
     }
