@@ -252,6 +252,11 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 112
       objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490475, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8404658762809490471, guid: ac776d3a65d626e4f89168b31769602f,
         type: 3}
       propertyPath: m_LocalRotation.y
@@ -282,6 +287,11 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6453415252965247495, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: expAgent
+      value: 
+      objectReference: {fileID: 1593563542}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac776d3a65d626e4f89168b31769602f, type: 3}
 --- !u!1 &473766152
@@ -333,7 +343,7 @@ MonoBehaviour:
   resetParameters:
     m_ResetParameters:
     - key: num_obstacles
-      value: 20
+      value: 15
     - key: spawn_range
       value: 1
     - key: collision_radius
@@ -521,16 +531,22 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.28648278, y: 0, z: 0, w: 0.9580854}
-  m_LocalPosition: {x: -0.17, y: 5.48, z: -4.4}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -3.74}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1095216229}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 33.295002, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1095216229 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8404658762809490471, guid: ac776d3a65d626e4f89168b31769602f,
+    type: 3}
+  m_PrefabInstance: {fileID: 99765231}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1593563542 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8404658762809490477, guid: ac776d3a65d626e4f89168b31769602f,
     type: 3}
   m_PrefabInstance: {fileID: 99765231}
   m_PrefabAsset: {fileID: 0}

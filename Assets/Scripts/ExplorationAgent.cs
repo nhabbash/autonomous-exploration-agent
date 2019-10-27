@@ -22,7 +22,7 @@ public class ExplorationAgent : Agent
     private bool reachedGoal;
     private bool resetting;
 
-    private const float MIN_REWARD = -1f;
+    private const float MIN_REWARD = -5f;
     private const float WIN_REWARD = 1f;
 
 
