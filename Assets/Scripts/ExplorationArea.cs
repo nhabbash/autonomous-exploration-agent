@@ -78,7 +78,7 @@ public class ExplorationArea : Area
         SpawnObjectsDist(goal, spawnRange, (Vector3 spawnPos) =>
             {
                 float cor = this.getColliderOccupationRadius(this.expAgent.GetComponent<Collider>(), this.expAgent);
-                return Vector3.Distance(spawnPos, this.expAgent.transform.position) - cor - collisionRadius >= pathMinimumDistance;
+                return Vector3.Distance(spawnPos, this.expAgent.transform.position) - cor - collisionRadius <= pathMinimumDistance;
             });
     }
 
@@ -112,12 +112,33 @@ public class ExplorationArea : Area
 
         for(; !foundLocation && tries > 0; tries--)
         {
-            var randomPosX = UnityEngine.Random.Range(
-                (-areaBounds.extents.x + targetCollider.bounds.extents.x),
-                (areaBounds.extents.x - targetCollider.bounds.extents.x)) * range;
-            var randomPosZ = UnityEngine.Random.Range(
-                (-areaBounds.extents.z + targetCollider.bounds.extents.z),
-                (areaBounds.extents.z - targetCollider.bounds.extents.z)) * range;
+            var randomPosX = 0.0f;
+            var randomPosZ = 0.0f;
+
+            if (target.name.Contains("Target"))
+            {
+                randomPosX = Mathf.Clamp(
+                    UnityEngine.Random.Range(
+                    (expAgent.transform.position.x - pathMinimumDistance),
+                    (expAgent.transform.position.x + pathMinimumDistance)),
+                    (-areaBounds.extents.x + targetCollider.bounds.extents.x),
+                    (areaBounds.extents.x - targetCollider.bounds.extents.x)
+                    );
+                randomPosZ = Mathf.Clamp(
+                    UnityEngine.Random.Range(
+                    (expAgent.transform.position.z - pathMinimumDistance),
+                    (expAgent.transform.position.z + pathMinimumDistance)),
+                    (-areaBounds.extents.z + targetCollider.bounds.extents.z),
+                    (areaBounds.extents.z - targetCollider.bounds.extents.z)
+                    );
+            }else{ 
+                randomPosX = UnityEngine.Random.Range(
+                    (-areaBounds.extents.x + targetCollider.bounds.extents.x),
+                    (areaBounds.extents.x - targetCollider.bounds.extents.x)) * range;
+                randomPosZ = UnityEngine.Random.Range(
+                    (-areaBounds.extents.z + targetCollider.bounds.extents.z),
+                    (areaBounds.extents.z - targetCollider.bounds.extents.z)) * range;
+            }
 
             spawnPos = ground.transform.position + new Vector3(randomPosX, targetCollider.bounds.extents.y, randomPosZ);
             foundLocation = this.checkLocation(spawnPos) && customCondToCheckLocation(spawnPos);

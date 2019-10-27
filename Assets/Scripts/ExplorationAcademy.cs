@@ -6,6 +6,10 @@ using UnityEngine;
 public class ExplorationAcademy : Academy {
 
     private ExplorationArea[] areas;
+    public override void InitializeAcademy()
+    {
+        Monitor.SetActive(true);
+    }
     public override void AcademyReset()
     {
         if (areas == null)

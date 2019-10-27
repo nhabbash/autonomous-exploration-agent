@@ -6,6 +6,6 @@
     "parameters" : 
     {
         "num_obstacles" : [1, 2, 4, 6, 6],
-        "spawn_range" : [12.0, 12.0, 12.0, 12.0, 12.0]
+        "spawn_range" : [1.0, 1.0, 1.0, 1.0, 1.0]
     }
 }

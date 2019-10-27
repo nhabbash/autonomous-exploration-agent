@@ -11,6 +11,7 @@ public class ExplorationAgent : Agent
     public bool showRays = true;
     public float[] rayAngles = { 20f, 90f, 160f, 45f, 135f, 70f, 110f };
     public float rayDistance = 20f;
+    public bool useVectorObs = true;
 
     private Vector3[] movement;
 
@@ -23,8 +24,7 @@ public class ExplorationAgent : Agent
     private bool resetting;
 
     private const float MIN_REWARD = -5f;
-    private const float WIN_REWARD = 1f;
-
+    private const float WIN_REWARD = 2f;
 
     public override void InitializeAgent()
     {
@@ -48,15 +48,18 @@ public class ExplorationAgent : Agent
 
     public override void CollectObservations()
     {
-        string[] detectableObjects = { "LevelBoundaries", "Obstacle", "Goal" };
+        if (useVectorObs)
+        {
+            string[] detectableObjects = { "LevelBoundaries", "Obstacle", "Goal" };
 
-        // Add obstacles and goal observations
-        AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, 0f));
+            // Add obstacles and goal observations
+            AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, 0f));
 
-        // Agent velocity
-        Vector3 localVelocity = transform.InverseTransformDirection(body.velocity);
-        AddVectorObs(localVelocity.x);
-        AddVectorObs(localVelocity.z);
+            // Agent velocity
+            Vector3 localVelocity = transform.InverseTransformDirection(body.velocity);
+            AddVectorObs(localVelocity.x);
+            AddVectorObs(localVelocity.z);
+        }
     }
 
     public override void AgentAction(float[] vectorAction, string textAction)
@@ -146,7 +149,7 @@ public class ExplorationAgent : Agent
     void FixedUpdate()
     {
         var direction = movement[0] + movement[1];
-        body.AddForce( direction * moveSpeed, ForceMode.VelocityChange);
+        body.AddForce(direction * moveSpeed, ForceMode.VelocityChange);
         transform.Rotate(movement[2], Time.fixedDeltaTime * turnSpeed);
 
         if (body.velocity.sqrMagnitude > maxSpeed)
