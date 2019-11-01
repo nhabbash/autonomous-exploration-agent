@@ -194,10 +194,95 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
         type: 3}
+      propertyPath: rayAngles.Array.size
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
       propertyPath: brain
       value: 
       objectReference: {fileID: 11400000, guid: 4ca82977c0a4ee34d993b620ccacae04,
         type: 2}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayDistance
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: showRays
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[7]
+      value: 95
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[8]
+      value: 105
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[9]
+      value: 115
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[10]
+      value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[11]
+      value: 135
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[12]
+      value: 145
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[13]
+      value: 155
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[0]
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[1]
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[2]
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[3]
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[4]
+      value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[5]
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[6]
+      value: 85
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac776d3a65d626e4f89168b31769602f, type: 3}
 --- !u!1 &473766152
@@ -233,8 +318,7 @@ MonoBehaviour:
     broadcastingBrains:
     - {fileID: 11400000, guid: 4ca82977c0a4ee34d993b620ccacae04, type: 2}
     - {fileID: 11400000, guid: d97a881a2fd6ef44ab5cb5e4b8002a93, type: 2}
-    m_BrainsToControl:
-    - {fileID: 11400000, guid: 4ca82977c0a4ee34d993b620ccacae04, type: 2}
+    m_BrainsToControl: []
   m_TrainingConfiguration:
     width: 80
     height: 80
@@ -256,7 +340,7 @@ MonoBehaviour:
     - key: collision_radius
       value: 2
     - key: path_minimum_distance
-      value: 5
+      value: 25
 --- !u!4 &473766154
 Transform:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ public class ExplorationAgent : Agent
     public float turnSpeed = 300;
     public float moveSpeed = 2f;
     public bool showRays = true;
-    public float[] rayAngles = { 20f, 90f, 160f, 45f, 135f, 70f, 110f };
+    public float[] rayAngles = { 20f, 30f, 40f, 50f, 60f, 70f, 80f, 90f, 100f, 110f, 120f, 130f, 140f, 150f };
     public float rayDistance = 20f;
     public bool useVectorObs = true;
 

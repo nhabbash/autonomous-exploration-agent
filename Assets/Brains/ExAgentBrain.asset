@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ExAgentBrain
   m_EditorClassIdentifier: 
   brainParameters:
-    vectorObservationSize: 37
+    vectorObservationSize: 72
     numStackedVectorObservations: 10
     vectorActionSize: 030000000300000003000000
     cameraResolutions: []
@@ -22,5 +22,5 @@ MonoBehaviour:
     - Right Axis
     - Horizontal Rotation Axis
     vectorActionSpaceType: 0
-  model: {fileID: 0}
+  model: {fileID: 5022602860645237092, guid: d99364c9e55593148b2d73b360ca36fc, type: 3}
   inferenceDevice: 0

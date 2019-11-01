@@ -192,6 +192,71 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.size
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[7]
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[8]
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[9]
+      value: 110
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[10]
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[11]
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[12]
+      value: 140
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[13]
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[1]
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[2]
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[3]
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[4]
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
+        type: 3}
+      propertyPath: rayAngles.Array.data[6]
+      value: 80
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac776d3a65d626e4f89168b31769602f, type: 3}
 --- !u!1 &473766152
