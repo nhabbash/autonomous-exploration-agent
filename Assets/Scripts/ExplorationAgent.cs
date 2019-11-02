@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using MLAgents;
+using System;
 
 public class ExplorationAgent : Agent
 {
@@ -143,7 +144,9 @@ public class ExplorationAgent : Agent
         } else if(collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("LevelBoundaries"))
         {
             exArea.OnObstacleCollision();
-            AddReward(-.1f);
+            float penality = float.Parse((-Math.Exp(0.3 * exArea.obstacleCollisions) + 1).ToString());
+            AddReward(penality);
+            //AddReward(-.1f);
         }
     }
 

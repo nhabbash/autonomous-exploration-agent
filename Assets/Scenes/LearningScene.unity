@@ -201,7 +201,7 @@ PrefabInstance:
         type: 3}
       propertyPath: brain
       value: 
-      objectReference: {fileID: 11400000, guid: d97a881a2fd6ef44ab5cb5e4b8002a93,
+      objectReference: {fileID: 11400000, guid: 4ca82977c0a4ee34d993b620ccacae04,
         type: 2}
     - target: {fileID: 8404658762809490476, guid: ac776d3a65d626e4f89168b31769602f,
         type: 3}
@@ -344,7 +344,7 @@ MonoBehaviour:
   resetParameters:
     m_ResetParameters:
     - key: num_obstacles
-      value: 1
+      value: 6
     - key: spawn_range
       value: 1
     - key: collision_radius

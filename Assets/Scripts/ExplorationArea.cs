@@ -42,6 +42,10 @@ public class ExplorationArea : Area
     public int collisionLayerMask;
 
     public delegate bool CustomCheckFunction(Vector3 pos);
+    public int obstacleCollisions
+    {
+        get { return Int32.Parse(obstacleCollisionsText.text); }
+    }
 
     private void Start()
     {
@@ -59,11 +63,12 @@ public class ExplorationArea : Area
 
     public void OnObstacleCollision()
     {
-        obstacleCollisionsText.text = (Int32.Parse(obstacleCollisionsText.text) + 1).ToString();
+        obstacleCollisionsText.text = (obstacleCollisions + 1).ToString();
     }
 
     public override void ResetArea()
     {
+        Debug.Log(obstacleCollisionsText.text);
         obstacleCollisionsText.text = "0";
         occupiedPositions.Clear();
         ResetAgent();
