@@ -344,13 +344,13 @@ MonoBehaviour:
   resetParameters:
     m_ResetParameters:
     - key: num_obstacles
-      value: 5
+      value: 8
     - key: spawn_range
       value: 1
     - key: collision_radius
       value: 2
     - key: path_minimum_distance
-      value: 25
+      value: 35
 --- !u!4 &473766154
 Transform:
   m_ObjectHideFlags: 0
