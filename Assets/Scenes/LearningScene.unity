@@ -344,7 +344,7 @@ MonoBehaviour:
   resetParameters:
     m_ResetParameters:
     - key: num_obstacles
-      value: 6
+      value: 5
     - key: spawn_range
       value: 1
     - key: collision_radius

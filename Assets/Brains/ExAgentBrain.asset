@@ -22,5 +22,5 @@ MonoBehaviour:
     - Right Axis
     - Horizontal Rotation Axis
     vectorActionSpaceType: 0
-  model: {fileID: 5022602860645237092, guid: d99364c9e55593148b2d73b360ca36fc, type: 3}
+  model: {fileID: 5022602860645237092, guid: 41ab7309a60f8e54aa03cfa46306586a, type: 3}
   inferenceDevice: 0

@@ -25,7 +25,7 @@ public class ExplorationAgent : Agent
     private bool resetting;
 
     private const float MIN_REWARD = -5f;
-    private const float WIN_REWARD = 2f;
+    private const float WIN_REWARD = 5f;
 
     public override void InitializeAgent()
     {
