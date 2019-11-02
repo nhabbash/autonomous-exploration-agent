@@ -13,6 +13,7 @@ public class ExplorationArea : Area
     public Material successMaterial;
     public Material failureMaterial;
     public TextMeshPro rewardText;
+    public TextMeshPro obstacleCollisionsText;
 
     [Header("Prefabs")]
     public GameObject goalPrefab;
@@ -55,8 +56,15 @@ public class ExplorationArea : Area
     {
         rewardText.text = reward.ToString("0.00");
     }
+
+    public void OnObstacleCollision()
+    {
+        obstacleCollisionsText.text = (Int32.Parse(obstacleCollisionsText.text) + 1).ToString();
+    }
+
     public override void ResetArea()
     {
+        obstacleCollisionsText.text = "0";
         occupiedPositions.Clear();
         ResetAgent();
         ResetGoal();

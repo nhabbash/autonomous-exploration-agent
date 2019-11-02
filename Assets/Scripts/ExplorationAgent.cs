@@ -142,6 +142,7 @@ public class ExplorationAgent : Agent
             exArea.UpdateScore(GetCumulativeReward());
         } else if(collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("LevelBoundaries"))
         {
+            exArea.OnObstacleCollision();
             AddReward(-.1f);
         }
     }
