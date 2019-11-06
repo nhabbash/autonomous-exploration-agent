@@ -1,16 +1,16 @@
 default:
     trainer: ppo
-    batch_size: 128
+    batch_size: 512
     beta: 5.0e-3
-    buffer_size: 2048
+    buffer_size: 4096
     epsilon: 0.14
-    hidden_units: 128
+    hidden_units: 256
     lambd: 0.95
     learning_rate: 6.0e-4
     max_steps: 1.0e7
     memory_size: 256
     normalize: false
-    num_epoch: 5
+    num_epoch: 6
     num_layers: 3
     time_horizon: 128
     sequence_length: 64
@@ -21,14 +21,7 @@ default:
         extrinsic:
             strength: 1.0
             gamma: 0.9
-
-ExplorationBrain_Learning:
-    max_steps: 1.0e6
-    batch_size: 512
-    buffer_size: 2048
-    beta: 9.0e-3
-    hidden_units: 256
-    summary_freq: 2000
-    time_horizon: 128
-    num_layers: 3
-    normalize: false
+        curiosity:
+            strength: 0.02
+            gamma: 0.99
+            encoding_size: 64

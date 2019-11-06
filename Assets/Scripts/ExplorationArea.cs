@@ -19,6 +19,10 @@ public class ExplorationArea : Area
     public GameObject goalPrefab;
     public GameObject obstaclePrefab;
 
+    [Header("Debug")]
+    public bool drawCollisionRadius = false;
+    public bool drawTargetDistance = false;
+
     [HideInInspector]
     public int numObstacles;
     [HideInInspector]
@@ -28,18 +32,32 @@ public class ExplorationArea : Area
     [HideInInspector]
     public float collisionRadius;
     [HideInInspector]
-    public float pathMinimumDistance;
+    public float targetDistance;
+    [HideInInspector]
+    public float targetSize;
+    [HideInInspector]
+    public float rayLength;
+    [HideInInspector]
+    public float minReward;
+    [HideInInspector]
+    public float winReward;
+    [HideInInspector]
+    public float collisionPenalty;
+    [HideInInspector]
+    public float timePenalty;
 
     [HideInInspector]
     public Bounds areaBounds;
+    [HideInInspector]
+    private ExplorationAcademy exAcademy;
 
     private GameObject goal;
     private List<GameObject> spawnedObstacles;
     private List<Tuple<Vector3, float>> occupiedPositions;
+    private int spawnTries = 30;
 
     private Renderer groundRenderer;
     private Material groundMaterial;
-    public int collisionLayerMask;
 
     public delegate bool CustomCheckFunction(Vector3 pos);
     public int obstacleCollisions
@@ -49,16 +67,19 @@ public class ExplorationArea : Area
 
     private void Start()
     {
+        exAcademy = FindObjectOfType<ExplorationAcademy>();
+
         groundRenderer = ground.GetComponent<Renderer>();
         groundMaterial = groundRenderer.material;
         areaBounds = ground.GetComponent<Collider>().bounds;
-        collisionLayerMask = ~LayerMask.GetMask("Ground");
         occupiedPositions = new List<Tuple<Vector3, float>>();
     }
 
     public void UpdateScore(float reward)
     {
         rewardText.text = reward.ToString("0.00");
+
+        Monitor.Log("Reward", reward/5f);
     }
 
     public void OnObstacleCollision()
@@ -68,7 +89,6 @@ public class ExplorationArea : Area
 
     public override void ResetArea()
     {
-        Debug.Log(obstacleCollisionsText.text);
         obstacleCollisionsText.text = "0";
         occupiedPositions.Clear();
         ResetAgent();
@@ -88,10 +108,12 @@ public class ExplorationArea : Area
             goal = Instantiate(goalPrefab, transform);
             goal.SetActive(true);
         }
+
         SpawnObjectsDist(goal, spawnRange, (Vector3 spawnPos) =>
             {
                 float cor = this.getColliderOccupationRadius(this.expAgent.GetComponent<Collider>(), this.expAgent);
-                return Vector3.Distance(spawnPos, this.expAgent.transform.position) - cor - collisionRadius <= pathMinimumDistance;
+                float dist = Vector3.Distance(spawnPos, this.expAgent.transform.position);
+                return Mathf.Abs(dist - targetDistance) <= 5;
             });
     }
 
@@ -109,19 +131,33 @@ public class ExplorationArea : Area
             }
         }
 
+        if(numObstacles > spawnedObstacles.Count)
+        {
+            for (int i = spawnedObstacles.Count; i < numObstacles; i++)
+            {
+                GameObject obstacle = Instantiate(obstaclePrefab, transform);
+                obstacle.SetActive(true);
+                obstacle.name += "(" + i + ")";
+                spawnedObstacles.Add(obstacle);
+            }
+        }
+
         foreach (GameObject obstacle in spawnedObstacles.ToArray())
         {
+            obstacle.SetActive(true);
             SpawnObjectsDist(obstacle, spawnRange);
         }
     }
 
-    private void SpawnObjectsDist(GameObject target, float range, int tries = 10) => SpawnObjectsDist(target, range, (Vector3 pos) => true, tries);
+    private void SpawnObjectsDist(GameObject target, float range) => SpawnObjectsDist(target, range, (Vector3 pos) => true);
 
-    private void SpawnObjectsDist(GameObject target, float range, CustomCheckFunction customCondToCheckLocation, int tries = 10)
+    private void SpawnObjectsDist(GameObject target, float range, CustomCheckFunction customCondToCheckLocation)
     {
         Collider targetCollider = target.GetComponent<Collider>();
         var spawnPos = Vector3.zero;
         bool foundLocation = false;
+
+        var tries = spawnTries;
 
         for(; !foundLocation && tries > 0; tries--)
         {
@@ -130,20 +166,18 @@ public class ExplorationArea : Area
 
             if (target.name.Contains("Target"))
             {
-                randomPosX = Mathf.Clamp(
-                    UnityEngine.Random.Range(
-                    (expAgent.transform.position.x - pathMinimumDistance),
-                    (expAgent.transform.position.x + pathMinimumDistance)),
-                    (-areaBounds.extents.x + targetCollider.bounds.extents.x),
-                    (areaBounds.extents.x - targetCollider.bounds.extents.x)
-                    );
-                randomPosZ = Mathf.Clamp(
-                    UnityEngine.Random.Range(
-                    (expAgent.transform.position.z - pathMinimumDistance),
-                    (expAgent.transform.position.z + pathMinimumDistance)),
-                    (-areaBounds.extents.z + targetCollider.bounds.extents.z),
-                    (areaBounds.extents.z - targetCollider.bounds.extents.z)
-                    );
+                // Find a random spot on the circumference at targetDistance
+                float angle = UnityEngine.Random.Range(0, Mathf.PI * 2);    
+                var pos = new Vector2(Mathf.Sin(angle) * targetDistance, Mathf.Cos(angle) * targetDistance);
+
+                randomPosX = Mathf.Clamp(pos.x,
+                                        (-areaBounds.extents.x + targetCollider.bounds.extents.x),
+                                        (areaBounds.extents.x - targetCollider.bounds.extents.x));
+
+                randomPosZ = Mathf.Clamp(pos.y,
+                                        (-areaBounds.extents.z + targetCollider.bounds.extents.z),
+                                        (areaBounds.extents.z - targetCollider.bounds.extents.z));
+
             }else{ 
                 randomPosX = UnityEngine.Random.Range(
                     (-areaBounds.extents.x + targetCollider.bounds.extents.x),
@@ -153,7 +187,7 @@ public class ExplorationArea : Area
                     (areaBounds.extents.z - targetCollider.bounds.extents.z)) * range;
             }
 
-            spawnPos = ground.transform.position + new Vector3(randomPosX, targetCollider.bounds.extents.y, randomPosZ);
+            spawnPos = new Vector3(randomPosX, targetCollider.bounds.extents.y, randomPosZ);
             foundLocation = this.checkLocation(spawnPos) && customCondToCheckLocation(spawnPos);
         }
 
@@ -167,8 +201,17 @@ public class ExplorationArea : Area
         }
         else
         {
-            target.SetActive(false);
-            Debug.LogWarning("Couldn't spawn object: " + target.name + ", deactivating it for the current episode");
+            if (target.name.Contains("Target") || target.name.Contains("Agent"))
+            {
+                Debug.LogWarning("Couldn't spawn object: " + target.name + ", resetting area");
+                ResetArea();
+            }
+            else
+            {
+                target.SetActive(false);
+                Debug.LogWarning("Couldn't spawn object: " + target.name + ", deactivating it for the current episode");
+            }
+
         }
 
     }
@@ -180,8 +223,8 @@ public class ExplorationArea : Area
         return (float)Mathf.Max(colliderBounds.x, colliderBounds.y, colliderBounds.z);
     }
 
-    private bool checkLocation(Vector3 spawnPos) => !occupiedPositions
-        .Exists(occupied =>
+    private bool checkLocation(Vector3 spawnPos) => 
+        !occupiedPositions.Exists(occupied =>
             Vector3.Distance(spawnPos, occupied.Item1) - occupied.Item2 - collisionRadius <= 0
         );
 
@@ -214,11 +257,42 @@ public class ExplorationArea : Area
         groundRenderer.material = groundMaterial;
     }
 
-     /*private void OnDrawGizmos()
+     private void OnDrawGizmos()
      {
-         foreach (GameObject obstacle in spawnedObstacles.ToArray())
-         {
-             Gizmos.DrawWireSphere(obstacle.transform.position, collisionRadius);
-         }
-    }*/
+        if (drawCollisionRadius)
+        {
+            if (spawnedObstacles != null)
+            {
+                foreach (GameObject obstacle in spawnedObstacles.ToArray())
+                {
+                    Gizmos.DrawWireSphere(obstacle.transform.position, collisionRadius);
+                }
+            }
+
+            if (goal != null)
+            {
+                Gizmos.DrawWireSphere(goal.transform.position, collisionRadius);
+            }
+
+            if (expAgent != null)
+            {
+                Gizmos.DrawWireSphere(expAgent.transform.position, collisionRadius);
+            }
+        }
+
+        if (drawTargetDistance)
+        {
+            if(goal != null && expAgent != null)
+            {
+                Gizmos.DrawLine(expAgent.transform.position, goal.transform.position);
+            }
+            
+        }
+
+    }
+
+    void OnGUI()
+    {
+        Monitor.Log("Obstacle collisions", obstacleCollisionsText.text);
+    }
 }

@@ -22,8 +22,13 @@ public class ExplorationAcademy : Academy {
             area.numObstacles = (int)resetParameters["num_obstacles"];
             area.spawnRange = resetParameters["spawn_range"];
             area.collisionRadius = resetParameters["collision_radius"];
-            area.pathMinimumDistance = resetParameters["path_minimum_distance"];
+            area.targetDistance = resetParameters["target_distance"];
+            area.minReward = resetParameters["min_reward"];
+            area.winReward = resetParameters["win_reward"];
+            area.collisionPenalty = resetParameters["collision_penalty"];
+            area.timePenalty = resetParameters["time_penalty"];
             area.ResetArea();
+
         }
     }
 

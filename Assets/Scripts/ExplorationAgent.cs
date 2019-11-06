@@ -11,12 +11,11 @@ public class ExplorationAgent : Agent
     public float moveSpeed = 2f;
     public bool showRays = true;
     public float[] rayAngles = { 20f, 30f, 40f, 50f, 60f, 70f, 80f, 90f, 100f, 110f, 120f, 130f, 140f, 150f };
-    public float rayDistance = 20f;
+    public float rayDistance;
     public bool useVectorObs = true;
 
     private Vector3[] movement;
 
-    private ExplorationAcademy exAcademy;
     private ExplorationArea exArea;
     private Rigidbody body;
     private RayPerception3D rayPerception;
@@ -24,14 +23,10 @@ public class ExplorationAgent : Agent
     private bool reachedGoal;
     private bool resetting;
 
-    private const float MIN_REWARD = -5f;
-    private const float WIN_REWARD = 5f;
-
     public override void InitializeAgent()
     {
         base.InitializeAgent();
         body = GetComponent<Rigidbody>();
-        exAcademy = FindObjectOfType<ExplorationAcademy>();
         exArea = transform.parent.GetComponent<ExplorationArea>();
         rayPerception = GetComponent<RayPerception3D>();
 
@@ -42,7 +37,6 @@ public class ExplorationAgent : Agent
 
     public override void AgentReset()
     {
-        //exArea.ResetAgent();
         reachedGoal = false;
         resetting = false;
     }
@@ -67,7 +61,7 @@ public class ExplorationAgent : Agent
     {
         getMovement(vectorAction);
 
-        if (GetCumulativeReward() < MIN_REWARD && !resetting)
+        if (GetCumulativeReward() < exArea.minReward && !resetting)
         {
             Done();
             exArea.FailResetArea();
@@ -83,7 +77,7 @@ public class ExplorationAgent : Agent
         }
         else
         {
-            AddReward(-.001f);
+            AddReward(exArea.timePenalty);
             exArea.UpdateScore(GetCumulativeReward());
         }
 
@@ -132,6 +126,12 @@ public class ExplorationAgent : Agent
         movement[0] = fwDirection;
         movement[1] = rDirection;
         movement[2] = rotation;
+
+        float[] actionHist = {forwardAxis == 2 ? -1 : forwardAxis,
+                              rightAxis == 2 ? -1 : rightAxis,
+                              horRotationAxis == 2 ? -1 : horRotationAxis};
+
+        Monitor.Log("Vector Action", actionHist);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -139,14 +139,13 @@ public class ExplorationAgent : Agent
         if (collision.gameObject.CompareTag("Goal"))
         {
             reachedGoal = true;
-            AddReward(WIN_REWARD);
+            AddReward(exArea.winReward);
             exArea.UpdateScore(GetCumulativeReward());
         } else if(collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("LevelBoundaries"))
         {
             exArea.OnObstacleCollision();
-            float penality = float.Parse((-Math.Exp(0.3 * exArea.obstacleCollisions) + 1).ToString());
+            float penality = (float)(-Math.Exp(exArea.collisionPenalty * exArea.obstacleCollisions) + 1);
             AddReward(penality);
-            //AddReward(-.1f);
         }
     }
 
@@ -171,7 +170,7 @@ public class ExplorationAgent : Agent
             {
                 var endPosition = transform.TransformDirection(
                     RayPerception3D.PolarToCartesian(rayDistance, angle));
-                Debug.DrawRay(transform.position, endPosition, Color.cyan, 0.01f, depthTest:true);
+                Debug.DrawRay(transform.position, endPosition, Color.gray, 0.01f, depthTest:true);
             }
 
         }

@@ -1,0 +1,13 @@
+{
+    "measure" : "reward",
+    "thresholds" : [0.5, 1.8, 3, 4],
+    "min_lesson_length" : 100,
+    "signal_smoothing" : true, 
+    "parameters" : 
+    {
+        "num_obstacles" : [4, 8, 10, 15, 20],
+        "spawn_range" : [1.0, 1.0, 1.0, 1.0, 1.0],
+        "collision_radius" : [10, 6, 4, 3, 2],
+        "target_distance" : [15, 20, 25, 35, 45]
+    }
+}

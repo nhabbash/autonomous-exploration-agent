@@ -718,8 +718,7 @@ MonoBehaviour:
     broadcastingBrains:
     - {fileID: 11400000, guid: 4ca82977c0a4ee34d993b620ccacae04, type: 2}
     - {fileID: 11400000, guid: d97a881a2fd6ef44ab5cb5e4b8002a93, type: 2}
-    m_BrainsToControl:
-    - {fileID: 11400000, guid: 4ca82977c0a4ee34d993b620ccacae04, type: 2}
+    m_BrainsToControl: []
   m_TrainingConfiguration:
     width: 80
     height: 80
@@ -730,7 +729,7 @@ MonoBehaviour:
     width: 1280
     height: 720
     qualityLevel: 5
-    timeScale: 1
+    timeScale: 1.99
     targetFrameRate: 60
   resetParameters:
     m_ResetParameters:
