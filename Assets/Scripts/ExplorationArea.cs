@@ -22,6 +22,7 @@ public class ExplorationArea : Area
     [Header("Debug")]
     public bool drawCollisionRadius = false;
     public bool drawTargetDistance = false;
+    public bool drawAgentRays = false;
 
     [HideInInspector]
     public int numObstacles;
@@ -50,7 +51,7 @@ public class ExplorationArea : Area
     public Bounds areaBounds;
     [HideInInspector]
     private ExplorationAcademy exAcademy;
-
+    
     private GameObject goal;
     private List<GameObject> spawnedObstacles;
     private List<Tuple<Vector3, float>> occupiedPositions;
@@ -164,6 +165,8 @@ public class ExplorationArea : Area
             var randomPosX = 0.0f;
             var randomPosZ = 0.0f;
 
+            var bounds = areaBounds.extents;
+
             if (target.name.Contains("Target"))
             {
                 // Find a random spot on the circumference at targetDistance
@@ -171,23 +174,23 @@ public class ExplorationArea : Area
                 var pos = new Vector2(Mathf.Sin(angle) * targetDistance, Mathf.Cos(angle) * targetDistance);
 
                 randomPosX = Mathf.Clamp(pos.x,
-                                        (-areaBounds.extents.x + targetCollider.bounds.extents.x),
-                                        (areaBounds.extents.x - targetCollider.bounds.extents.x));
+                                        (-bounds.x + targetCollider.bounds.extents.x),
+                                        (bounds.x - targetCollider.bounds.extents.x));
 
                 randomPosZ = Mathf.Clamp(pos.y,
-                                        (-areaBounds.extents.z + targetCollider.bounds.extents.z),
-                                        (areaBounds.extents.z - targetCollider.bounds.extents.z));
+                                        (-bounds.z + targetCollider.bounds.extents.z),
+                                        (bounds.z - targetCollider.bounds.extents.z));
 
             }else{ 
                 randomPosX = UnityEngine.Random.Range(
-                    (-areaBounds.extents.x + targetCollider.bounds.extents.x),
-                    (areaBounds.extents.x - targetCollider.bounds.extents.x)) * range;
+                    (-bounds.x + targetCollider.bounds.extents.x),
+                    (bounds.x - targetCollider.bounds.extents.x)) * range;
                 randomPosZ = UnityEngine.Random.Range(
-                    (-areaBounds.extents.z + targetCollider.bounds.extents.z),
-                    (areaBounds.extents.z - targetCollider.bounds.extents.z)) * range;
+                    (-bounds.z + targetCollider.bounds.extents.z),
+                    (bounds.z - targetCollider.bounds.extents.z)) * range;
             }
 
-            spawnPos = new Vector3(randomPosX, targetCollider.bounds.extents.y, randomPosZ);
+            spawnPos = new Vector3(randomPosX, targetCollider.bounds.extents.y, randomPosZ) + areaBounds.center;
             foundLocation = this.checkLocation(spawnPos) && customCondToCheckLocation(spawnPos);
         }
 
@@ -288,7 +291,6 @@ public class ExplorationArea : Area
             }
             
         }
-
     }
 
     void OnGUI()

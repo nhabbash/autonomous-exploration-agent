@@ -10,17 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b23992c8eb17439887f5e944bf04a40, type: 3}
-  m_Name: ExAgentBrain
+  m_Name: CameraExAgentBrain
   m_EditorClassIdentifier: 
   brainParameters:
-    vectorObservationSize: 72
+    vectorObservationSize: 0
     numStackedVectorObservations: 10
     vectorActionSize: 030000000300000003000000
-    cameraResolutions: []
+    cameraResolutions:
+    - width: 84
+      height: 84
+      blackAndWhite: 0
     vectorActionDescriptions:
     - Forward Axis
     - Right Axis
     - Horizontal Rotation Axis
     vectorActionSpaceType: 0
-  model: {fileID: 5022602860645237092, guid: 8af1dbd7b731795449f63291f637d76a, type: 3}
+  model: {fileID: 0}
   inferenceDevice: 0

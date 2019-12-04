@@ -9,7 +9,6 @@ public class ExplorationAgent : Agent
     public float maxSpeed = 25f;
     public float turnSpeed = 300;
     public float moveSpeed = 2f;
-    public bool showRays = true;
     public float[] rayAngles = { 20f, 30f, 40f, 50f, 60f, 70f, 80f, 90f, 100f, 110f, 120f, 130f, 140f, 150f };
     public float rayDistance;
     public bool useVectorObs = true;
@@ -51,7 +50,9 @@ public class ExplorationAgent : Agent
             AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, 0f));
 
             // Agent velocity
-            Vector3 localVelocity = transform.InverseTransformDirection(body.velocity);
+            Vector3 localVelocity = transform.InverseTransformDirection(body.velocity).normalized;
+
+            // Normalization
             AddVectorObs(localVelocity.x);
             AddVectorObs(localVelocity.z);
         }
@@ -144,7 +145,7 @@ public class ExplorationAgent : Agent
         } else if(collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("LevelBoundaries"))
         {
             exArea.OnObstacleCollision();
-            float penality = (float)(-Math.Exp(exArea.collisionPenalty * exArea.obstacleCollisions) + 1);
+            float penality = -0.1f; //(float)(-Math.Exp(exArea.collisionPenalty * exArea.obstacleCollisions) + 1);
             AddReward(penality);
         }
     }
@@ -164,7 +165,7 @@ public class ExplorationAgent : Agent
 
     void Update()
     {
-        if (showRays)
+        if (exArea.drawAgentRays)
         {
             foreach (var angle in rayAngles)
             {
