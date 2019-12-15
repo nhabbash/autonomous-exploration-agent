@@ -6,7 +6,6 @@ using System;
 public class ExplorationAgent : Agent
 {
     [Header("Exploration Agent Settings")]
-    public bool is3D = false;
     public float maxSpeed = 25f;
     public float turnSpeed = 300;
     public float moveSpeed = 2f;
@@ -55,6 +54,10 @@ public class ExplorationAgent : Agent
 
             // Normalization
             AddVectorObs(localVelocity.x);
+            if(exArea.is3D)
+            {
+                AddVectorObs(localVelocity.y);
+            }
             AddVectorObs(localVelocity.z);
         }
     }

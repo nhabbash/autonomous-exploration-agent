@@ -7,6 +7,8 @@ using MLAgents;
 
 public class ExplorationArea : Area
 {
+    [Header("Settings")]
+    public bool is3D;
     [Header("Exploration Area Objects")]
     public GameObject expAgent;
     public GameObject ground;
@@ -163,38 +165,86 @@ public class ExplorationArea : Area
         for(; !foundLocation && tries > 0; tries--)
         {
             var randomPosX = 0.0f;
+            var randomPosY = 0.0f;
             var randomPosZ = 0.0f;
-
             var bounds = areaBounds.extents;
-
-            if (target.name.Contains("Target"))
+            if(is3D)
             {
-                // Find a random spot on the circumference at targetDistance
-                float angle = UnityEngine.Random.Range(0, Mathf.PI * 2);    
-                var pos = new Vector2(Mathf.Sin(angle) * targetDistance, Mathf.Cos(angle) * targetDistance);
+                if (target.name.Contains("Target"))
+                {
+                    // Find a random spot on the circumference at targetDistance
+                    float angle = UnityEngine.Random.Range(0, Mathf.PI * 2);
+                    var pos = new Vector3(Mathf.Sin(angle) * targetDistance, Mathf.Cos(angle) * targetDistance);
 
-                randomPosX = Mathf.Clamp(pos.x,
-                                        (-bounds.x + targetCollider.bounds.extents.x),
-                                        (bounds.x - targetCollider.bounds.extents.x));
+                    randomPosX = Mathf.Clamp(pos.x,
+                                            (-bounds.x + targetCollider.bounds.extents.x),
+                                            (bounds.x - targetCollider.bounds.extents.x));
 
-                randomPosZ = Mathf.Clamp(pos.y,
-                                        (-bounds.z + targetCollider.bounds.extents.z),
-                                        (bounds.z - targetCollider.bounds.extents.z));
+                    randomPosY = Mathf.Clamp(pos.y,
+                                            (-bounds.y + targetCollider.bounds.extents.y),
+                                            (bounds.y - targetCollider.bounds.extents.y));
 
-            }else{ 
-                randomPosX = UnityEngine.Random.Range(
-                    (-bounds.x + targetCollider.bounds.extents.x),
-                    (bounds.x - targetCollider.bounds.extents.x)) * range;
-                randomPosZ = UnityEngine.Random.Range(
-                    (-bounds.z + targetCollider.bounds.extents.z),
-                    (bounds.z - targetCollider.bounds.extents.z)) * range;
+                    randomPosZ = Mathf.Clamp(pos.z,
+                                            (-bounds.z + targetCollider.bounds.extents.z),
+                                            (bounds.z - targetCollider.bounds.extents.z));
+                }
+                else
+                {
+                    randomPosX = UnityEngine.Random.Range(
+                        (-bounds.x + targetCollider.bounds.extents.x),
+                        (bounds.x - targetCollider.bounds.extents.x)) * range;
+                    randomPosY = UnityEngine.Random.Range(
+                        (-bounds.y + targetCollider.bounds.extents.y),
+                        (bounds.y - targetCollider.bounds.extents.y)) * range;
+                    randomPosZ = UnityEngine.Random.Range(
+                        (-bounds.z + targetCollider.bounds.extents.z),
+                        (bounds.z - targetCollider.bounds.extents.z)) * range;
+                }
+
+                spawnPos = new Vector3(randomPosX, randomPosY, randomPosZ) + areaBounds.center;
+                foundLocation = this.checkLocation(spawnPos) && customCondToCheckLocation(spawnPos);
+            } else
+            {
+                if (target.name.Contains("Target"))
+                {
+                    // Find a random spot on the circumference at targetDistance
+                    float angle = UnityEngine.Random.Range(0, Mathf.PI * 2);
+                    var pos = new Vector2(Mathf.Sin(angle) * targetDistance, Mathf.Cos(angle) * targetDistance);
+
+                    randomPosX = Mathf.Clamp(pos.x,
+                                            (-bounds.x + targetCollider.bounds.extents.x),
+                                            (bounds.x - targetCollider.bounds.extents.x));
+
+                    randomPosZ = Mathf.Clamp(pos.y,
+                                            (-bounds.z + targetCollider.bounds.extents.z),
+                                            (bounds.z - targetCollider.bounds.extents.z));
+
+                }
+                else
+                {
+                    randomPosX = UnityEngine.Random.Range(
+                        (-bounds.x + targetCollider.bounds.extents.x),
+                        (bounds.x - targetCollider.bounds.extents.x)) * range;
+                    randomPosZ = UnityEngine.Random.Range(
+                        (-bounds.z + targetCollider.bounds.extents.z),
+                        (bounds.z - targetCollider.bounds.extents.z)) * range;
+                }
+
+                spawnPos = new Vector3(randomPosX, targetCollider.bounds.extents.y, randomPosZ) + areaBounds.center;
+                foundLocation = this.checkLocation(spawnPos) && customCondToCheckLocation(spawnPos);
             }
 
-            spawnPos = new Vector3(randomPosX, targetCollider.bounds.extents.y, randomPosZ) + areaBounds.center;
-            foundLocation = this.checkLocation(spawnPos) && customCondToCheckLocation(spawnPos);
         }
 
-        if (foundLocation)
+        if (foundLocation && is3D)
+        {
+            var orientation = Quaternion.Euler(new Vector3(UnityEngine.Random.Range(0f, 360f), UnityEngine.Random.Range(0f, 360f), 0f));
+
+            target.transform.position = spawnPos;
+            target.transform.rotation = orientation;
+            occupiedPositions.Add(new Tuple<Vector3, float>(target.transform.position, getColliderOccupationRadius(targetCollider, target)));
+        }
+        else if (foundLocation && !is3D)
         {
             var orientation = Quaternion.Euler(new Vector3(0f, UnityEngine.Random.Range(0f, 360f), 0f));
 
