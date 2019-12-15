@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: ExAgentBrain
   m_EditorClassIdentifier: 
   brainParameters:
-    vectorObservationSize: 37
+    vectorObservationSize: 38
     numStackedVectorObservations: 10
-    vectorActionSize: 030000000300000003000000
+    vectorActionSize: 0300000003000000030000000300000003000000
     cameraResolutions: []
     vectorActionDescriptions:
     - Forward Axis
     - Right Axis
-    - Horizontal Rotation Axis
+    - Up Axis
+    - Yaw Rotation
+    - Pitch Rotation
     vectorActionSpaceType: 0
   model: {fileID: 0}
   inferenceDevice: 0

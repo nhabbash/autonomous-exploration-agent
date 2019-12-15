@@ -59,8 +59,8 @@ public class ExplorationArea : Area
     private List<Tuple<Vector3, float>> occupiedPositions;
     private int spawnTries = 30;
 
-    private Renderer groundRenderer;
-    private Material groundMaterial;
+    private Renderer areaRenderer;
+    private Material areaMaterial;
 
     public delegate bool CustomCheckFunction(Vector3 pos);
     public int obstacleCollisions
@@ -72,9 +72,17 @@ public class ExplorationArea : Area
     {
         exAcademy = FindObjectOfType<ExplorationAcademy>();
 
-        groundRenderer = ground.GetComponent<Renderer>();
-        groundMaterial = groundRenderer.material;
-        areaBounds = ground.GetComponent<Collider>().bounds;
+        if (!is3D)
+        {
+            areaRenderer = ground.GetComponent<Renderer>();
+            areaMaterial = areaRenderer.material;
+            areaBounds = ground.GetComponent<Collider>().bounds;
+        } else
+        {
+            areaRenderer = ground.GetComponent<Renderer>();
+            areaMaterial = areaRenderer.material;
+            areaBounds = ground.GetComponent<Collider>().bounds;
+        }
         occupiedPositions = new List<Tuple<Vector3, float>>();
     }
 
@@ -93,7 +101,9 @@ public class ExplorationArea : Area
     public override void ResetArea()
     {
         obstacleCollisionsText.text = "0";
-        occupiedPositions.Clear();
+        if(occupiedPositions != null) {
+            occupiedPositions.Clear();
+        }
         ResetAgent();
         ResetGoal();
         ResetObstacles();
@@ -284,30 +294,30 @@ public class ExplorationArea : Area
     public void SuccessResetArea()
     {
         // Color map
-        StartCoroutine(this.SwapGroundMaterial(success: true));
+        StartCoroutine(this.SwapareaMaterial(success: true));
         ResetArea();
     }
 
     public void FailResetArea()
     {
         // Color map
-        StartCoroutine(this.SwapGroundMaterial(success: false));
+        StartCoroutine(this.SwapareaMaterial(success: false));
         ResetAgent();
         ResetArea();
     }
 
-    public IEnumerator SwapGroundMaterial(bool success)
+    public IEnumerator SwapareaMaterial(bool success)
     {
         if (success)
         {
-            groundRenderer.material = successMaterial;
+            areaRenderer.material = successMaterial;
         }
         else
         {
-            groundRenderer.material = failureMaterial;
+            areaRenderer.material = failureMaterial;
         }
         yield return new WaitForSeconds(0.5f);
-        groundRenderer.material = groundMaterial;
+        areaRenderer.material = areaMaterial;
     }
 
      private void OnDrawGizmos()

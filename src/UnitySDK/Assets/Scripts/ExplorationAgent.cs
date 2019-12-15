@@ -14,6 +14,8 @@ public class ExplorationAgent : Agent
     public bool useVectorObs = true;
 
     private Vector3[] movement;
+    private Vector3 translation;
+    private Vector3 rotation;
 
     private ExplorationArea exArea;
     private Rigidbody body;
@@ -30,6 +32,8 @@ public class ExplorationAgent : Agent
         rayPerception = GetComponent<RayPerception3D>();
 
         movement = new Vector3[3];
+        translation = new Vector3();
+        rotation = new Vector3();
         reachedGoal = false;
         resetting = false;
     }
@@ -57,6 +61,7 @@ public class ExplorationAgent : Agent
             if(exArea.is3D)
             {
                 AddVectorObs(localVelocity.y);
+
             }
             AddVectorObs(localVelocity.z);
         }
@@ -64,7 +69,13 @@ public class ExplorationAgent : Agent
 
     public override void AgentAction(float[] vectorAction, string textAction)
     {
-        getMovement(vectorAction);
+        if (exArea.is3D)
+        {
+            get3DMovement(vectorAction);
+        } else
+        {
+            get2DMovement(vectorAction);
+        }
 
         if (GetCumulativeReward() < exArea.minReward && !resetting)
         {
@@ -88,15 +99,15 @@ public class ExplorationAgent : Agent
 
     }
 
-    private void getMovement(float[] actions)
+    private void get2DMovement(float[] actions)
     {
         var fwDirection = Vector3.zero;
         var rDirection = Vector3.zero;
-        var rotation = Vector3.zero;
+        var yawRot = Vector3.zero;
 
         var forwardAxis = (int)actions[0];
         var rightAxis = (int)actions[1];
-        var horRotationAxis = (int)actions[2];
+        var yawRotationAxis = (int)actions[2];
 
         switch (forwardAxis)
         {
@@ -118,23 +129,99 @@ public class ExplorationAgent : Agent
                 break;
         }
 
-        switch (horRotationAxis)
+        switch (yawRotationAxis)
         {
             case 1:
-                rotation = -transform.up;
+                yawRot = -transform.up;
                 break;
             case 2:
-                rotation = transform.up;
+                yawRot = transform.up;
                 break;
         }
 
-        movement[0] = fwDirection;
-        movement[1] = rDirection;
-        movement[2] = rotation;
+        translation = fwDirection + rDirection;
+        rotation = yawRot;
 
         float[] actionHist = {forwardAxis == 2 ? -1 : forwardAxis,
                               rightAxis == 2 ? -1 : rightAxis,
-                              horRotationAxis == 2 ? -1 : horRotationAxis};
+                              yawRotationAxis == 2 ? -1 : yawRotationAxis};
+
+        Monitor.Log("Vector Action", actionHist);
+    }
+
+    private void get3DMovement(float[] actions)
+    {
+        var fwDirection = Vector3.zero;
+        var rDirection = Vector3.zero;
+        var uDirection = Vector3.zero;
+        var yawRot = 0.0f;
+        var pitchRot = 0.0f;
+
+        var forwardAxis = (int)actions[0];
+        var rightAxis = (int)actions[1];
+        var upAxis = (int)actions[2];
+        var yawRotationAxis = (int)actions[3];
+        var pitchRotationAxis = (int)actions[4];
+
+        switch (forwardAxis)
+        {
+            case 1:
+                fwDirection = transform.forward;
+                break;
+            case 2:
+                fwDirection = -transform.forward;
+                break;
+        }
+
+        switch (rightAxis)
+        {
+            case 1:
+                rDirection = -transform.right;
+                break;
+            case 2:
+                rDirection = transform.right;
+                break;
+        }
+
+        switch (upAxis)
+        {
+            case 1:
+                uDirection = -transform.up;
+                break;
+            case 2:
+                uDirection = transform.up;
+                break;
+        }
+
+        switch (yawRotationAxis)
+        {
+            case 1:
+                yawRot = -transform.rotation.eulerAngles.y;
+                break;
+            case 2:
+                yawRot = transform.transform.rotation.eulerAngles.y;
+                break;
+        }
+
+        switch (pitchRotationAxis)
+        {
+            case 1:
+                pitchRot = -transform.rotation.eulerAngles.x;
+                break;
+            case 2:
+                pitchRot = transform.transform.rotation.eulerAngles.x;
+                break;
+        }
+
+        translation = fwDirection + rDirection + uDirection;
+        rotation = new Vector3(pitchRot, yawRot, 0.0f);
+
+        float[] actionHist = {forwardAxis == 2 ? -1 : forwardAxis,
+                              rightAxis == 2 ? -1 : rightAxis,
+                              upAxis == 2 ? -1 : upAxis,
+                              yawRotationAxis == 2 ? -1 : yawRotationAxis,
+                              pitchRotationAxis == 2 ? -1 : pitchRotationAxis,
+        };
 
         Monitor.Log("Vector Action", actionHist);
     }
@@ -156,10 +243,9 @@ public class ExplorationAgent : Agent
 
     void FixedUpdate()
     {
-        var direction = movement[0] + movement[1];
-        body.AddForce(direction * moveSpeed, ForceMode.VelocityChange);
-        transform.Rotate(movement[2], Time.fixedDeltaTime * turnSpeed);
-
+        body.AddForce(translation * moveSpeed, ForceMode.VelocityChange);
+        transform.Rotate(rotation, Time.fixedDeltaTime * turnSpeed);
+        
         if (body.velocity.sqrMagnitude > maxSpeed)
         {
             body.velocity *= 0.95f;
