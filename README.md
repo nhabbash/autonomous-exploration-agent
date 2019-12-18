@@ -59,5 +59,5 @@ $ mlagents-learn src\config\trainer_config.yaml --run-id=TEST --train
 
 ## Authors
 
-* **Federico Bottoni** (xxxxxx) - 
+* **Federico Bottoni** (806944) - [FedericoBottoni](https://github.com/FedericoBottoni)
 * **Nassim Habbash** (808292) - [dodicin](https://github.com/dodicin)
