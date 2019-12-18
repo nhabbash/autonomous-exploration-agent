@@ -447,7 +447,7 @@ GameObject:
   - component: {fileID: 7406989719043059684}
   m_Layer: 0
   m_Name: Wall
-  m_TagString: Untagged
+  m_TagString: LevelBoundaries
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -755,7 +755,7 @@ GameObject:
   - component: {fileID: 3465582922881113084}
   m_Layer: 0
   m_Name: Wall1
-  m_TagString: Untagged
+  m_TagString: LevelBoundaries
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1085,7 +1085,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c83d8d3ef0e2f1b40bb26fd28c71f46f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brain: {fileID: 11400000, guid: d97a881a2fd6ef44ab5cb5e4b8002a93, type: 2}
+  brain: {fileID: 11400000, guid: 68104e0222c39b04b9e4191b3b62a16f, type: 2}
   agentParameters:
     agentCameras: []
     agentRenderTextures: []

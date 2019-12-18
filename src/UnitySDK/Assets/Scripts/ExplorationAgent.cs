@@ -52,6 +52,11 @@ public class ExplorationAgent : Agent
 
             // Add obstacles and goal observations
             AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, 0f));
+            if(exArea.is3D)
+            {
+                AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, 5f));
+                AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, -5f));
+            }
 
             // Agent velocity
             Vector3 localVelocity = transform.InverseTransformDirection(body.velocity).normalized;
