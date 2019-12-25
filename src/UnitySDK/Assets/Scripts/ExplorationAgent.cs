@@ -18,7 +18,7 @@ public class ExplorationAgent : Agent
     private Vector3 rotation;
 
     private ExplorationArea exArea;
-    private Rigidbody body;
+    public Rigidbody body;
     private RayPerception3D rayPerception;
 
     private bool reachedGoal;
@@ -204,7 +204,7 @@ public class ExplorationAgent : Agent
                 yawRot = -transform.rotation.eulerAngles.y;
                 break;
             case 2:
-                yawRot = transform.transform.rotation.eulerAngles.y;
+                yawRot = transform.rotation.eulerAngles.y;
                 break;
         }
 
@@ -214,7 +214,7 @@ public class ExplorationAgent : Agent
                 pitchRot = -transform.rotation.eulerAngles.x;
                 break;
             case 2:
-                pitchRot = transform.transform.rotation.eulerAngles.x;
+                pitchRot = transform.rotation.eulerAngles.x;
                 break;
         }
 
@@ -260,6 +260,7 @@ public class ExplorationAgent : Agent
 
     void Update()
     {
+        Monitor.Log("Check", this.transform.position.ToString());
         if (exArea.drawAgentRays)
         {
             foreach (var angle in rayAngles)

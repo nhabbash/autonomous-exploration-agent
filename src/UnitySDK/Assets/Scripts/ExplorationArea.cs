@@ -9,6 +9,8 @@ public class ExplorationArea : Area
 {
     [Header("Settings")]
     public bool is3D;
+    public bool isStructured;
+
     [Header("Exploration Area Objects")]
     public GameObject expAgent;
     public GameObject ground;
@@ -111,23 +113,30 @@ public class ExplorationArea : Area
 
     public void ResetAgent()
     {
-        SpawnObjectsDist(expAgent, spawnRange);
+        if(!isStructured)
+        {
+            SpawnObjectsDist(expAgent, spawnRange);
+        }
     }
 
     private void ResetGoal()
     {
-        if (goal == null)
+        if (!isStructured)
         {
-            goal = Instantiate(goalPrefab, transform);
-            goal.SetActive(true);
-        }
+            if (goal == null)
+            {
+                goal = Instantiate(goalPrefab, transform);
+                goal.SetActive(true);
+            }
 
-        SpawnObjectsDist(goal, spawnRange, (Vector3 spawnPos) =>
+            SpawnObjectsDist(goal, spawnRange, (Vector3 spawnPos) =>
             {
                 float cor = this.getColliderOccupationRadius(this.expAgent.GetComponent<Collider>(), this.expAgent);
                 float dist = Vector3.Distance(spawnPos, this.expAgent.transform.position);
                 return Mathf.Abs(dist - targetDistance) <= 5;
             });
+        }
+        
     }
 
     private void ResetObstacles()
@@ -250,7 +259,13 @@ public class ExplorationArea : Area
         {
             var orientation = Quaternion.Euler(new Vector3(UnityEngine.Random.Range(0f, 360f), UnityEngine.Random.Range(0f, 360f), 0f));
 
-            target.transform.position = spawnPos;
+            if(target.name.Contains("Agent"))
+            {
+                target.transform.position = new Vector3(20, 0, 0); //spawnPos;
+            } else
+            {
+                target.transform.position = spawnPos;
+            }
             target.transform.rotation = orientation;
             occupiedPositions.Add(new Tuple<Vector3, float>(target.transform.position, getColliderOccupationRadius(targetCollider, target)));
         }
