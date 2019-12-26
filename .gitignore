@@ -104,3 +104,6 @@ venv/
 .coverage
 coverage.xml
 /htmlcov/
+
+# Build for the notebook
+src/notebooks/envs/CameraLearningTestScene/*
