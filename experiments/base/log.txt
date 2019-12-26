@@ -1,0 +1,108 @@
+INFO:mlagents.envs:Start training by pressing the Play button in the Unity Editor.
+INFO:mlagents.envs:
+'Academy' started successfully!
+Unity Academy name: Academy
+        Number of Brains: 2
+        Number of Training Brains : 1
+        Reset Parameters :
+                target_size -> 0.0
+                spawn_range -> 1.0
+                num_obstacles -> 10.0
+                collision_penalty -> 0.30000001192092896
+                min_reward -> -5.0
+                ray_length -> 0.0
+                win_reward -> 5.0
+                time_penalty -> -0.0010000000474974513
+                collision_radius -> 2.0
+                target_distance -> 45.0
+Unity brain name: ExAgentBrain
+        Number of Visual Observations (per agent): 0
+        Vector Observation space size (per agent): 37
+        Number of stacked Vector Observation: 10
+        Vector Action space type: discrete
+        Vector Action space size (per agent): [3, 3, 3]
+        Vector Action descriptions: Forward Axis, Right Axis, Horizontal Rotation Axis
+Unity brain name: ExAgentBrain_Player
+        Number of Visual Observations (per agent): 0
+        Vector Observation space size (per agent): 37
+        Number of stacked Vector Observation: 10
+        Vector Action space type: discrete
+        Vector Action space size (per agent): [3, 3, 3]
+        Vector Action descriptions: Forward Axis, Right Axis, Horizontal Rotation Axis
+2019-12-26 14:10:30.735457: I T:\src\github\tensorflow\tensorflow\core\platform\cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
+INFO:mlagents.envs:Hyperparameters for the PPOTrainer of brain ExAgentBrain:
+        trainer:        ppo
+        batch_size:     512
+        beta:   0.005
+        buffer_size:    4096
+        epsilon:        0.14
+        hidden_units:   256
+        lambd:  0.95
+        learning_rate:  0.0006
+        max_steps:      1.0e7
+        memory_size:    256
+        normalize:      False
+        num_epoch:      6
+        num_layers:     3
+        time_horizon:   128
+        sequence_length:        64
+        summary_freq:   2000
+        use_recurrent:  False
+        vis_encode_type:        simple
+        reward_signals:
+          extrinsic:
+            strength:   1.0
+            gamma:      0.9
+          curiosity:
+            strength:   0.02
+            gamma:      0.99
+            encoding_size:      64
+        summary_path:   ./summaries/Base4_ExAgentBrain
+        model_path:     ./models/Base4-0/ExAgentBrain
+        keep_checkpoints:       5
+INFO:mlagents.envs:Academy reset with parameters: num_obstacles -> 8, spawn_range -> 1.0, collision_radius -> 6, target_distance -> 25
+d:\programmi\anaconda3\envs\ml-agents\lib\site-packages\numpy\core\fromnumeric.py:3257: RuntimeWarning: Mean of empty slice.
+  out=out, **kwargs)
+d:\programmi\anaconda3\envs\ml-agents\lib\site-packages\numpy\core\_methods.py:161: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 2000. Time Elapsed: 63.216 s Mean Reward: -1.023. Std of Reward: 4.090. Training.
+INFO:mlagents.trainers:ExAgentBrain lesson changed. Now in lesson 1: num_obstacles -> 10, spawn_range -> 1.0, collision_radius -> 6, target_distance -> 28
+INFO:mlagents.envs:Academy reset with parameters: num_obstacles -> 10, spawn_range -> 1.0, collision_radius -> 6, target_distance -> 28
+INFO:mlagents.trainers:ExAgentBrain lesson changed. Now in lesson 2: num_obstacles -> 13, spawn_range -> 1.0, collision_radius -> 4, target_distance -> 30
+INFO:mlagents.envs:Academy reset with parameters: num_obstacles -> 13, spawn_range -> 1.0, collision_radius -> 4, target_distance -> 30
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 4000. Time Elapsed: 126.545 s Mean Reward: 1.254. Std of Reward: 3.554. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 6000. Time Elapsed: 188.354 s Mean Reward: 1.405. Std of Reward: 3.528. Training.
+INFO:mlagents.trainers:ExAgentBrain lesson changed. Now in lesson 3: num_obstacles -> 15, spawn_range -> 1.0, collision_radius -> 4, target_distance -> 33
+INFO:mlagents.envs:Academy reset with parameters: num_obstacles -> 15, spawn_range -> 1.0, collision_radius -> 4, target_distance -> 33
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 8000. Time Elapsed: 251.949 s Mean Reward: 2.185. Std of Reward: 3.005. Training.
+INFO:mlagents.trainers:ExAgentBrain lesson changed. Now in lesson 4: num_obstacles -> 17, spawn_range -> 1.0, collision_radius -> 3, target_distance -> 35
+INFO:mlagents.envs:Academy reset with parameters: num_obstacles -> 17, spawn_range -> 1.0, collision_radius -> 3, target_distance -> 35
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 10000. Time Elapsed: 315.797 s Mean Reward: 2.343. Std of Reward: 3.027. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 12000. Time Elapsed: 379.390 s Mean Reward: 2.167. Std of Reward: 3.136. Training.
+INFO:mlagents.trainers:ExAgentBrain lesson changed. Now in lesson 5: num_obstacles -> 18, spawn_range -> 1.0, collision_radius -> 3, target_distance -> 37
+INFO:mlagents.envs:Academy reset with parameters: num_obstacles -> 18, spawn_range -> 1.0, collision_radius -> 3, target_distance -> 37
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 14000. Time Elapsed: 442.032 s Mean Reward: 2.635. Std of Reward: 2.801. Training.
+INFO:mlagents.trainers:ExAgentBrain lesson changed. Now in lesson 6: num_obstacles -> 19, spawn_range -> 1.0, collision_radius -> 2, target_distance -> 38
+INFO:mlagents.envs:Academy reset with parameters: num_obstacles -> 19, spawn_range -> 1.0, collision_radius -> 2, target_distance -> 38
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 16000. Time Elapsed: 505.757 s Mean Reward: 2.913. Std of Reward: 2.522. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 18000. Time Elapsed: 569.328 s Mean Reward: 2.598. Std of Reward: 2.709. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 20000. Time Elapsed: 632.791 s Mean Reward: 2.715. Std of Reward: 2.686. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 22000. Time Elapsed: 696.380 s Mean Reward: 2.817. Std of Reward: 2.569. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 24000. Time Elapsed: 758.564 s Mean Reward: 3.080. Std of Reward: 2.278. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 26000. Time Elapsed: 823.467 s Mean Reward: 3.213. Std of Reward: 2.243. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 28000. Time Elapsed: 886.010 s Mean Reward: 3.470. Std of Reward: 1.943. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 30000. Time Elapsed: 949.965 s Mean Reward: 3.656. Std of Reward: 1.761. Training.
+INFO:mlagents.trainers:ExAgentBrain lesson changed. Now in lesson 7: num_obstacles -> 20, spawn_range -> 1.0, collision_radius -> 2, target_distance -> 40
+INFO:mlagents.envs:Academy reset with parameters: num_obstacles -> 20, spawn_range -> 1.0, collision_radius -> 2, target_distance -> 40
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 32000. Time Elapsed: 1014.264 s Mean Reward: 3.839. Std of Reward: 1.481. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 34000. Time Elapsed: 1078.602 s Mean Reward: 3.933. Std of Reward: 1.168. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 36000. Time Elapsed: 1143.332 s Mean Reward: 3.996. Std of Reward: 1.076. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 38000. Time Elapsed: 1208.125 s Mean Reward: 3.985. Std of Reward: 1.251. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 40000. Time Elapsed: 1271.518 s Mean Reward: 4.047. Std of Reward: 1.086. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 42000. Time Elapsed: 1336.166 s Mean Reward: 4.137. Std of Reward: 0.954. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 44000. Time Elapsed: 1400.808 s Mean Reward: 4.150. Std of Reward: 0.940. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 46000. Time Elapsed: 1465.499 s Mean Reward: 4.137. Std of Reward: 1.059. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 48000. Time Elapsed: 1530.267 s Mean Reward: 4.208. Std of Reward: 0.975. Training.
+INFO:mlagents.envs:Saved Model
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 50000. Time Elapsed: 1595.191 s Mean Reward: 4.096. Std of Reward: 1.171. Training.
+INFO:mlagents.trainers: Base4: ExAgentBrain: Step: 52000. Time Elapsed: 1658.481 s Mean Reward: 4.059. Std of Reward: 1.210. Training.
