@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ExAgentBrain
   m_EditorClassIdentifier: 
   brainParameters:
-    vectorObservationSize: 38
+    vectorObservationSize: 108
     numStackedVectorObservations: 10
     vectorActionSize: 0300000003000000030000000300000003000000
     cameraResolutions: []
