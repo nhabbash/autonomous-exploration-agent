@@ -14,6 +14,7 @@ public class ExplorationArea : Area
     [Header("Exploration Area Objects")]
     public GameObject expAgent;
     public GameObject ground;
+    public GameObject area3D;
     public Material successMaterial;
     public Material failureMaterial;
     public TextMeshPro rewardText;
@@ -62,6 +63,7 @@ public class ExplorationArea : Area
     private int spawnTries = 30;
 
     private Renderer areaRenderer;
+    private GameObject areaObject;
     private Material areaMaterial;
 
     public delegate bool CustomCheckFunction(Vector3 pos);
@@ -83,7 +85,7 @@ public class ExplorationArea : Area
         {
             areaRenderer = ground.GetComponent<Renderer>();
             areaMaterial = areaRenderer.material;
-            areaBounds = ground.GetComponent<Collider>().bounds;
+            areaBounds = new Bounds(area3D.transform.position, area3D.transform.localScale);
         }
         occupiedPositions = new List<Tuple<Vector3, float>>();
     }
@@ -258,14 +260,7 @@ public class ExplorationArea : Area
         if (foundLocation && is3D)
         {
             var orientation = Quaternion.Euler(new Vector3(UnityEngine.Random.Range(0f, 360f), UnityEngine.Random.Range(0f, 360f), 0f));
-
-            if(target.name.Contains("Agent"))
-            {
-                target.transform.position = new Vector3(20, 0, 0); //spawnPos;
-            } else
-            {
-                target.transform.position = spawnPos;
-            }
+            target.transform.position = spawnPos;
             target.transform.rotation = orientation;
             occupiedPositions.Add(new Tuple<Vector3, float>(target.transform.position, getColliderOccupationRadius(targetCollider, target)));
         }
