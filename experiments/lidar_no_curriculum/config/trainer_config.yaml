@@ -1,0 +1,27 @@
+default:
+    trainer: ppo
+    batch_size: 512
+    beta: 5.0e-3
+    buffer_size: 4096
+    epsilon: 0.14
+    hidden_units: 256
+    lambd: 0.95
+    learning_rate: 6.0e-4
+    max_steps: 1.0e7
+    memory_size: 256
+    normalize: false
+    num_epoch: 6
+    num_layers: 3
+    time_horizon: 128
+    sequence_length: 64
+    summary_freq: 2000
+    use_recurrent: false
+    vis_encode_type: simple
+    reward_signals: 
+        extrinsic:
+            strength: 1.0
+            gamma: 0.9
+        curiosity:
+            strength: 0.02
+            gamma: 0.99
+            encoding_size: 64
