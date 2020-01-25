@@ -241,7 +241,7 @@ public class ExplorationAgent : Agent
         } else if(collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("LevelBoundaries"))
         {
             exArea.OnObstacleCollision();
-            float penality = -0.1f; //(float)(-Math.Exp(exArea.collisionPenalty * exArea.obstacleCollisions) + 1);
+            float penality = -(exArea.collisionPenalty+exArea.obstacleCollisions); //(float)(-Math.Exp(exArea.collisionPenalty * exArea.obstacleCollisions) + 1);
             AddReward(penality);
         }
     }
