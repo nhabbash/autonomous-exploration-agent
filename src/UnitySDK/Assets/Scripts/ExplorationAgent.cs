@@ -151,7 +151,7 @@ public class ExplorationAgent : Agent
                               rightAxis == 2 ? -1 : rightAxis,
                               yawRotationAxis == 2 ? -1 : yawRotationAxis};
 
-        Monitor.Log("Vector Action", actionHist);
+        //Monitor.Log("Vector Action", actionHist);
     }
 
     private void get3DMovement(float[] actions)
@@ -260,7 +260,7 @@ public class ExplorationAgent : Agent
 
     void Update()
     {
-        Monitor.Log("Check", this.transform.position.ToString());
+        //Monitor.Log("Position", this.transform.position.ToString());
         if (exArea.drawAgentRays)
         {
             foreach (var angle in rayAngles)

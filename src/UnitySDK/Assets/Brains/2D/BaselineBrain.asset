@@ -10,19 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b23992c8eb17439887f5e944bf04a40, type: 3}
-  m_Name: ExAgentBrain
+  m_Name: BaselineBrain
   m_EditorClassIdentifier: 
   brainParameters:
-    vectorObservationSize: 108
+    vectorObservationSize: 37
     numStackedVectorObservations: 10
-    vectorActionSize: 0300000003000000030000000300000003000000
+    vectorActionSize: 030000000300000003000000
     cameraResolutions: []
     vectorActionDescriptions:
     - Forward Axis
     - Right Axis
-    - Up Axis
-    - Yaw Rotation
-    - Pitch Rotation
+    - Horizontal Rotation Axis
     vectorActionSpaceType: 0
-  model: {fileID: 0}
+  model: {fileID: 5022602860645237092, guid: 63739b7825d70ef4dbcd32e522c6e35a, type: 3}
   inferenceDevice: 0

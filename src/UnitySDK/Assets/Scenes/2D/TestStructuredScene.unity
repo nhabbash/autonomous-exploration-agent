@@ -325,7 +325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   broadcastHub:
     broadcastingBrains:
-    - {fileID: 11400000, guid: 4ca82977c0a4ee34d993b620ccacae04, type: 2}
+    - {fileID: 11400000, guid: fb5e9700dff39a749a66bc69106a3ffe, type: 2}
     - {fileID: 11400000, guid: d97a881a2fd6ef44ab5cb5e4b8002a93, type: 2}
     m_BrainsToControl: []
   m_TrainingConfiguration:
@@ -362,6 +362,12 @@ MonoBehaviour:
       value: 0.3
     - key: time_penalty
       value: -0.001
+  performanceRun: 1
+  duration: 5
+  experimentName: structured
+  logFile: \experiments\performance.txt
+  totalTargetsHits: 0
+  totalCollisions: 0
 --- !u!4 &1777008082
 Transform:
   m_ObjectHideFlags: 0
@@ -1346,6 +1352,7 @@ MonoBehaviour:
   isStructured: 1
   expAgent: {fileID: 3934117644271585117}
   ground: {fileID: 2308276628175948532}
+  area3D: {fileID: 0}
   successMaterial: {fileID: 2100000, guid: df32cc593804f42df97464dc455057b8, type: 2}
   failureMaterial: {fileID: 2100000, guid: a1daf31cdf41e484ca9ac33a5c6f524a, type: 2}
   rewardText: {fileID: 6453415254260368031}

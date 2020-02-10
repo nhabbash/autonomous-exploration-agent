@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41e9bda8f3cf1492fa74926a530f6f70, type: 3}
-  m_Name: ExAgentBrain_Player
+  m_Name: CameraBrain_Player
   m_EditorClassIdentifier: 
   brainParameters:
     vectorObservationSize: 0

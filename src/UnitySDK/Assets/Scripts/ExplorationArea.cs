@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using MLAgents;
+using System.IO;
 
 public class ExplorationArea : Area
 {
@@ -28,7 +29,7 @@ public class ExplorationArea : Area
     public bool drawCollisionRadius = false;
     public bool drawTargetDistance = false;
     public bool drawAgentRays = false;
-
+    
     [HideInInspector]
     public int numObstacles;
     [HideInInspector]
@@ -93,17 +94,16 @@ public class ExplorationArea : Area
     public void UpdateScore(float reward)
     {
         rewardText.text = reward.ToString("0.00");
-
-        Monitor.Log("Reward", reward/5f);
     }
 
     public void OnObstacleCollision()
     {
         obstacleCollisionsText.text = (obstacleCollisions + 1).ToString();
+        exAcademy.totalCollisions++;
     }
 
     public override void ResetArea()
-    {
+    {   
         obstacleCollisionsText.text = "0";
         if(occupiedPositions != null) {
             occupiedPositions.Clear();
@@ -118,6 +118,10 @@ public class ExplorationArea : Area
         if(!isStructured)
         {
             SpawnObjectsDist(expAgent, spawnRange);
+        }
+        else
+        {
+            expAgent.transform.position = new Vector3(-15.5f, 0.5f, 11.8f);
         }
     }
 
@@ -276,13 +280,13 @@ public class ExplorationArea : Area
         {
             if (target.name.Contains("Target") || target.name.Contains("Agent"))
             {
-                Debug.LogWarning("Couldn't spawn object: " + target.name + ", resetting area");
+                UnityEngine.Debug.LogWarning("Couldn't spawn object: " + target.name + ", resetting area");
                 ResetArea();
             }
             else
             {
                 target.SetActive(false);
-                Debug.LogWarning("Couldn't spawn object: " + target.name + ", deactivating it for the current episode");
+                UnityEngine.Debug.LogWarning("Couldn't spawn object: " + target.name + ", deactivating it for the current episode");
             }
 
         }
@@ -305,6 +309,8 @@ public class ExplorationArea : Area
     {
         // Color map
         StartCoroutine(this.SwapareaMaterial(success: true));
+        // Increase hits
+        exAcademy.totalTargetsHits++;
         ResetArea();
     }
 
@@ -363,8 +369,4 @@ public class ExplorationArea : Area
         }
     }
 
-    void OnGUI()
-    {
-        Monitor.Log("Obstacle collisions", obstacleCollisionsText.text);
-    }
 }
