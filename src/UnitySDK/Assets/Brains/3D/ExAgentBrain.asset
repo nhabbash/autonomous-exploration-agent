@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ExAgentBrain
   m_EditorClassIdentifier: 
   brainParameters:
-    vectorObservationSize: 38
+    vectorObservationSize: 178
     numStackedVectorObservations: 10
     vectorActionSize: 0300000003000000030000000300000003000000
     cameraResolutions: []
@@ -24,5 +24,5 @@ MonoBehaviour:
     - Yaw Rotation
     - Pitch Rotation
     vectorActionSpaceType: 0
-  model: {fileID: 0}
+  model: {fileID: 5022602860645237092, guid: c9f9ee4d0292ff5488deec7c2822d022, type: 3}
   inferenceDevice: 0

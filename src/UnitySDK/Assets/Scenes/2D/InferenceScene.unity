@@ -325,7 +325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   broadcastHub:
     broadcastingBrains:
-    - {fileID: 11400000, guid: 4ca82977c0a4ee34d993b620ccacae04, type: 2}
+    - {fileID: 11400000, guid: b3f434f6b58625d4382006c48a4aaf38, type: 2}
     - {fileID: 11400000, guid: d97a881a2fd6ef44ab5cb5e4b8002a93, type: 2}
     m_BrainsToControl: []
   m_TrainingConfiguration:
@@ -588,6 +588,7 @@ MonoBehaviour:
   - 110
   rayDistance: 20
   useVectorObs: 1
+  body: {fileID: 0}
 --- !u!23 &1741709289200381715
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1112,8 +1113,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90227e4a99cdce8489d1250ab8d681dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  is3D: 0
+  isStructured: 0
+  performanceRun: 0
+  performanceFile: \experiments\lidar_no_curriculum\prformance.csv
+  duration: 5
   expAgent: {fileID: 3934117644271585117}
   ground: {fileID: 2308276628175948532}
+  area3D: {fileID: 0}
   successMaterial: {fileID: 2100000, guid: df32cc593804f42df97464dc455057b8, type: 2}
   failureMaterial: {fileID: 2100000, guid: a1daf31cdf41e484ca9ac33a5c6f524a, type: 2}
   rewardText: {fileID: 6453415254260368031}
@@ -1136,6 +1143,7 @@ MonoBehaviour:
   winReward: 0
   collisionPenalty: 0
   timePenalty: 0
+  totalTargetsHits: 0
   areaBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}

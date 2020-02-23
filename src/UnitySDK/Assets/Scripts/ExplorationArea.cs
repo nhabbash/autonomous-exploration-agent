@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using MLAgents;
+using System.IO;
 
 public class ExplorationArea : Area
 {
@@ -14,6 +15,7 @@ public class ExplorationArea : Area
     [Header("Exploration Area Objects")]
     public GameObject expAgent;
     public GameObject ground;
+    public GameObject area3D;
     public Material successMaterial;
     public Material failureMaterial;
     public TextMeshPro rewardText;
@@ -27,7 +29,7 @@ public class ExplorationArea : Area
     public bool drawCollisionRadius = false;
     public bool drawTargetDistance = false;
     public bool drawAgentRays = false;
-
+    
     [HideInInspector]
     public int numObstacles;
     [HideInInspector]
@@ -62,6 +64,7 @@ public class ExplorationArea : Area
     private int spawnTries = 30;
 
     private Renderer areaRenderer;
+    private GameObject areaObject;
     private Material areaMaterial;
 
     public delegate bool CustomCheckFunction(Vector3 pos);
@@ -83,7 +86,7 @@ public class ExplorationArea : Area
         {
             areaRenderer = ground.GetComponent<Renderer>();
             areaMaterial = areaRenderer.material;
-            areaBounds = ground.GetComponent<Collider>().bounds;
+            areaBounds = new Bounds(area3D.transform.position, area3D.transform.localScale);
         }
         occupiedPositions = new List<Tuple<Vector3, float>>();
     }
@@ -91,17 +94,16 @@ public class ExplorationArea : Area
     public void UpdateScore(float reward)
     {
         rewardText.text = reward.ToString("0.00");
-
-        Monitor.Log("Reward", reward/5f);
     }
 
     public void OnObstacleCollision()
     {
         obstacleCollisionsText.text = (obstacleCollisions + 1).ToString();
+        exAcademy.totalCollisions++;
     }
 
     public override void ResetArea()
-    {
+    {   
         obstacleCollisionsText.text = "0";
         if(occupiedPositions != null) {
             occupiedPositions.Clear();
@@ -116,6 +118,10 @@ public class ExplorationArea : Area
         if(!isStructured)
         {
             SpawnObjectsDist(expAgent, spawnRange);
+        }
+        else
+        {
+            expAgent.transform.position = new Vector3(-15.5f, 0.5f, 11.8f);
         }
     }
 
@@ -258,14 +264,7 @@ public class ExplorationArea : Area
         if (foundLocation && is3D)
         {
             var orientation = Quaternion.Euler(new Vector3(UnityEngine.Random.Range(0f, 360f), UnityEngine.Random.Range(0f, 360f), 0f));
-
-            if(target.name.Contains("Agent"))
-            {
-                target.transform.position = new Vector3(20, 0, 0); //spawnPos;
-            } else
-            {
-                target.transform.position = spawnPos;
-            }
+            target.transform.position = spawnPos;
             target.transform.rotation = orientation;
             occupiedPositions.Add(new Tuple<Vector3, float>(target.transform.position, getColliderOccupationRadius(targetCollider, target)));
         }
@@ -281,13 +280,13 @@ public class ExplorationArea : Area
         {
             if (target.name.Contains("Target") || target.name.Contains("Agent"))
             {
-                Debug.LogWarning("Couldn't spawn object: " + target.name + ", resetting area");
+                UnityEngine.Debug.LogWarning("Couldn't spawn object: " + target.name + ", resetting area");
                 ResetArea();
             }
             else
             {
                 target.SetActive(false);
-                Debug.LogWarning("Couldn't spawn object: " + target.name + ", deactivating it for the current episode");
+                UnityEngine.Debug.LogWarning("Couldn't spawn object: " + target.name + ", deactivating it for the current episode");
             }
 
         }
@@ -310,6 +309,8 @@ public class ExplorationArea : Area
     {
         // Color map
         StartCoroutine(this.SwapareaMaterial(success: true));
+        // Increase hits
+        exAcademy.totalTargetsHits++;
         ResetArea();
     }
 
@@ -368,8 +369,4 @@ public class ExplorationArea : Area
         }
     }
 
-    void OnGUI()
-    {
-        Monitor.Log("Obstacle collisions", obstacleCollisionsText.text);
-    }
 }

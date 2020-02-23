@@ -54,8 +54,10 @@ public class ExplorationAgent : Agent
             AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, 0f));
             if(exArea.is3D)
             {
-                AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, 5f));
-                AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, -5f));
+                AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, 28.29f)); //45°
+                AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, 15.32f)); //22°
+                AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, -28.29f)); //-45°
+                AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, -15.32f)); //-22°
             }
 
             // Agent velocity
@@ -151,7 +153,7 @@ public class ExplorationAgent : Agent
                               rightAxis == 2 ? -1 : rightAxis,
                               yawRotationAxis == 2 ? -1 : yawRotationAxis};
 
-        Monitor.Log("Vector Action", actionHist);
+        //Monitor.Log("Vector Action", actionHist);
     }
 
     private void get3DMovement(float[] actions)
@@ -241,7 +243,7 @@ public class ExplorationAgent : Agent
         } else if(collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("LevelBoundaries"))
         {
             exArea.OnObstacleCollision();
-            float penality = -0.1f; //(float)(-Math.Exp(exArea.collisionPenalty * exArea.obstacleCollisions) + 1);
+            float penality = -(exArea.collisionPenalty+exArea.obstacleCollisions); //(float)(-Math.Exp(exArea.collisionPenalty * exArea.obstacleCollisions) + 1);
             AddReward(penality);
         }
     }
@@ -260,7 +262,7 @@ public class ExplorationAgent : Agent
 
     void Update()
     {
-        Monitor.Log("Check", this.transform.position.ToString());
+        //Monitor.Log("Position", this.transform.position.ToString());
         if (exArea.drawAgentRays)
         {
             foreach (var angle in rayAngles)

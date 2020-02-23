@@ -1,0 +1,8 @@
+experiment;targets;obstacles;duration;agents;tpm;cpm
+baseline;495;623;5;25;3,96;4,984
+curriculum;1202;1321;5;25;9,616;10,568
+hardpenalty;487;574;5;25;3,896;4,592
+camera;381;908;5;25;3,048;7,264
+3d;24;39;5;25;0,192;0,312
+structured;9;36;5;1;1,8;7,2
+3d;224;184;5;25;1.792;1.472
