@@ -54,8 +54,10 @@ public class ExplorationAgent : Agent
             AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, 0f));
             if(exArea.is3D)
             {
-                AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, 5f));
-                AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, -5f));
+                AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, 28.29f)); //45°
+                AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, 15.32f)); //22°
+                AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, -28.29f)); //-45°
+                AddVectorObs(rayPerception.Perceive(rayDistance, rayAngles, detectableObjects, 0f, -15.32f)); //-22°
             }
 
             // Agent velocity

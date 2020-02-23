@@ -7,6 +7,7 @@
 /src/UnitySDK/Assets/AssetStoreTools*
 /src/UnitySDK/Assets/Plugins*
 /src/UnitySDK/Assets/Demonstrations*
+/2019.2.7f2*
 
 # Tensorflow Model Info
 /models
