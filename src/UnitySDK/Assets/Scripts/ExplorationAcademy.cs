@@ -79,7 +79,7 @@ public class ExplorationAcademy : Academy {
                                  agents.ToString() + ";" + tpm + ";" + cpm);
                 writer.Close();
                 // Stops the editor
-                UnityEditor.EditorApplication.isPlaying = false;
+                //UnityEditor.EditorApplication.isPlaying = false;
                 UnityEngine.Debug.Log("Performance metrics per " + duration + " minutes");
                 UnityEngine.Debug.Log("Total targets: " + totalTargetsHits.ToString());
                 UnityEngine.Debug.Log("Total obstacles: " + totalCollisions.ToString());
