@@ -11,9 +11,6 @@ const Unity2DSparse = ({ width, height, ...params }) => {
 unityContent.setFullscreen(false);
   return <div
     style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
       width,
       height
     }}
