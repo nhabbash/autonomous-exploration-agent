@@ -4,10 +4,10 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  
+
   return (
     <div className="App">
-      <Unity2DSparse />
+      <Unity2DSparse width="50%" />
     </div>
   );
 }
