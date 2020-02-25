@@ -23,11 +23,15 @@ import Unity2DSparse from './unity/Unity2DSparse';
 
 const drawerWidth = 240;
 
+const mainColor = 'rgb(243, 177, 69)';
+const secondaryColor = '#45484a';
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
   appBar: {
+    backgroundColor: mainColor,
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -42,6 +46,7 @@ const useStyles = makeStyles(theme => ({
     }),
   },
   menuButton: {
+    color: secondaryColor,
     marginRight: theme.spacing(2),
   },
   hide: {
@@ -77,6 +82,9 @@ const useStyles = makeStyles(theme => ({
     }),
     marginLeft: 0,
   },
+  title: {
+    color: secondaryColor
+  } 
 }));
 
 const App = () => {
@@ -127,6 +135,8 @@ const App = () => {
     },
   ];
 
+  const getMenu = () => [...menu, ...menuSecond]
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -146,7 +156,7 @@ const App = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" noWrap className={classes.title}>
             Autonomous exploration agent
           </Typography>
         </Toolbar>
@@ -196,7 +206,12 @@ const App = () => {
         })}
       >
         <div className={classes.drawerHeader} />
-          <Unity2DSparse width="50%" />
+          <div>
+            <Typography variant="h1">
+              {getMenu().find(x => x.ordinalPosition === menuSelectedIndex).name}
+            </Typography>
+            <Unity2DSparse width="50%" />
+          </div>
       </main>
     </div>
   );
