@@ -1,219 +1,111 @@
-import React from 'react';
-import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import React, { useState, useRef } from 'react';
 import Filter3 from '@material-ui/icons/Filter3';
 import ScatterPlot from '@material-ui/icons/ScatterPlot';
 import ViewQuilt from '@material-ui/icons/ViewQuilt';
 import People from '@material-ui/icons/People';
-import Unity2DSparse from './unity/Unity2DSparse';
+import Typography from '@material-ui/core/Typography';
+import TemplatePage from './TemplatePage';
+import Panel from './Panel';
+import Unity, { UnityContent } from "react-unity-webgl";
 
-const drawerWidth = 240;
 
-const mainColor = 'rgb(243, 177, 69)';
-const secondaryColor = '#45484a';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-  },
-  appBar: {
-    backgroundColor: mainColor,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    color: secondaryColor,
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: 'none',
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-  title: {
-    color: secondaryColor
-  } 
-}));
-
-const App = () => {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-  const [menuSelectedIndex, setMenuSelectedIndex] = React.useState(0);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
-  const setMenuIndex = (setMenuSelectedIndex, ordinalPosition) => {
-    setMenuSelectedIndex(ordinalPosition);
+const unityContent = new UnityContent(
+  "build/Build/build.json",
+  "build/Build/UnityLoader.js",
+  {
+    unityVersion: "2019.2"
   }
+);
 
-  const menu = [
-     {
-      name: '2D sparse',
-      icon: <ScatterPlot />,
-      ordinalPosition: 0,
-      onClick: setMenuIndex
-     },
-     {
-      name: '2D structured',
-      icon: <ViewQuilt />,
-      ordinalPosition: 1,
-      onClick: setMenuIndex
-     },
-     {
-      name: '3D sparse',
-      icon: <Filter3 />,
-      ordinalPosition: 2,
-      onClick: setMenuIndex
-     },
-  ];
+const setMenuIndex = (setMenuSelectedIndex, id) => {
+  setMenuSelectedIndex(id);
+}
 
-  const menuSecond = [
-    {
-     name: 'About',
-     icon: <People />,
-     ordinalPosition: 3,
-     onClick: setMenuIndex
-    },
-  ];
+const changeScene = (unityContent, scene) => {
+  unityContent.send(
+    "Academy", 
+    "changeScene",
+    scene
+  );
+}
 
-  const getMenu = () => [...menu, ...menuSecond]
+const menu = [
+  {
+   name: '2D sparse',
+   icon: <ScatterPlot />,
+   id: 0,
+   onClick: setMenuIndex,
+   scene: "InferenceScene",
+  },
+  {
+   name: '2D structured',
+   icon: <ViewQuilt />,
+   id: 1,
+   onClick: setMenuIndex,
+   scene: "TestStructuredScene",
+  },
+  {
+   name: '3D sparse',
+   icon: <Filter3 />,
+   id: 2,
+   onClick: setMenuIndex,
+   scene: "InferenceScene",
+  },
+];
+
+const menuSecond = [
+ {
+  name: 'About',
+  icon: <People />,
+  id: 3,
+  onClick: setMenuIndex,
+ },
+];
+
+const requestMenuChange = (setMenuSelectedIndex, canvasContainer, unityContent, id, ...params) => {
+    const menuItem = menu.find(x => x.id === id);
+    if(menuItem && menuItem.scene) {
+      const canvas = canvasContainer.current.htmlElement.children[0];
+      const width = canvas.getAttribute('width');
+      const height = canvas.getAttribute('height');
+      changeScene(unityContent, menuItem.scene);
+      setTimeout(() => {
+        canvas.setAttribute('width', width);
+        canvas.setAttribute('height', height);
+      }, 20);
+    }
+    setMenuSelectedIndex(id, ...params);
+}
+
+const getMenu = () => [...menu, ...menuSecond]
+
+const App = (props) => { 
+  const [menuSelectedIndex, setMenuSelectedIndex] = useState(0);
+  const canvasContainer = useRef(null);
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap className={classes.title}>
-            Autonomous exploration agent
+    <TemplatePage
+      menu={menu}
+      menuSecond={menuSecond}
+      getMenu={getMenu}
+      menuSelectedIndex={menuSelectedIndex}
+      setMenuSelectedIndex={(...params) => requestMenuChange(setMenuSelectedIndex, canvasContainer, unityContent, ...params)}
+      {...props}
+      render={() => {
+        const element = getMenu().find(x => x.id === menuSelectedIndex);
+        const Page = element.page
+        return (<div style={{ width: "50%" }}>
+          <Typography variant="h1">
+            {element.name}
           </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        className={classes.drawer}
-        variant="persistent"
-        anchor="left"
-        open={open}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <div className={classes.drawerHeader}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-          {menu.map(({ name, icon, ordinalPosition, onClick }) => (
-            <ListItem button key={name}
-              selected={ordinalPosition === menuSelectedIndex}
-              onClick={(...params) => onClick(setMenuSelectedIndex, ordinalPosition, ...params)}
-            >
-              <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText primary={name} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {menuSecond.map(({ name, icon, ordinalPosition, onClick }) => (
-            <ListItem button key={name}
-              selected={ordinalPosition === menuSelectedIndex}
-              onClick={(...params) => onClick(setMenuSelectedIndex, ordinalPosition, ...params)}
-            >
-              <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText primary={name} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <main
-        className={clsx(classes.content, {
-          [classes.contentShift]: open,
-        })}
-      >
-        <div className={classes.drawerHeader} />
           <div>
-            <Typography variant="h1">
-              {getMenu().find(x => x.ordinalPosition === menuSelectedIndex).name}
-            </Typography>
-            <Unity2DSparse width="50%" />
+            <Unity unityContent={unityContent} ref={(r) => { canvasContainer.current = r }} />
+            <Panel unityContent={unityContent} />
           </div>
-      </main>
-    </div>
+        
+      </div>);
+      }}
+    />
   );
 }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Diagnostics;
 using System;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class ExplorationAcademy : Academy {
 
@@ -88,6 +89,11 @@ public class ExplorationAcademy : Academy {
             }
         }
 
+    }
+
+    public void changeScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
     }
 
     void OnGUI()
