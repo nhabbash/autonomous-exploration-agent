@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 using MLAgents;
 using System.IO;
+using System.Linq;
 
 public class ExplorationArea : Area
 {
@@ -157,6 +158,11 @@ public class ExplorationArea : Area
                 obstacle.name += "(" + i + ")";
                 spawnedObstacles.Add(obstacle);
             }
+        }
+        if (numObstacles < spawnedObstacles.Count)
+        {
+            spawnedObstacles.Take(spawnedObstacles.Count - numObstacles).ToList().ForEach(Destroy);
+            spawnedObstacles = spawnedObstacles.Skip(spawnedObstacles.Count - numObstacles).ToList();
         }
 
         if(numObstacles > spawnedObstacles.Count)

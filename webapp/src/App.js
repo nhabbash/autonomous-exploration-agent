@@ -8,6 +8,19 @@ import TemplatePage from './TemplatePage';
 import Panel from './Panel';
 import Unity, { UnityContent } from "react-unity-webgl";
 
+const style = {
+  row: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  column: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  block: {
+    display: 'block'
+  }
+}
 
 const unityContent = new UnityContent(
   "build/Build/build.json",
@@ -49,7 +62,7 @@ const menu = [
    icon: <Filter3 />,
    id: 2,
    onClick: setMenuIndex,
-   scene: "InferenceScene",
+   scene: "InferenceScene3D",
   },
 ];
 
@@ -94,16 +107,19 @@ const App = (props) => {
       render={() => {
         const element = getMenu().find(x => x.id === menuSelectedIndex);
         const Page = element.page
-        return (<div style={{ width: "50%" }}>
+        return (<div style={style.column}>
           <Typography variant="h1">
             {element.name}
           </Typography>
-          <div>
-            <Unity unityContent={unityContent} ref={(r) => { canvasContainer.current = r }} />
+          <div style={style.row}>
+            <div style={{ width: "50%" }}>
+              <span style={style.block}>
+                <Unity unityContent={unityContent} ref={(r) => { canvasContainer.current = r }} />
+              </span>
+            </div>
             <Panel unityContent={unityContent} />
           </div>
-        
-      </div>);
+        </div>);
       }}
     />
   );

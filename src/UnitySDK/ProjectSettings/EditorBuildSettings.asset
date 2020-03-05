@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/2D/InferenceScene.unity
     guid: e8bad4f7c66dd3547b14e5a0aed58a1e
+  - enabled: 1
+    path: Assets/Scenes/3D/InferenceScene3D.unity
+    guid: d22a375120e42704abf8501c36dad917
+  - enabled: 1
+    path: Assets/Scenes/2D/TestStructuredScene.unity
+    guid: b98f46b00b1a8574a8cf731d9aa7d5af
   m_configObjects: {}

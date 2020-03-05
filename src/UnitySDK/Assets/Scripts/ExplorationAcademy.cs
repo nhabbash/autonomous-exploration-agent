@@ -58,6 +58,28 @@ public class ExplorationAcademy : Academy {
         }
     }
 
+    public void CustomAcademyReset(string parameters)
+    {
+        if (areas == null)
+        {
+            areas = GameObject.FindObjectsOfType<ExplorationArea>();
+        }
+
+        string[] paramss = parameters.Split('-');
+        foreach (ExplorationArea area in areas)
+        {
+            area.numObstacles = int.Parse(paramss[0]);
+            area.spawnRange = float.Parse(paramss[1]);
+            area.collisionRadius = float.Parse(paramss[2]);
+            area.targetDistance = float.Parse(paramss[3]);
+            area.minReward = resetParameters["min_reward"];
+            area.winReward = resetParameters["win_reward"];
+            area.collisionPenalty = float.Parse(paramss[4]);
+            area.timePenalty = resetParameters["time_penalty"];
+            area.ResetArea();
+        }
+    }
+
     private void Update()
     {
         if (performanceRun)
