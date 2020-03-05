@@ -1,18 +1,42 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Slider from '@material-ui/core/Slider';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles(theme => ({
   container: {
-    padding: 16,
+    paddingLeft: 24,
     display: 'flex',
     flex: 2
   },
   paperRoot: {
+    width: '100%',
+    paddingTop: 16,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around'
+  },
+  row: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  lineOfSliders: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  sliderRoot: {
+    minWidth: 200,
+  },
+  sliderContainer: {
+    margin: 32,
     width: '100%'
-  }
+  },
+  margin: {
+    height: theme.spacing(3),
+  },
 }))
 
 const change = (unityContent, val) => {
@@ -52,18 +76,82 @@ const Panel = ({ unityContent, ...params }) => {
 
   return (<div className={classes.container}>
     <Paper elevation={3} classes={{ root: classes.paperRoot }}>
-      
-    <Slider
-        defaultValue={8}
-        getAriaValueText={val => val}
-        aria-labelledby="num_obstacles"
-        min={0}
-        max={20}
-        step={1}
-        marks={marks}
-        valueLabelDisplay="on"
-        onChangeCommitted={(_, val) => change(unityContent, val)}
-      />
+      <div className={classes.lineOfSliders}>
+        <div className={classes.sliderContainer}>
+          <Typography gutterBottom>
+            Max obstacles
+          </Typography>
+          <Slider
+            classes={{ root: classes.sliderRoot }}
+            defaultValue={8}
+            getAriaValueText={val => val}
+            aria-labelledby="num_obstacles"
+            min={0}
+            max={20}
+            step={1}
+            marks={marks}
+            valueLabelDisplay="auto"
+            onChangeCommitted={(_, val) => change(unityContent, val)}
+          />
+          <div className={classes.margin} />
+        </div>
+        <div className={classes.sliderContainer}>
+          <Typography gutterBottom>
+            Max obstacles
+          </Typography>
+          <Slider
+            classes={{ root: classes.sliderRoot }}
+            defaultValue={8}
+            getAriaValueText={val => val}
+            aria-labelledby="num_obstacles"
+            min={0}
+            max={20}
+            step={1}
+            marks={marks}
+            valueLabelDisplay="auto"
+            onChangeCommitted={(_, val) => change(unityContent, val)}
+          />
+          <div className={classes.margin} />
+        </div>
+      </div>
+      <div className={classes.lineOfSliders}>
+        <div className={classes.sliderContainer}>
+          <Typography gutterBottom>
+            Max obstacles
+          </Typography>
+          <Slider
+            classes={{ root: classes.sliderRoot }}
+            defaultValue={8}
+            getAriaValueText={val => val}
+            aria-labelledby="num_obstacles"
+            min={0}
+            max={20}
+            step={1}
+            marks={marks}
+            valueLabelDisplay="auto"
+            onChangeCommitted={(_, val) => change(unityContent, val)}
+          />
+          <div className={classes.margin} />
+        </div>
+        <div className={classes.sliderContainer}>
+          <Typography gutterBottom>
+            Max obstacles
+          </Typography>
+          <Slider
+            classes={{ root: classes.sliderRoot }}
+            defaultValue={8}
+            getAriaValueText={val => val}
+            aria-labelledby="num_obstacles"
+            min={0}
+            max={20}
+            step={1}
+            marks={marks}
+            valueLabelDisplay="auto"
+            onChangeCommitted={(_, val) => change(unityContent, val)}
+          />
+          <div className={classes.margin} />
+        </div>
+      </div>
     </Paper>
   </div>);
 }

@@ -112,7 +112,7 @@ const App = (props) => {
             {element.name}
           </Typography>
           <div style={style.row}>
-            <div style={{ width: "50%" }}>
+            <div style={{ width: "60%" }}>
               <span style={style.block}>
                 <Unity unityContent={unityContent} ref={(r) => { canvasContainer.current = r }} />
               </span>

@@ -115,10 +115,10 @@ public class ExplorationAcademy : Academy {
 
     public void changeScene(string sceneName)
     {
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
-    void OnGUI()
+    /*void OnGUI()
     {
         Monitor.Log("Total obstacle collisions", totalCollisions.ToString());
         // Monitor.Log("Reward"; reward / 5f);
@@ -127,6 +127,6 @@ public class ExplorationAcademy : Academy {
         {
             Monitor.Log("Time", stopwatch.Elapsed.TotalSeconds.ToString());
         }
-    }
+    }*/
 
 }
