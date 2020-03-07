@@ -201,7 +201,7 @@ const Panel = ({ unityContent, structured, contentId, ...others }) => {
         </div>
         <div className={classes.sliderContainer}>
           <Typography gutterBottom>
-            Collision radious
+            Min spawn distance
           </Typography>
           <Slider
             classes={{ root: classes.sliderRoot }}
