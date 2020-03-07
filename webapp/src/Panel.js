@@ -145,10 +145,20 @@ const initialParams = {
 const Panel = ({ unityContent, structured, contentId, ...others }) => { 
   const classes = useStyles();
   const theme = useTheme();
+  const [isLoading, setIsLoading] = useState(true);
   const [numObstacles, setNumObstacles] = useState(initialParams.numObstacles);
   const [collisionRadious, setCollisionRadious] = useState(initialParams.collisionRadious);
   const [targetDistance, setTargetDistance] = useState(initialParams.targetDistance);
   const [collisionPenalty, setCollisionPenalty] = useState(initialParams.collisionPenalty);
+
+  useEffect(() => {
+    unityContent.on("loaded", () => {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2400)
+    });
+  }, [])
+
   useEffect(() => {
     setNumObstacles(initialParams.numObstacles);
     setCollisionRadious(initialParams.collisionRadious);
@@ -176,7 +186,7 @@ const Panel = ({ unityContent, structured, contentId, ...others }) => {
             classes={{ root: classes.sliderRoot }}
             defaultValue={numObstacles}
             value={numObstacles}
-            disabled={structured}
+            disabled={isLoading || structured}
             getAriaValueText={val => val}
             aria-labelledby="num_obstacles"
             min={0}
@@ -197,6 +207,7 @@ const Panel = ({ unityContent, structured, contentId, ...others }) => {
             classes={{ root: classes.sliderRoot }}
             defaultValue={collisionRadious}
             value={collisionRadious}
+            disabled={isLoading}
             getAriaValueText={val => val}
             aria-labelledby="collision_radious"
             min={2}
@@ -219,7 +230,7 @@ const Panel = ({ unityContent, structured, contentId, ...others }) => {
             classes={{ root: classes.sliderRoot }}
             defaultValue={targetDistance}
             value={targetDistance}
-            disabled={structured}
+            disabled={isLoading || structured}
             getAriaValueText={val => val}
             aria-labelledby="target_distance"
             min={10}
@@ -240,6 +251,7 @@ const Panel = ({ unityContent, structured, contentId, ...others }) => {
             classes={{ root: classes.sliderRoot }}
             defaultValue={collisionPenalty}
             value={collisionPenalty}
+            disabled={isLoading}
             getAriaValueText={val => val}
             aria-labelledby="collision_penalty"
             min={0}
