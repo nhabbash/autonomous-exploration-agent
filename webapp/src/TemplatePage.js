@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles, makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -15,8 +15,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const drawerWidth = 240;
 
@@ -89,6 +88,16 @@ const useStyles = makeStyles(theme => ({
   } 
 }));
 
+const HtmlTooltip = withStyles(theme => ({
+  tooltip: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: '1px solid #dadde9',
+  },
+}))(Tooltip);
+
 const TemplatePage = ({ menu, menuSecond, menuSelectedIndex, setMenuSelectedIndex, render }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -149,25 +158,47 @@ const TemplatePage = ({ menu, menuSecond, menuSelectedIndex, setMenuSelectedInde
         <Divider />
         <List>
           {menu.map(({ name, icon, id, onClick }) => (
-            <ListItem button key={name}
-              selected={id === menuSelectedIndex}
-              onClick={(...params) => onClick(setMenuSelectedIndex, id, ...params)}
+             <HtmlTooltip
+              placement="right"
+              disableHoverListener={open}
+              enterDelay={100}
+              title={
+                <>
+                  <Typography>{name}</Typography>
+                </>
+              }
             >
+              <ListItem button key={name}
+                selected={id === menuSelectedIndex}
+                onClick={(...params) => onClick(setMenuSelectedIndex, id, ...params)}
+              >
               <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText primary={name} />
             </ListItem>
+           </HtmlTooltip>
           ))}
         </List>
         <Divider />
         <List>
           {menuSecond.map(({ name, icon, id, onClick }) => (
-            <ListItem button key={name}
-              selected={id === menuSelectedIndex}
-              onClick={(...params) => onClick(setMenuSelectedIndex, id, ...params)}
+             <HtmlTooltip
+              placement="right"
+              disableHoverListener={open}
+              enterDelay={100}
+              title={
+                <>
+                  <Typography>{name}</Typography>
+                </>
+              }
             >
-              <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText primary={name} />
-            </ListItem>
+              <ListItem button key={name}
+                selected={id === menuSelectedIndex}
+                onClick={(...params) => onClick(setMenuSelectedIndex, id, ...params)}
+              >
+                <ListItemIcon>{icon}</ListItemIcon>
+                <ListItemText primary={name} />
+              </ListItem>
+            </HtmlTooltip>
           ))}
         </List>
       </Drawer>
