@@ -106,7 +106,6 @@ const App = (props) => {
       {...props}
       render={() => {
         const element = getMenu().find(x => x.id === menuSelectedIndex);
-        const Page = element.page
         return (<div style={style.column}>
           <Typography variant="h1">
             {element.name}
@@ -117,7 +116,7 @@ const App = (props) => {
                 <Unity unityContent={unityContent} ref={(r) => { canvasContainer.current = r }} />
               </span>
             </div>
-            <Panel unityContent={unityContent} />
+            <Panel unityContent={unityContent} contentId={element.id} structured={element.id === menu.find(x => x.name === '2D structured').id}  />
           </div>
         </div>);
       }}
