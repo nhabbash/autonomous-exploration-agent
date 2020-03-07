@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
@@ -39,15 +39,20 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const change = (unityContent, val) => {
+const updateScene = (unityContent, { numObstacles, collisionRadious, targetDistance, collisionPenalty }) => {
   unityContent.send(
     "Academy", 
     "CustomAcademyReset",
-    `${val}-1-6-25-0.5`
+    `${numObstacles}-1-${collisionRadious}-${targetDistance}-${collisionPenalty}`
   );
 }
 
-const marks = [
+const updateParam = (unityContent, params, { key, value }) => {
+  params.current[key] = value;
+  updateScene(unityContent, params.current);
+}
+
+const marksObstacles = [
   {
     value: 0,
     label: '0',
@@ -70,9 +75,80 @@ const marks = [
   },
 ];
 
-const Panel = ({ unityContent, ...params }) => { 
+const marksCollsion = [
+  {
+    value: 2,
+    label: '2',
+  },
+  {
+    value: 4,
+    label: '4',
+  },
+  {
+    value: 6,
+    label: '6',
+  },
+  {
+    value: 8,
+    label: '8',
+  },
+];
+
+const marksTarget = [
+  {
+    value: 10,
+    label: '10',
+  },
+  {
+    value: 20,
+    label: '20',
+  },
+  {
+    value: 30,
+    label: '30',
+  },
+  {
+    value: 40,
+    label: '40',
+  },
+];
+
+
+const marksPenalty = [
+  {
+    value: 0,
+    label: '0',
+  },
+  {
+    value: 1,
+    label: '1',
+  },
+  {
+    value: 2,
+    label: '2',
+  },
+  {
+    value: 3,
+    label: '3',
+  },
+  {
+    value: 4,
+    label: '4',
+  },
+  {
+    value: 5,
+    label: '5',
+  },
+];
+const Panel = ({ unityContent, ...others }) => { 
   const classes = useStyles();
   const theme = useTheme();
+  const params = useRef({
+    numObstacles: 10,
+    collisionRadious: 2,
+    targetDistance: 30,
+    collisionPenalty: 0.3
+  });
 
   return (<div className={classes.container}>
     <Paper elevation={3} classes={{ root: classes.paperRoot }}>
@@ -83,33 +159,33 @@ const Panel = ({ unityContent, ...params }) => {
           </Typography>
           <Slider
             classes={{ root: classes.sliderRoot }}
-            defaultValue={8}
+            defaultValue={params.current.numObstacles}
             getAriaValueText={val => val}
             aria-labelledby="num_obstacles"
             min={0}
             max={20}
             step={1}
-            marks={marks}
+            marks={marksObstacles}
             valueLabelDisplay="auto"
-            onChangeCommitted={(_, val) => change(unityContent, val)}
+            onChangeCommitted={(_, value) => updateParam(unityContent, params, { key: 'numObstacles', value })}
           />
           <div className={classes.margin} />
         </div>
         <div className={classes.sliderContainer}>
           <Typography gutterBottom>
-            Max obstacles
+            Collision radious
           </Typography>
           <Slider
             classes={{ root: classes.sliderRoot }}
-            defaultValue={8}
+            defaultValue={params.current.collisionRadious}
             getAriaValueText={val => val}
-            aria-labelledby="num_obstacles"
-            min={0}
-            max={20}
-            step={1}
-            marks={marks}
+            aria-labelledby="collision_radious"
+            min={2}
+            max={8}
+            step={0.5}
+            marks={marksCollsion}
             valueLabelDisplay="auto"
-            onChangeCommitted={(_, val) => change(unityContent, val)}
+            onChangeCommitted={(_, value) => updateParam(unityContent, params, { key: 'collisionRadious', value })}
           />
           <div className={classes.margin} />
         </div>
@@ -117,37 +193,37 @@ const Panel = ({ unityContent, ...params }) => {
       <div className={classes.lineOfSliders}>
         <div className={classes.sliderContainer}>
           <Typography gutterBottom>
-            Max obstacles
+            Target distance
           </Typography>
           <Slider
             classes={{ root: classes.sliderRoot }}
-            defaultValue={8}
+            defaultValue={params.current.targetDistance}
             getAriaValueText={val => val}
-            aria-labelledby="num_obstacles"
-            min={0}
-            max={20}
-            step={1}
-            marks={marks}
+            aria-labelledby="target_distance"
+            min={10}
+            max={40}
+            step={2}
+            marks={marksTarget}
             valueLabelDisplay="auto"
-            onChangeCommitted={(_, val) => change(unityContent, val)}
+            onChangeCommitted={(_, value) => updateParam(unityContent, params, { key: 'targetDistance', value })}
           />
           <div className={classes.margin} />
         </div>
         <div className={classes.sliderContainer}>
           <Typography gutterBottom>
-            Max obstacles
+           Collision penalty
           </Typography>
           <Slider
             classes={{ root: classes.sliderRoot }}
-            defaultValue={8}
+            defaultValue={params.current.collisionPenalty}
             getAriaValueText={val => val}
-            aria-labelledby="num_obstacles"
+            aria-labelledby="collision_penalty"
             min={0}
-            max={20}
-            step={1}
-            marks={marks}
+            max={5}
+            step={0.25}
+            marks={marksPenalty}
             valueLabelDisplay="auto"
-            onChangeCommitted={(_, val) => change(unityContent, val)}
+            onChangeCommitted={(_, value) => updateParam(unityContent, params, { key: 'collisionPenalty', value })}
           />
           <div className={classes.margin} />
         </div>
