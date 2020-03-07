@@ -25,11 +25,6 @@ public class ExplorationArea : Area
     [Header("Prefabs")]
     public GameObject goalPrefab;
     public GameObject obstaclePrefab;
-
-    [Header("Debug")]
-    public bool drawCollisionRadius = false;
-    public bool drawTargetDistance = false;
-    public bool drawAgentRays = false;
     
     [HideInInspector]
     public int numObstacles;
@@ -344,35 +339,53 @@ public class ExplorationArea : Area
 
      private void OnDrawGizmos()
      {
-        if (drawCollisionRadius)
+        if (exAcademy)
         {
-            if (spawnedObstacles != null)
+            if (exAcademy.drawCollisionRadius)
             {
-                foreach (GameObject obstacle in spawnedObstacles.ToArray())
+                if (spawnedObstacles != null)
                 {
-                    Gizmos.DrawWireSphere(obstacle.transform.position, collisionRadius);
+                    foreach (GameObject obstacle in spawnedObstacles.ToArray())
+                    {
+                        Gizmos.DrawWireSphere(obstacle.transform.position, collisionRadius);
+                    }
+                }
+
+                if (goal != null)
+                {
+                    Gizmos.DrawWireSphere(goal.transform.position, collisionRadius);
+                }
+
+                if (expAgent != null)
+                {
+                    Gizmos.DrawWireSphere(expAgent.transform.position, collisionRadius);
                 }
             }
 
-            if (goal != null)
+            if (exAcademy.drawTargetDistance)
             {
-                Gizmos.DrawWireSphere(goal.transform.position, collisionRadius);
+                if (goal != null && expAgent != null)
+                {
+                    Gizmos.DrawLine(expAgent.transform.position, goal.transform.position);
+                }
+
             }
 
-            if (expAgent != null)
+            //Monitor.Log("Position", this.transform.position.ToString());
+            if (exAcademy.drawAgentRays)
             {
-                Gizmos.DrawWireSphere(expAgent.transform.position, collisionRadius);
-            }
-        }
+                var angles = expAgent.GetComponent<ExplorationAgent>().rayAngles;
+                var distance = expAgent.GetComponent<ExplorationAgent>().rayDistance;
+                foreach (var angle in angles)
+                {
+                    var endPosition = expAgent.transform.TransformDirection(
+                        RayPerception3D.PolarToCartesian(distance, angle));
+                    Debug.DrawRay(expAgent.transform.position, endPosition, Color.gray, 0.01f, depthTest: true);
+                }
 
-        if (drawTargetDistance)
-        {
-            if(goal != null && expAgent != null)
-            {
-                Gizmos.DrawLine(expAgent.transform.position, goal.transform.position);
             }
-            
         }
+     
     }
 
 }
