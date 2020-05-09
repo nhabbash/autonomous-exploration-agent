@@ -1,8 +1,5 @@
 # Autonomous Exploration Agent with Obstacle Avoidance 
-
-## Brief
-
-The project implements an autonomous agent searching for and moving towards a target, using reinforcement learning. The agent moves in a cluttered randomly generated space and is incentivated to avoid obstacles in its path or exploration towards the target.
+> The project implements an autonomous agent searching for and moving towards a target, using reinforcement learning. The agent moves in a cluttered randomly generated space and is incentivated to avoid obstacles in its path or exploration towards the target.
 
 ## Structure
 
