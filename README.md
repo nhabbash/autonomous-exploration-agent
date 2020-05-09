@@ -1,5 +1,4 @@
 # Autonomous Exploration Agent with Obstacle Avoidance 
-> Final Project for the Complex Systems: Models and Simulation course at University of Milano-Bicocca 
 
 ## Brief
 
