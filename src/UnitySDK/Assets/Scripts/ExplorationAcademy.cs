@@ -29,6 +29,8 @@ public class ExplorationAcademy : Academy {
     public int totalCollisions;
     [HideInInspector]
     public Stopwatch stopwatch;
+    [HideInInspector]
+    public Camera[] cams;
 
     public override void InitializeAcademy()
     {
@@ -97,6 +99,23 @@ public class ExplorationAcademy : Academy {
         this.drawDebug = activate;
     }
 
+    public void switchCam()
+    {
+        var cams = this.cams;
+        for (var i = 0; i < cams.Length; i++)
+        {
+            cams[i].enabled = !cams[i].enabled;
+        }
+    }
+
+    private void Start()
+    {
+
+        this.cams = Camera.allCameras;
+        cams[0].enabled = true;
+        cams[1].enabled = false;
+    }
+
     private void Update()
     {
         if (performanceRun)
@@ -148,7 +167,6 @@ public class ExplorationAcademy : Academy {
                         var direction = agent.transform.TransformDirection(coord);
 
                         agent.rayRenderer[i*j].SetPosition(0, agent.transform.position);
-                        agent.rayRenderer[i*j].enabled = true;
                         if (Physics.Raycast(agent.transform.position, direction, out RaycastHit hit))
                             if (hit.collider && Vector3.Distance(hit.point, agent.transform.position) <= agent.rayDistance)
                                 agent.rayRenderer[i * j].SetPosition(1, hit.point);
@@ -164,7 +182,7 @@ public class ExplorationAcademy : Academy {
                     var coord = RayPerception3D.PolarToCartesian(agent.rayDistance, angle);
                     var endPosition = agent.transform.TransformPoint(coord);
                     var direction = agent.transform.TransformDirection(coord);
-                    agent.rayRenderer[i].enabled = true;
+
                     agent.rayRenderer[i].SetPosition(0, agent.transform.position);
                     if (Physics.Raycast(agent.transform.position, direction, out RaycastHit hit))
                         if (hit.collider && Vector3.Distance(hit.point, agent.transform.position) <= agent.rayDistance)
@@ -177,14 +195,6 @@ public class ExplorationAcademy : Academy {
 
             }
 
-        }
-        else
-        {
-            var agent = areas[0].expAgent.GetComponent<ExplorationAgent>();
-            for (var i=0; i< agent.rayRenderer.Length; i++)
-            {
-                agent.rayRenderer[i].enabled = false;
-            }
         }
     }
 
