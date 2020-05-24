@@ -313,7 +313,6 @@ public class ExplorationArea : Area
         // Increase hits
         exAcademy.totalTargetsHits++;
         ResetArea();
-        exAcademy.changeScene("InferenceScene3D");
     }
 
     public void FailResetArea()
