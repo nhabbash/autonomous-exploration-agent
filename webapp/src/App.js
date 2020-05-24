@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import Filter3 from '@material-ui/icons/Filter3';
 import ScatterPlot from '@material-ui/icons/ScatterPlot';
 import ViewQuilt from '@material-ui/icons/ViewQuilt';
-import People from '@material-ui/icons/People';
+import VideoCall from '@material-ui/icons/VideoCall';
 import Unity, { UnityContent } from "react-unity-webgl";
 import TemplatePage from './TemplatePage';
 import Panel from './Panel';
@@ -51,25 +51,40 @@ const activateDraw = (setRayActivated, unityContent, activated) => {
   );
 }
 
+const toggleCamView = (setCamView, unityContent, checked) => {
+  setCamView(checked);
+  unityContent.send(
+    "Academy", 
+    "switchCam"
+  );
+}
+
 const menu = [
   {
-   name: '2D sparse',
+   name: '2D lidar sparse',
    icon: <ScatterPlot />,
    id: 0,
    onClick: setMenuIndex,
    scene: "InferenceScene",
   },
   {
-   name: '2D structured',
-   icon: <ViewQuilt />,
+   name: '2D camera sparse',
+   icon: <VideoCall />,
    id: 1,
+   onClick: setMenuIndex,
+   scene: "CameraInferenceScene",
+  },
+  {
+   name: '2D lidar structured',
+   icon: <ViewQuilt />,
+   id: 2,
    onClick: setMenuIndex,
    scene: "TestStructuredScene",
   },
   {
-   name: '3D sparse',
+   name: '3D lidar sparse',
    icon: <Filter3 />,
-   id: 2,
+   id: 3,
    onClick: setMenuIndex,
    scene: "InferenceScene3D",
   },
@@ -85,16 +100,18 @@ const menuSecond = [
  },*/
 ];
 
-const requestMenuChange = (setMenuSelectedIndex, canvasContainer, unityContent, id, ...params) => {
+const requestMenuChange = (setCamView, setMenuSelectedIndex, canvasContainer, unityContent, id, ...params) => {
     const menuItem = menu.find(x => x.id === id);
     if(menuItem && menuItem.scene && canvasContainer.current) {
       const canvas = canvasContainer.current.htmlElement.children[0];
       const width = canvas.getAttribute('width');
       const height = canvas.getAttribute('height');
       changeScene(unityContent, menuItem.scene);
+
       setTimeout(() => {
         canvas.setAttribute('width', width);
         canvas.setAttribute('height', height);
+        setCamView(false)
       }, 20);
     }
     setMenuSelectedIndex(id, ...params);
@@ -105,6 +122,7 @@ const getMenu = () => [...menu, ...menuSecond]
 const App = (props) => { 
   const [menuSelectedIndex, setMenuSelectedIndex] = useState(0);
   const [rayActivated, setRayActivated] = useState(true);
+  const [camView, setCamView] = useState(false);
   const canvasContainer = useRef(null);
 
   return (
@@ -113,7 +131,7 @@ const App = (props) => {
       menuSecond={menuSecond}
       getMenu={getMenu}
       menuSelectedIndex={menuSelectedIndex}
-      setMenuSelectedIndex={(...params) => requestMenuChange(setMenuSelectedIndex, canvasContainer, unityContent, ...params)}
+      setMenuSelectedIndex={(...params) => requestMenuChange(setCamView, setMenuSelectedIndex, canvasContainer, unityContent, ...params)}
       {...props}
       render={() => {
         const Element = getMenu().find(x => x.id === menuSelectedIndex);
@@ -130,9 +148,11 @@ const App = (props) => {
               <Panel
                 unityContent={unityContent}
                 contentId={Element.id}
-                structured={Element.id === menu.find(x => x.name === '2D structured').id}
+                structured={Element.id === menu.find(x => x.name === '2D lidar structured').id}
                 rayActivated={rayActivated}
-                toggleRay={(event) => activateDraw(setRayActivated, unityContent, event.target.checked)}
+                toggleRay={(checked) => activateDraw(setRayActivated, unityContent, checked)}
+                camView={camView}
+                setCamView={(checked) => toggleCamView(setCamView, unityContent, checked)}
               />
             </div>
           )}

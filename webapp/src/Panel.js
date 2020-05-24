@@ -3,6 +3,12 @@ import Paper from '@material-ui/core/Paper';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 import Switch from '@material-ui/core/Switch';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import Videocam from '@material-ui/icons/Videocam';
+import VideocamOff from '@material-ui/icons/VideocamOff';
+import LeakAdd from '@material-ui/icons/LeakAdd';
+import LeakRemove from '@material-ui/icons/LeakRemove';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -149,7 +155,7 @@ const initialParams = {
   collisionPenalty: 0.3
 };
 
-const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, ...others }) => { 
+const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, camView, setCamView, ...others }) => { 
   const classes = useStyles();
   const theme = useTheme();
   const [isLoading, setIsLoading] = useState(true);
@@ -185,10 +191,14 @@ const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, .
   return (<div className={classes.container}>
     <Paper elevation={3} classes={{ root: classes.paperRoot }} {...others}>
       <div className={classes.lineOfSlidersAlone}>
-          <Typography gutterBottom>
-            Show rays:
-            <Switch disabled={isLoading} color="primary" checked={rayActivated} onChange={toggleRay} />
-          </Typography>
+          <ToggleButtonGroup value={[camView ? 'nocam' : 'cam', rayActivated ? 'noray' : 'ray',]}>
+            <ToggleButton disabled={isLoading} value="ray" onClick={() => toggleRay(!rayActivated)}>
+              {rayActivated ? <LeakRemove /> : <LeakAdd />}
+            </ToggleButton>
+            <ToggleButton disabled={isLoading} value="cam" onClick={() => setCamView(!camView)}>
+              {camView ? <VideocamOff /> : <Videocam />}
+            </ToggleButton>
+          </ToggleButtonGroup>
       </div>
       <div className={classes.lineOfSliders}>
         <div className={classes.sliderContainer}>
