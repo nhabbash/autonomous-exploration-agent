@@ -10,8 +10,12 @@ public class ExplorationAgent : Agent
     public float turnSpeed = 300;
     public float moveSpeed = 2f;
     public float[] rayAngles = { 20f, 30f, 40f, 50f, 60f, 70f, 80f, 90f, 100f, 110f, 120f, 130f, 140f, 150f };
+    public LineRenderer[] rayRenderer;
     public float rayDistance;
     public bool useVectorObs = true;
+
+    [HideInInspector]
+    public float[] actionHist;
 
     private Vector3[] movement;
     private Vector3 translation;
@@ -30,6 +34,17 @@ public class ExplorationAgent : Agent
         body = GetComponent<Rigidbody>();
         exArea = transform.parent.GetComponent<ExplorationArea>();
         rayPerception = GetComponent<RayPerception3D>();
+
+        int rayPlanes = exArea.is3D ? 4 : 1;
+        rayRenderer = new LineRenderer[rayAngles.Length*rayPlanes];
+        for (int i=0; i< rayRenderer.Length; i++)
+        {
+            rayRenderer[i] = (new GameObject("Ray")).AddComponent<LineRenderer>();
+            rayRenderer[i].transform.parent = this.transform;
+            rayRenderer[i].material = new Material(Shader.Find("Sprites/Default"));
+            rayRenderer[i].widthMultiplier = 0.1f;
+            rayRenderer[i].endColor = Color.green;
+        }
 
         movement = new Vector3[3];
         translation = new Vector3();
@@ -149,11 +164,10 @@ public class ExplorationAgent : Agent
         translation = fwDirection + rDirection;
         rotation = yawRot;
 
-        float[] actionHist = {forwardAxis == 2 ? -1 : forwardAxis,
-                              rightAxis == 2 ? -1 : rightAxis,
-                              yawRotationAxis == 2 ? -1 : yawRotationAxis};
-
-        //Monitor.Log("Vector Action", actionHist);
+        float[] ah = {forwardAxis == 2 ? -1 : forwardAxis,
+                    rightAxis == 2 ? -1 : rightAxis,
+                    yawRotationAxis == 2 ? -1 : yawRotationAxis};
+        this.actionHist = ah;
     }
 
     private void get3DMovement(float[] actions)
@@ -223,14 +237,14 @@ public class ExplorationAgent : Agent
         translation = fwDirection + rDirection + uDirection;
         rotation = new Vector3(pitchRot, yawRot, 0.0f);
 
-        float[] actionHist = {forwardAxis == 2 ? -1 : forwardAxis,
-                              rightAxis == 2 ? -1 : rightAxis,
-                              upAxis == 2 ? -1 : upAxis,
-                              yawRotationAxis == 2 ? -1 : yawRotationAxis,
-                              pitchRotationAxis == 2 ? -1 : pitchRotationAxis,
+        float[] ah = {
+                    forwardAxis == 2 ? -1 : forwardAxis,
+                    rightAxis == 2 ? -1 : rightAxis,
+                    upAxis == 2 ? -1 : upAxis,
+                    yawRotationAxis == 2 ? -1 : yawRotationAxis,
+                    pitchRotationAxis == 2 ? -1 : pitchRotationAxis,
         };
-
-        Monitor.Log("Vector Action", actionHist);
+        this.actionHist = ah;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -260,18 +274,4 @@ public class ExplorationAgent : Agent
 
     }
 
-    void Update()
-    {
-        //Monitor.Log("Position", this.transform.position.ToString());
-        if (exArea.drawAgentRays)
-        {
-            foreach (var angle in rayAngles)
-            {
-                var endPosition = transform.TransformDirection(
-                    RayPerception3D.PolarToCartesian(rayDistance, angle));
-                Debug.DrawRay(transform.position, endPosition, Color.gray, 0.01f, depthTest:true);
-            }
-
-        }
-    }
 }

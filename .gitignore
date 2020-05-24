@@ -76,7 +76,6 @@
 *.idea/
 *.iml
 *.cache
-*/build/
 */dist/
 *.egg-info*
 *.eggs*
@@ -96,7 +95,6 @@
 
 # Ignore PyPi build files.
 dist/
-build/
 
 # Python virtual environment
 .venv/

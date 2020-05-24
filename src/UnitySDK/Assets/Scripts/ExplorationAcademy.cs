@@ -16,7 +16,12 @@ public class ExplorationAcademy : Academy {
     public float duration;
     public string experimentName;
     public string logFile;
-    
+
+    [Header("Debug")]
+    public bool drawDebug = false;
+    public bool drawCollisionRadius = false;
+    public bool drawTargetDistance = false;
+    public bool drawAgentRays = false;
 
     [HideInInspector]
     public int totalTargetsHits;
@@ -24,10 +29,14 @@ public class ExplorationAcademy : Academy {
     public int totalCollisions;
     [HideInInspector]
     public Stopwatch stopwatch;
+    [HideInInspector]
+    public Camera[] cams;
 
     public override void InitializeAcademy()
     {
         Monitor.SetActive(true);
+        Monitor.s_IsInstantiated = false;
+        Monitor.s_Initialized = false;
 
         // Performance metric
         if (performanceRun)
@@ -57,7 +66,6 @@ public class ExplorationAcademy : Academy {
             area.ResetArea();
         }
     }
-
     public void CustomAcademyReset(string parameters)
     {
         if (areas == null)
@@ -80,8 +88,46 @@ public class ExplorationAcademy : Academy {
         }
     }
 
+    public void changeScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+    }
+
+    public void activateDraw(string activateString)
+    {
+        bool activate = activateString.Equals("true");
+        this.drawDebug = activate;
+    }
+
+    public void switchCam()
+    {
+        var cams = this.cams;
+        if (this.cams.Length > 1)
+        {
+            for (var i = 0; i < cams.Length; i++)
+            {
+                cams[i].enabled = !cams[i].enabled;
+            }
+        }
+            
+    }
+
+    private void Start()
+    {
+        this.cams = Camera.allCameras;
+        if(this.cams.Length > 1)
+        {
+            cams[0].enabled = true;
+            cams[1].enabled = false;
+        }
+    }
+
     private void Update()
     {
+        /*if (Input.GetKeyDown(KeyCode.C))
+        {
+            switchCam();
+        }*/
         if (performanceRun)
         {
             TimeSpan timeSpan = stopwatch.Elapsed;
@@ -111,11 +157,65 @@ public class ExplorationAcademy : Academy {
             }
         }
 
-    }
+        var actionHist = areas[0].expAgent.GetComponent<ExplorationAgent>().actionHist;
+        Monitor.Log("Vector Action", actionHist);
 
-    public void changeScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        // Draws only when there's 1 area to avoid getting too computationally intensive
+        if (drawDebug && areas.Length == 1)
+        {
+            var agent = areas[0].expAgent.GetComponent<ExplorationAgent>();
+            var is3D = areas[0].is3D ? true : false;
+            float[] offsets3D = { 28.29f, 15.32f, -28.29f, -15.32f };
+            int i = 0;
+
+            if (is3D)
+            {
+                for (i = 0; i < agent.rayAngles.Length; i++)
+                {
+                    for (int j = 1; j <= offsets3D.Length; j++)
+                    {
+                        var coord = RayPerception3D.PolarToCartesian(agent.rayDistance, agent.rayAngles[i]);
+                        coord.y = offsets3D[j-1];
+                        var endPosition = agent.transform.TransformPoint(coord);
+                        var direction = agent.transform.TransformDirection(coord);
+                        agent.rayRenderer[i*j].enabled = true;
+                        agent.rayRenderer[i*j].SetPosition(0, agent.transform.position);
+                        if (Physics.Raycast(agent.transform.position, direction, out RaycastHit hit))
+                            if (hit.collider && Vector3.Distance(hit.point, agent.transform.position) <= agent.rayDistance)
+                                agent.rayRenderer[i * j].SetPosition(1, hit.point);
+                            else
+                                agent.rayRenderer[i * j].SetPosition(1, endPosition);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var angle in agent.rayAngles)
+                {
+                    var coord = RayPerception3D.PolarToCartesian(agent.rayDistance, angle);
+                    var endPosition = agent.transform.TransformPoint(coord);
+                    var direction = agent.transform.TransformDirection(coord);
+                    agent.rayRenderer[i].enabled = true;
+                    agent.rayRenderer[i].SetPosition(0, agent.transform.position);
+                    if (Physics.Raycast(agent.transform.position, direction, out RaycastHit hit))
+                        if (hit.collider && Vector3.Distance(hit.point, agent.transform.position) <= agent.rayDistance)
+                            agent.rayRenderer[i].SetPosition(1, hit.point);
+                        else
+                            agent.rayRenderer[i].SetPosition(1, endPosition);
+                    i++;
+                }
+
+            }
+
+        }
+        else
+        {
+            var agent = areas[0].expAgent.GetComponent<ExplorationAgent>();
+            for (var i = 0; i < agent.rayRenderer.Length; i++)
+            {
+                agent.rayRenderer[i].enabled = false;
+            }
+        }
     }
 
     /*void OnGUI()

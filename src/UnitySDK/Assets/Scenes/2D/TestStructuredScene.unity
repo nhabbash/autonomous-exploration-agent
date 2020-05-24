@@ -366,8 +366,13 @@ MonoBehaviour:
   duration: 5
   experimentName: structured
   logFile: \experiments\performance.txt
+  drawDebug: 0
+  drawCollisionRadius: 0
+  drawTargetDistance: 0
+  drawAgentRays: 0
   totalTargetsHits: 0
   totalCollisions: 0
+  cams: []
 --- !u!4 &1777008082
 Transform:
   m_ObjectHideFlags: 0
@@ -646,6 +651,7 @@ MonoBehaviour:
   - 135
   - 70
   - 110
+  rayRenderer: []
   rayDistance: 20
   useVectorObs: 1
   body: {fileID: 0}
@@ -1335,7 +1341,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &6453415252895105512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1361,9 +1367,6 @@ MonoBehaviour:
     type: 3}
   obstaclePrefab: {fileID: 44659161343732118, guid: 679b1d578c387bf489174274f139f438,
     type: 3}
-  drawCollisionRadius: 0
-  drawTargetDistance: 0
-  drawAgentRays: 0
   numObstacles: 0
   obstacleSpeed: 0
   spawnRange: 0

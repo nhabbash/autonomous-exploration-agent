@@ -31,7 +31,7 @@ namespace MLAgents
         /// </summary>
         public static float verticalOffset = 3f;
 
-        static bool s_IsInstantiated;
+        public static bool s_IsInstantiated;
         static GameObject s_Canvas;
         static Dictionary<Transform, Dictionary<string, DisplayValue>> s_DisplayTransformValues;
 
@@ -66,7 +66,7 @@ namespace MLAgents
         static GUIStyle s_GreenStyle;
         static GUIStyle s_RedStyle;
         static GUIStyle[] s_ColorStyle;
-        static bool s_Initialized;
+        public static bool s_Initialized;
 
         /// <summary>
         /// Use the Monitor.Log static function to attach information to a transform.
@@ -340,8 +340,9 @@ namespace MLAgents
         }
 
         /// Initializes the canvas.
-        static void InstantiateCanvas()
+        public static void InstantiateCanvas()
         {
+            
             s_Canvas = GameObject.Find("AgentMonitorCanvas");
             if (s_Canvas == null)
             {
@@ -527,7 +528,7 @@ namespace MLAgents
         }
 
         /// Helper method used to initialize the GUI. Called once.
-        void Initialize()
+        public void Initialize()
         {
             s_KeyStyle = GUI.skin.label;
             s_ValueStyle = GUI.skin.label;

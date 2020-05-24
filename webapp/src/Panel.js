@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import Videocam from '@material-ui/icons/Videocam';
+import VideocamOff from '@material-ui/icons/VideocamOff';
+import LeakAdd from '@material-ui/icons/LeakAdd';
+import LeakRemove from '@material-ui/icons/LeakRemove';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -25,6 +32,12 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around'
+  },
+  lineOfSlidersAlone: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    marginLeft: 32,
   },
   sliderRoot: {
     minWidth: 200,
@@ -142,7 +155,7 @@ const initialParams = {
   collisionPenalty: 0.3
 };
 
-const Panel = ({ unityContent, structured, contentId, ...others }) => { 
+const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, camView, setCamView, ...others }) => { 
   const classes = useStyles();
   const theme = useTheme();
   const [isLoading, setIsLoading] = useState(true);
@@ -177,6 +190,25 @@ const Panel = ({ unityContent, structured, contentId, ...others }) => {
 
   return (<div className={classes.container}>
     <Paper elevation={3} classes={{ root: classes.paperRoot }} {...others}>
+      <div className={classes.lineOfSlidersAlone}>
+          <Typography gutterBottom>
+            View controls
+          </Typography>
+          <ToggleButtonGroup value={[!camView ? 'nocam' : 'cam', !rayActivated ? 'noray' : 'ray',]}>
+              <ToggleButton disabled={isLoading} value="ray" onClick={() => toggleRay(!rayActivated)}>
+                {rayActivated ?
+                  <Tooltip title="Turn off lidars"><LeakAdd /></Tooltip>
+                :
+                  <Tooltip title="Turn on lidars"><LeakRemove /></Tooltip>}
+              </ToggleButton>
+            <ToggleButton disabled={isLoading} value="cam" onClick={() => setCamView(!camView)}>
+              {camView ?
+                <Tooltip title="Spectate agent"><Videocam /></Tooltip>
+                : 
+                <Tooltip title="Agent pov"><VideocamOff /></Tooltip>}
+            </ToggleButton>
+          </ToggleButtonGroup>
+      </div>
       <div className={classes.lineOfSliders}>
         <div className={classes.sliderContainer}>
           <Typography gutterBottom>
@@ -201,7 +233,7 @@ const Panel = ({ unityContent, structured, contentId, ...others }) => {
         </div>
         <div className={classes.sliderContainer}>
           <Typography gutterBottom>
-            Collision radious
+            Min spawn distance
           </Typography>
           <Slider
             classes={{ root: classes.sliderRoot }}
