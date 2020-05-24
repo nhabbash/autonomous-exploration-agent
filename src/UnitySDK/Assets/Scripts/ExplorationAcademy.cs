@@ -102,22 +102,32 @@ public class ExplorationAcademy : Academy {
     public void switchCam()
     {
         var cams = this.cams;
-        for (var i = 0; i < cams.Length; i++)
+        if (this.cams.Length > 1)
         {
-            cams[i].enabled = !cams[i].enabled;
+            for (var i = 0; i < cams.Length; i++)
+            {
+                cams[i].enabled = !cams[i].enabled;
+            }
         }
+            
     }
 
     private void Start()
     {
-
         this.cams = Camera.allCameras;
-        cams[0].enabled = true;
-        cams[1].enabled = false;
+        if(this.cams.Length > 1)
+        {
+            cams[0].enabled = true;
+            cams[1].enabled = false;
+        }
     }
 
     private void Update()
     {
+        /*if (Input.GetKeyDown(KeyCode.C))
+        {
+            switchCam();
+        }*/
         if (performanceRun)
         {
             TimeSpan timeSpan = stopwatch.Elapsed;
