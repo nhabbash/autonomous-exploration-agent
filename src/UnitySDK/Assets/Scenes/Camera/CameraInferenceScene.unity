@@ -372,6 +372,7 @@ MonoBehaviour:
   drawAgentRays: 0
   totalTargetsHits: 0
   totalCollisions: 0
+  cams: []
 --- !u!4 &1777008082
 Transform:
   m_ObjectHideFlags: 0
@@ -1112,7 +1113,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &6453415252895105512
 MonoBehaviour:
   m_ObjectHideFlags: 0
