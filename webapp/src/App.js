@@ -100,7 +100,7 @@ const menuSecond = [
  },*/
 ];
 
-const requestMenuChange = (setCamView, setMenuSelectedIndex, canvasContainer, unityContent, id, ...params) => {
+const requestMenuChange = (setRayActivated, setCamView, setMenuSelectedIndex, canvasContainer, unityContent, id, ...params) => {
     const menuItem = menu.find(x => x.id === id);
     if(menuItem && menuItem.scene && canvasContainer.current) {
       const canvas = canvasContainer.current.htmlElement.children[0];
@@ -112,6 +112,7 @@ const requestMenuChange = (setCamView, setMenuSelectedIndex, canvasContainer, un
         canvas.setAttribute('width', width);
         canvas.setAttribute('height', height);
         setCamView(false)
+        activateDraw(setRayActivated, unityContent, true);
       }, 20);
     }
     setMenuSelectedIndex(id, ...params);
@@ -131,7 +132,7 @@ const App = (props) => {
       menuSecond={menuSecond}
       getMenu={getMenu}
       menuSelectedIndex={menuSelectedIndex}
-      setMenuSelectedIndex={(...params) => requestMenuChange(setCamView, setMenuSelectedIndex, canvasContainer, unityContent, ...params)}
+      setMenuSelectedIndex={(...params) => requestMenuChange(setRayActivated, setCamView, setMenuSelectedIndex, canvasContainer, unityContent, ...params)}
       {...props}
       render={() => {
         const Element = getMenu().find(x => x.id === menuSelectedIndex);

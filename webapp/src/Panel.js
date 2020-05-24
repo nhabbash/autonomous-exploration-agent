@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
-import Switch from '@material-ui/core/Switch';
+import Tooltip from '@material-ui/core/Tooltip';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Videocam from '@material-ui/icons/Videocam';
@@ -35,9 +35,9 @@ const useStyles = makeStyles(theme => ({
   },
   lineOfSlidersAlone: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'flex-start',
-    marginLeft: 32
+    marginLeft: 32,
   },
   sliderRoot: {
     minWidth: 200,
@@ -191,12 +191,21 @@ const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, c
   return (<div className={classes.container}>
     <Paper elevation={3} classes={{ root: classes.paperRoot }} {...others}>
       <div className={classes.lineOfSlidersAlone}>
-          <ToggleButtonGroup value={[camView ? 'nocam' : 'cam', rayActivated ? 'noray' : 'ray',]}>
-            <ToggleButton disabled={isLoading} value="ray" onClick={() => toggleRay(!rayActivated)}>
-              {rayActivated ? <LeakRemove /> : <LeakAdd />}
-            </ToggleButton>
+          <Typography gutterBottom>
+            View controls
+          </Typography>
+          <ToggleButtonGroup value={[!camView ? 'nocam' : 'cam', !rayActivated ? 'noray' : 'ray',]}>
+              <ToggleButton disabled={isLoading} value="ray" onClick={() => toggleRay(!rayActivated)}>
+                {rayActivated ?
+                  <Tooltip title="Turn off lidars"><LeakAdd /></Tooltip>
+                :
+                  <Tooltip title="Turn on lidars"><LeakRemove /></Tooltip>}
+              </ToggleButton>
             <ToggleButton disabled={isLoading} value="cam" onClick={() => setCamView(!camView)}>
-              {camView ? <VideocamOff /> : <Videocam />}
+              {camView ?
+                <Tooltip title="Spectate agent"><Videocam /></Tooltip>
+                : 
+                <Tooltip title="Agent pov"><VideocamOff /></Tooltip>}
             </ToggleButton>
           </ToggleButtonGroup>
       </div>
