@@ -34,8 +34,9 @@ public class ExplorationAcademy : Academy {
 
     public override void InitializeAcademy()
     {
-        Monitor.InstantiateCanvas();
         Monitor.SetActive(true);
+        Monitor.s_IsInstantiated = false;
+        Monitor.s_Initialized = false;
 
         // Performance metric
         if (performanceRun)
@@ -90,7 +91,6 @@ public class ExplorationAcademy : Academy {
     public void changeScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
-        
     }
 
     public void activateDraw(string activateString)
@@ -156,6 +156,9 @@ public class ExplorationAcademy : Academy {
                 UnityEngine.Debug.Log("CPM: " + cpm);
             }
         }
+
+        var actionHist = areas[0].expAgent.GetComponent<ExplorationAgent>().actionHist;
+        Monitor.Log("Vector Action", actionHist);
 
         // Draws only when there's 1 area to avoid getting too computationally intensive
         if (drawDebug && areas.Length == 1)

@@ -14,6 +14,9 @@ public class ExplorationAgent : Agent
     public float rayDistance;
     public bool useVectorObs = true;
 
+    [HideInInspector]
+    public float[] actionHist;
+
     private Vector3[] movement;
     private Vector3 translation;
     private Vector3 rotation;
@@ -161,11 +164,10 @@ public class ExplorationAgent : Agent
         translation = fwDirection + rDirection;
         rotation = yawRot;
 
-        float[] actionHist = {forwardAxis == 2 ? -1 : forwardAxis,
-                              rightAxis == 2 ? -1 : rightAxis,
-                              yawRotationAxis == 2 ? -1 : yawRotationAxis};
-
-        //Monitor.Log("Vector Action", actionHist);
+        float[] ah = {forwardAxis == 2 ? -1 : forwardAxis,
+                    rightAxis == 2 ? -1 : rightAxis,
+                    yawRotationAxis == 2 ? -1 : yawRotationAxis};
+        this.actionHist = ah;
     }
 
     private void get3DMovement(float[] actions)
@@ -235,14 +237,14 @@ public class ExplorationAgent : Agent
         translation = fwDirection + rDirection + uDirection;
         rotation = new Vector3(pitchRot, yawRot, 0.0f);
 
-        float[] actionHist = {forwardAxis == 2 ? -1 : forwardAxis,
-                              rightAxis == 2 ? -1 : rightAxis,
-                              upAxis == 2 ? -1 : upAxis,
-                              yawRotationAxis == 2 ? -1 : yawRotationAxis,
-                              pitchRotationAxis == 2 ? -1 : pitchRotationAxis,
+        float[] ah = {
+                    forwardAxis == 2 ? -1 : forwardAxis,
+                    rightAxis == 2 ? -1 : rightAxis,
+                    upAxis == 2 ? -1 : upAxis,
+                    yawRotationAxis == 2 ? -1 : yawRotationAxis,
+                    pitchRotationAxis == 2 ? -1 : pitchRotationAxis,
         };
-
-        Monitor.Log("Vector Action", actionHist);
+        this.actionHist = ah;
     }
 
     private void OnCollisionEnter(Collision collision)
