@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
+import Switch from '@material-ui/core/Switch';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -25,6 +26,12 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around'
+  },
+  lineOfSlidersAlone: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    marginLeft: 32
   },
   sliderRoot: {
     minWidth: 200,
@@ -142,7 +149,7 @@ const initialParams = {
   collisionPenalty: 0.3
 };
 
-const Panel = ({ unityContent, structured, contentId, ...others }) => { 
+const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, ...others }) => { 
   const classes = useStyles();
   const theme = useTheme();
   const [isLoading, setIsLoading] = useState(true);
@@ -177,6 +184,12 @@ const Panel = ({ unityContent, structured, contentId, ...others }) => {
 
   return (<div className={classes.container}>
     <Paper elevation={3} classes={{ root: classes.paperRoot }} {...others}>
+      <div className={classes.lineOfSlidersAlone}>
+          <Typography gutterBottom>
+            Show rays:
+            <Switch disabled={isLoading} color="primary" checked={rayActivated} onChange={toggleRay} />
+          </Typography>
+      </div>
       <div className={classes.lineOfSliders}>
         <div className={classes.sliderContainer}>
           <Typography gutterBottom>

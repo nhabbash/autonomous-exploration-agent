@@ -3,10 +3,10 @@ import Filter3 from '@material-ui/icons/Filter3';
 import ScatterPlot from '@material-ui/icons/ScatterPlot';
 import ViewQuilt from '@material-ui/icons/ViewQuilt';
 import People from '@material-ui/icons/People';
-import Typography from '@material-ui/core/Typography';
+import Unity, { UnityContent } from "react-unity-webgl";
 import TemplatePage from './TemplatePage';
 import Panel from './Panel';
-import Unity, { UnityContent } from "react-unity-webgl";
+import About from './pages/About';
 
 const style = {
   row: {
@@ -42,6 +42,15 @@ const changeScene = (unityContent, scene) => {
   );
 }
 
+const activateDraw = (setRayActivated, unityContent, activated) => {
+  setRayActivated(activated);
+  unityContent.send(
+    "Academy", 
+    "activateDraw",
+    `${activated}`
+  );
+}
+
 const menu = [
   {
    name: '2D sparse',
@@ -67,17 +76,18 @@ const menu = [
 ];
 
 const menuSecond = [
- {
+ /*{
   name: 'About',
   icon: <People />,
   id: 3,
   onClick: setMenuIndex,
- },
+  Page: About
+ },*/
 ];
 
 const requestMenuChange = (setMenuSelectedIndex, canvasContainer, unityContent, id, ...params) => {
     const menuItem = menu.find(x => x.id === id);
-    if(menuItem && menuItem.scene) {
+    if(menuItem && menuItem.scene && canvasContainer.current) {
       const canvas = canvasContainer.current.htmlElement.children[0];
       const width = canvas.getAttribute('width');
       const height = canvas.getAttribute('height');
@@ -94,6 +104,7 @@ const getMenu = () => [...menu, ...menuSecond]
 
 const App = (props) => { 
   const [menuSelectedIndex, setMenuSelectedIndex] = useState(0);
+  const [rayActivated, setRayActivated] = useState(true);
   const canvasContainer = useRef(null);
 
   return (
@@ -105,20 +116,27 @@ const App = (props) => {
       setMenuSelectedIndex={(...params) => requestMenuChange(setMenuSelectedIndex, canvasContainer, unityContent, ...params)}
       {...props}
       render={() => {
-        const element = getMenu().find(x => x.id === menuSelectedIndex);
+        const Element = getMenu().find(x => x.id === menuSelectedIndex);
         return (<div style={style.column}>
-          <Typography variant="h1">
-            {element.name}
-          </Typography>
-          <div style={style.row}>
-            <div style={{ width: "60%" }}>
-              <span style={style.block}>
-                <Unity unityContent={unityContent} ref={(r) => { canvasContainer.current = r }} />
-              </span>
+          {menuSecond.map(x => x.id).indexOf(Element.id) !== -1 ? (
+            <Element.Page title={Element.name} />
+          ) : (
+            <div style={style.row}>
+              <div style={{ width: "60%" }}>
+                <span style={style.block}>
+                  <Unity unityContent={unityContent} ref={(r) => { canvasContainer.current = r }} />
+                </span>
+              </div>
+              <Panel
+                unityContent={unityContent}
+                contentId={Element.id}
+                structured={Element.id === menu.find(x => x.name === '2D structured').id}
+                rayActivated={rayActivated}
+                toggleRay={(event) => activateDraw(setRayActivated, unityContent, event.target.checked)}
+              />
             </div>
-            <Panel unityContent={unityContent} contentId={element.id} structured={element.id === menu.find(x => x.name === '2D structured').id}  />
-          </div>
-        </div>);
+          )}
+          </div>);
       }}
     />
   );
