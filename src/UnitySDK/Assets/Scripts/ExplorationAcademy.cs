@@ -89,8 +89,9 @@ public class ExplorationAcademy : Academy {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
-    public void activateDraw(bool activate)
+    public void activateDraw(string activateString)
     {
+        bool activate = activateString.Equals("true");
         this.drawDebug = activate;
     }
 
