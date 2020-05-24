@@ -1,9 +1,15 @@
-# Autonomous Exploration Agent with Obstacle Avoidance 
-> Final Project for the Complex Systems: Models and Simulation course at University of Milano-Bicocca 
+# Autonomous Exploration Agent
+> Obstacle-ridden environment exploration with Unity3D and ML-Agents 
 
-## Brief
+## Overview
 
-The project implements an autonomous agent searching for and moving towards a target, using reinforcement learning. The agent moves in a cluttered randomly generated space and is incentivated to avoid obstacles in its path or exploration towards the target.
+This work implements a searching agent capable of exploring cluttered environments using Reinforcement Learning. The agent moves in a randomly generated space filled with obstacles and is incentivated to avoid obstacles in its path while searching for the target.
+
+## Prerequisites
+
+* Unity v2019.1 or higher
+* [ML-Agents v0.11](https://github.com/Unity-Technologies/ml-agents)
+* Python 3.6
 
 ## Structure
 
@@ -14,12 +20,7 @@ The repository is structured as follows:
     - [`notebooks`](src/notebooks) which holds notebooks for Jupyter for testing and extracting data from the `mlagents` Python package (which contains the actual RL implementations)
     - [`UnitySDK`](src/UnitySDK) holds Unity's source code for the environment, consisting of scenes, agent and other classes, etc.
 - [`docs`](docs) contains a formalized report of the project and a presentation.
-
-## Prerequisites
-
-* Unity v2019.1 or higher
-* [ML-Agents v0.11](https://github.com/Unity-Technologies/ml-agents)
-* Python 3.6
+- [`webapp`](webapp) contains a demo of the project.
 
 ## Installation
 ```sh
@@ -60,4 +61,4 @@ $ mlagents-learn src\config\trainer_config.yaml --curriculum=src\config\curricul
 ## Authors
 
 * **Federico Bottoni** (806944) - [FedericoBottoni](https://github.com/FedericoBottoni)
-* **Nassim Habbash** (808292) - [nhabbash](https://github.com/dodicin)
+* **Nassim Habbash** (808292) - [nhabbash](https://github.com/nhabbash)
