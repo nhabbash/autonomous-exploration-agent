@@ -340,7 +340,7 @@ namespace MLAgents
         }
 
         /// Initializes the canvas.
-        static void InstantiateCanvas()
+        public static void InstantiateCanvas()
         {
             s_Canvas = GameObject.Find("AgentMonitorCanvas");
             if (s_Canvas == null)
@@ -527,7 +527,7 @@ namespace MLAgents
         }
 
         /// Helper method used to initialize the GUI. Called once.
-        void Initialize()
+        public void Initialize()
         {
             s_KeyStyle = GUI.skin.label;
             s_ValueStyle = GUI.skin.label;

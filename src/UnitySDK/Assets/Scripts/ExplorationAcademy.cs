@@ -32,6 +32,7 @@ public class ExplorationAcademy : Academy {
 
     public override void InitializeAcademy()
     {
+        Monitor.InstantiateCanvas();
         Monitor.SetActive(true);
 
         // Performance metric
@@ -87,6 +88,7 @@ public class ExplorationAcademy : Academy {
     public void changeScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        
     }
 
     public void activateDraw(string activateString)
