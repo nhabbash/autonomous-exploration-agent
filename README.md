@@ -1,9 +1,17 @@
 # Autonomous Exploration Agent
 > Obstacle-ridden environment exploration with Unity3D and ML-Agents 
 
+<p align="center">
+  <img  src="docs/example.gif" width="55%">
+</p>
+
 ## Overview
 
 This work implements a searching agent capable of exploring cluttered environments using Reinforcement Learning. The agent moves in a randomly generated space filled with obstacles and is incentivated to avoid obstacles in its path while searching for the target.
+
+#### [Live demo](https://nhabbash.github.io/autonomous-exploration-agent/)
+#### [Documentatation](docs/report.pdf)
+#### [Presentation](docs/presentation.pdf)
 
 ## Prerequisites
 
@@ -52,7 +60,7 @@ $ mlagents-learn src\config\trainer_config.yaml --curriculum=src\config\curricul
 * Stop the training when the cumulative reward reaches a satisfying level
 * Models are saved under `./models`
 
-# Testing
+## Testing
 * Open the project
 * Unick the Control checkboxes in the Broadcast
 * Add the models to the Brain objects under `./Assets/Brains`. The models are found under `./models`
