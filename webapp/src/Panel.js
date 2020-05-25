@@ -155,7 +155,7 @@ const initialParams = {
   collisionPenalty: 0.3
 };
 
-const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, camView, setCamView, ...others }) => { 
+const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, camView, setCamView, preventLidars, ...others }) => { 
   const classes = useStyles();
   const theme = useTheme();
   const [isLoading, setIsLoading] = useState(true);
@@ -194,9 +194,9 @@ const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, c
           <Typography gutterBottom>
             View controls
           </Typography>
-          <ToggleButtonGroup value={[!camView ? 'nocam' : 'cam', !rayActivated ? 'noray' : 'ray',]}>
-              <ToggleButton disabled={isLoading} value="ray" onClick={() => toggleRay(!rayActivated)}>
-                {rayActivated ?
+          <ToggleButtonGroup value={[!camView ? 'nocam' : 'cam', !rayActivated && !preventLidars ? 'noray' : 'ray',]}>
+              <ToggleButton disabled={isLoading || preventLidars} value="ray" onClick={() => toggleRay(!rayActivated)}>
+                {rayActivated || preventLidars ?
                   <Tooltip title="Turn off lidars"><LeakAdd /></Tooltip>
                 :
                   <Tooltip title="Turn on lidars"><LeakRemove /></Tooltip>}

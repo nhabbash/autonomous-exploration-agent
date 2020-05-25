@@ -133,7 +133,7 @@ const TemplatePage = ({ menu, menuSecond, menuSelectedIndex, setMenuSelectedInde
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap className={classes.title}>
-            Autonomous exploration agent
+            Autonomous Exploration Agent
           </Typography>
         </Toolbar>
       </AppBar>

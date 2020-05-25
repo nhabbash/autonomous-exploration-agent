@@ -39,7 +39,6 @@ const setMenuIndex = (setMenuSelectedIndex, id) => {
 
 const goTo = (_, __, href) => {
   window.open(href, '_blank');
-  //window.location.href = href;
 }
 
 const changeScene = (unityContent, scene) => {
@@ -74,7 +73,8 @@ const menu = [
    id: 0,
    onClick: setMenuIndex,
    scene: "InferenceScene",
-   structured: false
+   structured: false,
+   lidars: true
   },
   {
    name: '2D Camera Sparse',
@@ -82,7 +82,8 @@ const menu = [
    id: 1,
    onClick: setMenuIndex,
    scene: "CameraInferenceScene",
-   structured: false
+   structured: false,
+   lidars: false
   },
   {
    name: '2D Lidar Structured',
@@ -90,7 +91,8 @@ const menu = [
    id: 2,
    onClick: setMenuIndex,
    scene: "TestStructuredScene",
-   structured: true
+   structured: true,
+   lidars: true
   },
   {
    name: '3D Lidar Sparse',
@@ -98,7 +100,8 @@ const menu = [
    id: 3,
    onClick: setMenuIndex,
    scene: "InferenceScene3D",
-   structured: false
+   structured: false,
+   lidars: true
   },
 ];
 
@@ -120,7 +123,7 @@ const menuSecond = [
  {
   name: 'Slides',
   icon: <SlideshowIcon />,
-  id: 5,
+  id: 6,
   onClick: goTo,
   href: '/Slides_AEA.pdf'
  },
@@ -138,7 +141,10 @@ const requestMenuChange = (setRayActivated, setCamView, setMenuSelectedIndex, ca
         canvas.setAttribute('width', width);
         canvas.setAttribute('height', height);
         setCamView(false)
-        activateDraw(setRayActivated, unityContent, true);
+        if(menuItem.lidars)
+          activateDraw(setRayActivated, unityContent, true);
+        else
+          activateDraw(setRayActivated, unityContent, false);
       }, 20);
     }
     setMenuSelectedIndex(id, ...params);
@@ -177,6 +183,7 @@ const App = (props) => {
                 <Panel
                   unityContent={unityContent}
                   contentId={Element.id}
+                  preventLidars={!Element.lidars}
                   structured={Element.id === menu.find(x => x.structured).id}
                   rayActivated={rayActivated}
                   toggleRay={(checked) => activateDraw(setRayActivated, unityContent, checked)}
@@ -184,7 +191,7 @@ const App = (props) => {
                   setCamView={(checked) => toggleCamView(setCamView, unityContent, checked)}
                 />
               </div>
-              <Description />
+              {/* <Description demo={Element} /> */}
             </>
           )}
           </div>);
