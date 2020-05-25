@@ -118,14 +118,14 @@ const menuSecond = [
   icon: <DescriptionIcon />,
   id: 5,
   onClick: goTo,
-  href: '/Report_AEA.pdf'
+  href: 'https://github.com/nhabbash/autonomous-exploration-agent/blob/master/docs/report.pdf'
  },
  {
   name: 'Slides',
   icon: <SlideshowIcon />,
   id: 6,
   onClick: goTo,
-  href: '/Slides_AEA.pdf'
+  href: 'https://github.com/nhabbash/autonomous-exploration-agent/blob/master/docs/presentation.pdf'
  },
 ];
 
