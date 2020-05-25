@@ -16,7 +16,7 @@ This work implements a searching agent capable of exploring cluttered environmen
 ## Prerequisites
 
 * Unity v2019.1 or higher
-* [ML-Agents v0.11](https://github.com/Unity-Technologies/ml-agents)
+* [ML-Agents v0.11](https://github.com/Unity-Technologies/ml-agents/tree/0.11.0)
 * Python 3.6
 
 ## Structure
