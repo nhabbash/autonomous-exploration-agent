@@ -239,7 +239,7 @@ const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, c
             classes={{ root: classes.sliderRoot }}
             defaultValue={collisionRadious}
             value={collisionRadious}
-            disabled={isLoading}
+            disabled={isLoading || structured}
             getAriaValueText={val => val}
             aria-labelledby="collision_radious"
             min={2}
@@ -283,7 +283,7 @@ const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, c
             classes={{ root: classes.sliderRoot }}
             defaultValue={collisionPenalty}
             value={collisionPenalty}
-            disabled={isLoading}
+            disabled={isLoading || structured}
             getAriaValueText={val => val}
             aria-labelledby="collision_penalty"
             min={0}
