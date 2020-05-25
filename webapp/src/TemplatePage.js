@@ -133,7 +133,7 @@ const TemplatePage = ({ menu, menuSecond, menuSelectedIndex, setMenuSelectedInde
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap className={classes.title}>
-            Autonomous exploration agent
+            Autonomous Exploration Agent
           </Typography>
         </Toolbar>
       </AppBar>
@@ -180,7 +180,7 @@ const TemplatePage = ({ menu, menuSecond, menuSelectedIndex, setMenuSelectedInde
         </List>
         <Divider />
         <List>
-          {menuSecond.map(({ name, icon, id, onClick }) => (
+          {menuSecond.map(({ name, icon, id, onClick, href }) => (
              <HtmlTooltip
               placement="right"
               disableHoverListener={open}
@@ -193,7 +193,7 @@ const TemplatePage = ({ menu, menuSecond, menuSelectedIndex, setMenuSelectedInde
             >
               <ListItem button key={name}
                 selected={id === menuSelectedIndex}
-                onClick={(...params) => onClick(setMenuSelectedIndex, id, ...params)}
+                onClick={(...params) => onClick(setMenuSelectedIndex, id, href, ...params)}
               >
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText primary={name} />

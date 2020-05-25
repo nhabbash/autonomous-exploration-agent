@@ -1,7 +1,6 @@
 {
   "name": "autonomous-exploration-agent",
-  "version": "1.0.1",
-  "homepage": "http://nhabbash.github.io/autonomous-exploration-agent",
+  "version": "1.0.2",
 
   "dependencies": {
     "@material-ui/core": "^4.9.4",
