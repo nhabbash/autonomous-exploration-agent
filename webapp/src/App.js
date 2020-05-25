@@ -1,11 +1,14 @@
 import React, { useState, useRef } from 'react';
+import Unity, { UnityContent } from "react-unity-webgl";
 import Filter3 from '@material-ui/icons/Filter3';
 import ScatterPlot from '@material-ui/icons/ScatterPlot';
 import ViewQuilt from '@material-ui/icons/ViewQuilt';
 import VideoCall from '@material-ui/icons/VideoCall';
-import Unity, { UnityContent } from "react-unity-webgl";
+import DescriptionIcon from '@material-ui/icons/Description';
+import SlideshowIcon from '@material-ui/icons/Slideshow';
 import TemplatePage from './TemplatePage';
 import Panel from './Panel';
+import Description from './Description';
 import About from './pages/About';
 
 const style = {
@@ -32,6 +35,11 @@ const unityContent = new UnityContent(
 
 const setMenuIndex = (setMenuSelectedIndex, id) => {
   setMenuSelectedIndex(id);
+}
+
+const goTo = (_, __, href) => {
+  window.open(href, '_blank');
+  //window.location.href = href;
 }
 
 const changeScene = (unityContent, scene) => {
@@ -61,32 +69,36 @@ const toggleCamView = (setCamView, unityContent, checked) => {
 
 const menu = [
   {
-   name: '2D lidar sparse',
+   name: '2D Lidar Sparse',
    icon: <ScatterPlot />,
    id: 0,
    onClick: setMenuIndex,
    scene: "InferenceScene",
+   structured: false
   },
   {
-   name: '2D camera sparse',
+   name: '2D Camera Sparse',
    icon: <VideoCall />,
    id: 1,
    onClick: setMenuIndex,
    scene: "CameraInferenceScene",
+   structured: false
   },
   {
-   name: '2D lidar structured',
+   name: '2D Lidar Structured',
    icon: <ViewQuilt />,
    id: 2,
    onClick: setMenuIndex,
    scene: "TestStructuredScene",
+   structured: true
   },
   {
-   name: '3D lidar sparse',
+   name: '3D Lidar Sparse',
    icon: <Filter3 />,
    id: 3,
    onClick: setMenuIndex,
    scene: "InferenceScene3D",
+   structured: false
   },
 ];
 
@@ -98,6 +110,20 @@ const menuSecond = [
   onClick: setMenuIndex,
   Page: About
  },*/
+ {
+  name: 'Report',
+  icon: <DescriptionIcon />,
+  id: 5,
+  onClick: goTo,
+  href: '/Report_AEA.pdf'
+ },
+ {
+  name: 'Slides',
+  icon: <SlideshowIcon />,
+  id: 5,
+  onClick: goTo,
+  href: '/Slides_AEA.pdf'
+ },
 ];
 
 const requestMenuChange = (setRayActivated, setCamView, setMenuSelectedIndex, canvasContainer, unityContent, id, ...params) => {
@@ -137,25 +163,29 @@ const App = (props) => {
       render={() => {
         const Element = getMenu().find(x => x.id === menuSelectedIndex);
         return (<div style={style.column}>
+          <h1 style={{ fontWeight: 500 }}>{Element.name}</h1>
           {menuSecond.map(x => x.id).indexOf(Element.id) !== -1 ? (
             <Element.Page title={Element.name} />
           ) : (
-            <div style={style.row}>
-              <div style={{ width: "60%" }}>
-                <span style={style.block}>
-                  <Unity unityContent={unityContent} ref={(r) => { canvasContainer.current = r }} />
-                </span>
+            <>
+              <div style={style.row}>
+                <div style={{ width: "60%", minWidth: 800 }}>
+                  <span style={style.block}>
+                    <Unity unityContent={unityContent} ref={(r) => { canvasContainer.current = r }} />
+                  </span>
+                </div>
+                <Panel
+                  unityContent={unityContent}
+                  contentId={Element.id}
+                  structured={Element.id === menu.find(x => x.structured).id}
+                  rayActivated={rayActivated}
+                  toggleRay={(checked) => activateDraw(setRayActivated, unityContent, checked)}
+                  camView={camView}
+                  setCamView={(checked) => toggleCamView(setCamView, unityContent, checked)}
+                />
               </div>
-              <Panel
-                unityContent={unityContent}
-                contentId={Element.id}
-                structured={Element.id === menu.find(x => x.name === '2D lidar structured').id}
-                rayActivated={rayActivated}
-                toggleRay={(checked) => activateDraw(setRayActivated, unityContent, checked)}
-                camView={camView}
-                setCamView={(checked) => toggleCamView(setCamView, unityContent, checked)}
-              />
-            </div>
+              <Description />
+            </>
           )}
           </div>);
       }}

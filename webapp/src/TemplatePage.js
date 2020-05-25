@@ -180,7 +180,7 @@ const TemplatePage = ({ menu, menuSecond, menuSelectedIndex, setMenuSelectedInde
         </List>
         <Divider />
         <List>
-          {menuSecond.map(({ name, icon, id, onClick }) => (
+          {menuSecond.map(({ name, icon, id, onClick, href }) => (
              <HtmlTooltip
               placement="right"
               disableHoverListener={open}
@@ -193,7 +193,7 @@ const TemplatePage = ({ menu, menuSecond, menuSelectedIndex, setMenuSelectedInde
             >
               <ListItem button key={name}
                 selected={id === menuSelectedIndex}
-                onClick={(...params) => onClick(setMenuSelectedIndex, id, ...params)}
+                onClick={(...params) => onClick(setMenuSelectedIndex, id, href, ...params)}
               >
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText primary={name} />
