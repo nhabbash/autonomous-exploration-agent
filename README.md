@@ -67,6 +67,9 @@ $ mlagents-learn src\config\trainer_config.yaml --curriculum=src\config\curricul
 * Press the play button to see the trained model in action
 
 ## Authors
+<a href="https://github.com/FedericoBottoni/autonomous-exploration-agent/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=FedericoBottoni/autonomous-exploration-agent" />
+</a>
 
 * **Federico Bottoni** (806944) - [FedericoBottoni](https://github.com/FedericoBottoni)
 * **Nassim Habbash** (808292) - [nhabbash](https://github.com/nhabbash)
