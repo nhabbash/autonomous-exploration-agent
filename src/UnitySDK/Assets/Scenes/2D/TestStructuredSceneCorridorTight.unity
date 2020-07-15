@@ -640,7 +640,7 @@ MonoBehaviour:
       value: -0.001
   performanceRun: 1
   duration: 5
-  experimentName: structured_corridor
+  experimentName: structured_corridor_tight
   logFile: \experiments\performance.txt
   drawDebug: 1
   drawCollisionRadius: 0
