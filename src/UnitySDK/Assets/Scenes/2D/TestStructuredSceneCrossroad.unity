@@ -1376,7 +1376,7 @@ MonoBehaviour:
       value: -0.001
   performanceRun: 1
   duration: 5
-  experimentName: structured
+  experimentName: structured_crossroad
   logFile: \experiments\performance.txt
   drawDebug: 1
   drawCollisionRadius: 0

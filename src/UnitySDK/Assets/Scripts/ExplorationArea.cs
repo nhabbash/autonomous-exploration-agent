@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 using MLAgents;
 using System.IO;
@@ -111,13 +112,27 @@ public class ExplorationArea : Area
 
     public void ResetAgent()
     {
+ 
         if(!isStructured)
         {
             SpawnObjectsDist(expAgent, spawnRange);
         }
         else
         {
-            expAgent.transform.position = new Vector3(-15.5f, 0.5f, 11.8f);
+            if (SceneManager.GetActiveScene().name == "TestStructuredSceneCrossroad")
+            {
+                Vector3[] positions = { new Vector3(-15.5f, 0.5f, 11.8f), new Vector3(-15.5f, 0.5f, 78.2f), new Vector3(14.5f, 0.5f, 45f) };
+                Vector3[] rotation = { new Vector3(0f, 0f, 0f), new Vector3(0f, 180f, 0f), new Vector3(0f, -90f, 0f) };
+                var rand = new System.Random();
+                int inst = rand.Next(0, 3);
+                Vector3[] pose = { positions[inst], rotation[inst] };
+                expAgent.transform.position = pose[0];
+                expAgent.transform.rotation = Quaternion.Euler(pose[1].x, pose[1].y, pose[1].z);
+            }
+            else
+            {
+                expAgent.transform.position = new Vector3(-15.5f, 0.5f, 11.8f);
+            }
         }
     }
 
