@@ -6,6 +6,10 @@ import ViewQuilt from '@material-ui/icons/ViewQuilt';
 import VideoCall from '@material-ui/icons/VideoCall';
 import DescriptionIcon from '@material-ui/icons/Description';
 import SlideshowIcon from '@material-ui/icons/Slideshow';
+import ForwardIcon from '@material-ui/icons/Forward';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight';
+import OpenWithIcon from '@material-ui/icons/OpenWith';
 import TemplatePage from './TemplatePage';
 import Panel from './Panel';
 import Description from './Description';
@@ -26,7 +30,7 @@ const style = {
 }
 
 const unityContent = new UnityContent(
-  "build/Build/build.json",
+  "build/Build/build1.json",
   "build/Build/UnityLoader.js",
   {
     unityVersion: "2019.2"
@@ -68,7 +72,7 @@ const toggleCamView = (setCamView, unityContent, checked) => {
 
 const menu = [
   {
-   name: '2D Lidar Sparse',
+   name: 'Lidar Sparse',
    icon: <ScatterPlot />,
    id: 0,
    onClick: setMenuIndex,
@@ -77,7 +81,7 @@ const menu = [
    lidars: true
   },
   {
-   name: '2D Camera Sparse',
+   name: 'Camera Sparse',
    icon: <VideoCall />,
    id: 1,
    onClick: setMenuIndex,
@@ -86,7 +90,7 @@ const menu = [
    lidars: false
   },
   {
-   name: '2D Lidar Structured',
+   name: 'Lidar "Rooms"',
    icon: <ViewQuilt />,
    id: 2,
    onClick: setMenuIndex,
@@ -95,9 +99,45 @@ const menu = [
    lidars: true
   },
   {
+    name: 'Lidar "Corridor"',
+    icon: <ForwardIcon />,
+    id: 3,
+    onClick: setMenuIndex,
+    scene: "TestStructuredSceneCorridor",
+    structured: true,
+    lidars: true
+  },
+  {
+    name: 'Lidar "CorridorTight"',
+    icon: <ArrowForwardIcon />,
+    id: 4,
+    onClick: setMenuIndex,
+    scene: "TestStructuredSceneCorridorTight",
+    structured: true,
+    lidars: true
+  },
+  {
+    name: 'Lidar "Turn"',
+    icon: <SubdirectoryArrowRightIcon />,
+    id: 5,
+    onClick: setMenuIndex,
+    scene: "TestStructuredSceneTurn",
+    structured: true,
+    lidars: true
+  },
+  {
+    name: 'Lidar "Crossroad"',
+    icon: <OpenWithIcon />,
+    id: 6,
+    onClick: setMenuIndex,
+    scene: "TestStructuredSceneCrossroad",
+    structured: true,
+    lidars: true
+  },
+  {
    name: '3D Lidar Sparse',
    icon: <Filter3 />,
-   id: 3,
+   id: 7,
    onClick: setMenuIndex,
    scene: "InferenceScene3D",
    structured: false,
@@ -116,14 +156,14 @@ const menuSecond = [
  {
   name: 'Report',
   icon: <DescriptionIcon />,
-  id: 5,
+  id: 100,
   onClick: goTo,
   href: 'https://github.com/nhabbash/autonomous-exploration-agent/blob/master/docs/report.pdf'
  },
  {
   name: 'Slides',
   icon: <SlideshowIcon />,
-  id: 6,
+  id: 101,
   onClick: goTo,
   href: 'https://github.com/nhabbash/autonomous-exploration-agent/blob/master/docs/presentation.pdf'
  },
@@ -184,7 +224,7 @@ const App = (props) => {
                   unityContent={unityContent}
                   contentId={Element.id}
                   preventLidars={!Element.lidars}
-                  structured={Element.id === menu.find(x => x.structured).id}
+                  structured={menu.filter(x => x.structured).map(x => x.id).indexOf(Element.id) !== -1}
                   rayActivated={rayActivated}
                   toggleRay={(checked) => activateDraw(setRayActivated, unityContent, checked)}
                   camView={camView}

@@ -20,4 +20,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Camera/CameraInferenceScene.unity
     guid: a9b5b87e1b3397443895130e77358c1a
+  - enabled: 0
+    path: Assets/Scenes/2D/PlayerScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/2D/TestStructuredSceneCorridor.unity
+    guid: fc288babb4687974c92791e112c8c089
+  - enabled: 1
+    path: Assets/Scenes/2D/TestStructuredSceneCorridorTight.unity
+    guid: 01d88121d85a69f45a69900e25d49223
+  - enabled: 1
+    path: Assets/Scenes/2D/TestStructuredSceneCrossroad.unity
+    guid: 54ffda03a5e074445a639df7acc8d0cc
+  - enabled: 1
+    path: Assets/Scenes/2D/TestStructuredSceneTurn.unity
+    guid: c7cf78510b1f1aa48bb00bc7fd9b7721
   m_configObjects: {}
