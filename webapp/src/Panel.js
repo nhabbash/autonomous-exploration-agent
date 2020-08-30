@@ -15,14 +15,23 @@ const useStyles = makeStyles(theme => ({
   container: {
     paddingLeft: 24,
     display: 'flex',
+    flexDirection: 'column',
     flex: 2
   },
   paperRoot: {
     width: '100%',
-    paddingTop: 16,
+    padding: '16px 0 16px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-around'
+  },
+  paperRoot1: {
+    width: '100%',
+    padding: '16px 8px 16px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    marginTop: 24
   },
   row: {
     display: 'flex',
@@ -49,6 +58,26 @@ const useStyles = makeStyles(theme => ({
   margin: {
     height: theme.spacing(3),
   },
+  infoBox: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  infoBoxColumn: {
+    width: '50%',
+    paddingLeft: 32
+  },
+  table: {
+    borderSpacing: 0,
+    marginTop: 4
+  },
+  tdHead: {
+    display: 'flex',
+    minWidth: 90,
+    marginBottom: 4
+  },
+  td: {
+    marginBottom: 4
+  }
 }))
 
 const updateScene = (unityContent, { numObstacles, collisionRadious, targetDistance, collisionPenalty }) => {
@@ -155,7 +184,7 @@ const initialParams = {
   collisionPenalty: 0.3
 };
 
-const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, camView, setCamView, preventLidars, ...others }) => { 
+const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, camView, setCamView, lidars, dims3, environmentDescription, ...others }) => { 
   const classes = useStyles();
   const theme = useTheme();
   const [isLoading, setIsLoading] = useState(true);
@@ -194,9 +223,9 @@ const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, c
           <Typography gutterBottom>
             View controls
           </Typography>
-          <ToggleButtonGroup value={[!camView ? 'nocam' : 'cam', !rayActivated && !preventLidars ? 'noray' : 'ray',]}>
-              <ToggleButton disabled={isLoading || preventLidars} value="ray" onClick={() => toggleRay(!rayActivated)}>
-                {rayActivated || preventLidars ?
+          <ToggleButtonGroup value={[!camView ? 'nocam' : 'cam', !rayActivated && lidars ? 'noray' : 'ray',]}>
+              <ToggleButton disabled={isLoading || !lidars} value="ray" onClick={() => toggleRay(!rayActivated)}>
+                {rayActivated || !lidars ?
                   <Tooltip title="Turn off lidars"><LeakAdd /></Tooltip>
                 :
                   <Tooltip title="Turn on lidars"><LeakRemove /></Tooltip>}
@@ -295,6 +324,41 @@ const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, c
             onChangeCommitted={updateParam}
           />
           <div className={classes.margin} />
+        </div>
+      </div>
+    </Paper>
+    <Paper elevation={3} classes={{ root: classes.paperRoot1 }} {...others}>
+      <div className={ classes.infoBox }>
+        <div className={ classes.infoBoxColumn }>
+          <strong>Agent</strong>
+          <table className={classes.table}>
+            <tr>
+              <td className={classes.tdHead}>Observation:</td>
+              <td className={classes.td}>{lidars ? "LIDARS" : "CAMERA"}</td>
+            </tr>
+            <tr>
+              <td className={classes.tdHead}>Obs. space:</td>
+              <td className={classes.td}>{lidars ? (dims3 ? "Vector of 42 distances (range 0-40u)" : "Vector of 14 distances (range 0-20u)")  :
+                 "Matrix 84x84 of RGB values"}</td>
+            </tr>
+            <tr>
+              <td className={classes.tdHead}>Action space:</td>
+              <td className={classes.td}>{dims3 ? "Forward, Side, Up, Yaw, Pitch in {-1,0,1}" : "Forward, Side, Yaw in {-1,0,1}"}</td>
+            </tr>
+          </table>
+        </div>
+        <div className={ classes.infoBoxColumn }>
+        <strong>Environment</strong>
+          <table className={classes.table}>
+            <tr>
+              <td className={classes.tdHead}>Spawn:</td>
+              <td className={classes.td}>{structured ? "Structured" : "Randomly Generated"}</td>
+            </tr>
+            <tr>
+              <td className={classes.tdHead}>Dimensions:</td>
+              <td className={classes.td}>{environmentDescription}</td>
+            </tr>
+          </table>
         </div>
       </div>
     </Paper>

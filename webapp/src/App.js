@@ -72,76 +72,92 @@ const toggleCamView = (setCamView, unityContent, checked) => {
 
 const menu = [
   {
-   name: 'Lidar Sparse',
+   name: 'Lidar RG',
    icon: <ScatterPlot />,
    id: 0,
    onClick: setMenuIndex,
    scene: "InferenceScene",
    structured: false,
-   lidars: true
+   lidars: true,
+   dims3: false,
+   environmentDesc: "50x50u platform with randomly generate obstacles"
   },
   {
-   name: 'Camera Sparse',
+   name: 'Camera RG',
    icon: <VideoCall />,
    id: 1,
    onClick: setMenuIndex,
    scene: "CameraInferenceScene",
    structured: false,
-   lidars: false
+   lidars: false,
+   dims3: false,
+   environmentDesc: "50x50u platform with randomly generate obstacles"
   },
   {
-   name: 'Lidar "Rooms"',
+   name: 'Rooms',
    icon: <ViewQuilt />,
    id: 2,
    onClick: setMenuIndex,
    scene: "TestStructuredScene",
    structured: true,
-   lidars: true
+   lidars: true,
+   dims3: false,
+   environmentDesc: "Two rooms connected by a 10u-wide door"
   },
   {
-    name: 'Lidar "Corridor"',
+    name: 'Corridor',
     icon: <ForwardIcon />,
     id: 3,
     onClick: setMenuIndex,
     scene: "TestStructuredSceneCorridor",
     structured: true,
-    lidars: true
+    lidars: true,
+    dims3: false,
+    environmentDesc: "Stright corridor 22u-wide"
   },
   {
-    name: 'Lidar "CorridorTight"',
+    name: 'CorridorTight',
     icon: <ArrowForwardIcon />,
     id: 4,
     onClick: setMenuIndex,
     scene: "TestStructuredSceneCorridorTight",
     structured: true,
-    lidars: true
+    lidars: true,
+    dims3: false,
+    environmentDesc: "Stright corridor 12u-wide"
   },
   {
-    name: 'Lidar "Turn"',
+    name: 'Turn',
     icon: <SubdirectoryArrowRightIcon />,
     id: 5,
     onClick: setMenuIndex,
     scene: "TestStructuredSceneTurn",
     structured: true,
-    lidars: true
+    lidars: true,
+    dims3: false,
+    environmentDesc: "Corridor 22u-wide including a 90° left turn"
   },
   {
-    name: 'Lidar "Crossroad"',
+    name: 'Crossroad',
     icon: <OpenWithIcon />,
     id: 6,
     onClick: setMenuIndex,
     scene: "TestStructuredSceneCrossroad",
     structured: true,
-    lidars: true
+    lidars: true,
+    dims3: false,
+    environmentDesc: "Crossroad of two corridors 20- wide"
   },
   {
-   name: '3D Lidar Sparse',
+   name: '3D Lidar RG',
    icon: <Filter3 />,
    id: 7,
    onClick: setMenuIndex,
    scene: "InferenceScene3D",
    structured: false,
-   lidars: true
+   lidars: true,
+   dims3: true,
+   environmentDesc: "Empty cube 50x50x50u with randomly generate obstacles"
   },
 ];
 
@@ -223,7 +239,9 @@ const App = (props) => {
                 <Panel
                   unityContent={unityContent}
                   contentId={Element.id}
-                  preventLidars={!Element.lidars}
+                  lidars={Element.lidars}
+                  dims3={Element.dims3}
+                  environmentDescription={Element.environmentDesc}
                   structured={menu.filter(x => x.structured).map(x => x.id).indexOf(Element.id) !== -1}
                   rayActivated={rayActivated}
                   toggleRay={(checked) => activateDraw(setRayActivated, unityContent, checked)}
