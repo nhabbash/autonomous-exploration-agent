@@ -72,11 +72,9 @@ const useStyles = makeStyles(theme => ({
   },
   tdHead: {
     display: 'flex',
-    minWidth: 90,
-    marginBottom: 4
+    minWidth: 90
   },
   td: {
-    marginBottom: 4
   }
 }))
 
@@ -333,13 +331,13 @@ const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, c
           <strong>Agent</strong>
           <table className={classes.table}>
             <tr>
-              <td className={classes.tdHead}>Observation:</td>
-              <td className={classes.td}>{lidars ? "LIDARS" : "CAMERA"}</td>
+              <td className={classes.tdHead}>Obs. type:</td>
+              <td className={classes.td}>{lidars ? "LIDARs" : "CAMERA"}</td>
             </tr>
             <tr>
               <td className={classes.tdHead}>Obs. space:</td>
               <td className={classes.td}>{lidars ? (dims3 ? "Vector of 42 distances (range 0-40u)" : "Vector of 14 distances (range 0-20u)")  :
-                 "Matrix 84x84 of RGB values"}</td>
+                 "84x84 RGB Matrix"}</td>
             </tr>
             <tr>
               <td className={classes.tdHead}>Action space:</td>
@@ -351,11 +349,11 @@ const Panel = ({ unityContent, structured, contentId, rayActivated, toggleRay, c
         <strong>Environment</strong>
           <table className={classes.table}>
             <tr>
-              <td className={classes.tdHead}>Spawn:</td>
-              <td className={classes.td}>{structured ? "Structured" : "Randomly Generated"}</td>
+              <td className={classes.tdHead}>Generation:</td>
+              <td className={classes.td}>{structured ? "Static" : "Random"}</td>
             </tr>
             <tr>
-              <td className={classes.tdHead}>Dimensions:</td>
+              <td className={classes.tdHead}>Description:</td>
               <td className={classes.td}>{environmentDescription}</td>
             </tr>
           </table>

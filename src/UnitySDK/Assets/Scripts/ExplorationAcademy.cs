@@ -158,7 +158,7 @@ public class ExplorationAcademy : Academy {
         }
 
         var actionHist = areas[0].expAgent.GetComponent<ExplorationAgent>().actionHist;
-        Monitor.Log("Vector Action", actionHist);
+        Monitor.Log("Action", actionHist);
 
         // Draws only when there's 1 area to avoid getting too computationally intensive
         if (drawDebug && areas.Length == 1)

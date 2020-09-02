@@ -30,7 +30,7 @@ const style = {
 }
 
 const unityContent = new UnityContent(
-  "build/Build/build1.json",
+  "build/Build/build001.json",
   "build/Build/UnityLoader.js",
   {
     unityVersion: "2019.2"
@@ -80,7 +80,7 @@ const menu = [
    structured: false,
    lidars: true,
    dims3: false,
-   environmentDesc: "50x50u platform with randomly generate obstacles"
+   environmentDesc: "50x50u platform with randomly placed agent and obstacles"
   },
   {
    name: 'Camera RG',
@@ -91,7 +91,7 @@ const menu = [
    structured: false,
    lidars: false,
    dims3: false,
-   environmentDesc: "50x50u platform with randomly generate obstacles"
+   environmentDesc: "50x50u platform with randomly placed agent and obstacles"
   },
   {
    name: 'Rooms',
@@ -102,7 +102,7 @@ const menu = [
    structured: true,
    lidars: true,
    dims3: false,
-   environmentDesc: "Two rooms connected by a 10u-wide door"
+   environmentDesc: "Two rooms connected by a 10u-wide opening"
   },
   {
     name: 'Corridor',
@@ -113,7 +113,7 @@ const menu = [
     structured: true,
     lidars: true,
     dims3: false,
-    environmentDesc: "Stright corridor 22u-wide"
+    environmentDesc: "Straight corridor 22u-wide"
   },
   {
     name: 'CorridorTight',
@@ -124,7 +124,7 @@ const menu = [
     structured: true,
     lidars: true,
     dims3: false,
-    environmentDesc: "Stright corridor 12u-wide"
+    environmentDesc: "Straight corridor 12u-wide"
   },
   {
     name: 'Turn',
@@ -146,7 +146,7 @@ const menu = [
     structured: true,
     lidars: true,
     dims3: false,
-    environmentDesc: "Crossroad of two corridors 20- wide"
+    environmentDesc: "Intersection of two corridors 20u-wide, random agent spawn"
   },
   {
    name: '3D Lidar RG',
