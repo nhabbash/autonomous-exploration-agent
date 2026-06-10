@@ -11,7 +11,7 @@
     "@testing-library/user-event": "^7.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.0",
+    "react-scripts": "5.0.1",
     "react-unity-webgl": "^7.1.10"
   },
   "scripts": {
